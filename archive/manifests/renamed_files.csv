@@ -1,0 +1,16 @@
+original_path,final_path_or_replacement,classification,reason,evidence,scientific_behavior_changed,references_updated
+REPOSITORY_AUDIT.md,docs/audit/REPOSITORY_AUDIT.md,RENAMED,Audit materials moved under docs/audit,cleanup policy,no,yes
+SCRIPT_DEPENDENCY_MAP.md,docs/audit/SCRIPT_DEPENDENCY_MAP.md,RENAMED,Audit materials moved under docs/audit,cleanup policy,no,yes
+DATASET_INVENTORY.md,docs/audit/DATASET_INVENTORY.md,RENAMED,Audit materials moved under docs/audit,cleanup policy,no,yes
+RESULTS_PROVENANCE.md,docs/audit/RESULTS_PROVENANCE.md,RENAMED,Audit materials moved under docs/audit,cleanup policy,no,yes
+UNRESOLVED_QUESTIONS.md,docs/audit/UNRESOLVED_QUESTIONS.md,RENAMED,Audit materials moved under docs/audit,cleanup policy,no,yes
+PROPOSED_REPOSITORY_STRUCTURE.md,docs/audit/PROPOSED_REPOSITORY_STRUCTURE.md,RENAMED,Audit materials moved under docs/audit,cleanup policy,no,yes
+CANONICAL_WORKFLOW_PROPOSAL.md,docs/audit/CANONICAL_WORKFLOW_PROPOSAL.md,RENAMED,Audit materials moved under docs/audit,cleanup policy,no,yes
+docs/pre_cleanup_inventory.md,docs/audit/pre_cleanup_inventory.md,RENAMED,Pre-cleanup inventory moved under audit docs,cleanup policy,no,yes
+mitochime_local_lab_setup_and_runs.md,docs/reproducibility/mitochime_local_lab_setup_and_runs.md,RENAMED,Lab reproducibility notes separated from root,Repository audit,no,yes
+mitochime_local_lab_runs.ipynb,notebooks/reproducibility/mitochime_local_lab_runs.ipynb,RENAMED,Lab rerun notebook separated from publication notebooks,Repository audit,no,yes
+src/scripts/extract_features.py,scripts/data_prep/extract_features.py,RENAMED,Operational script moved out of legacy source tree,Repository audit,no,yes
+src/scripts/run_pipeline_gb.sh,scripts/inference/run_pipeline_gb.sh,RENAMED,Operational script moved out of legacy source tree,Repository audit,no,yes
+src/scripts/run_pipeline_cnn.sh,scripts/inference/run_pipeline_cnn.sh,RENAMED,Operational script moved out of legacy source tree,Repository audit,no,yes
+src/scripts/run_pipeline_rnnkmer.sh,scripts/inference/run_pipeline_rnnkmer.sh,RENAMED,Operational script moved out of legacy source tree,Repository audit,no,yes
+

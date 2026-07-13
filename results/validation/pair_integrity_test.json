@@ -1,0 +1,21 @@
+{
+  "feature_dataset": "data/processed/PAIR_test.tsv",
+  "sequence_dataset": "data/processed/PAIR_test_seq_L150.tsv",
+  "split_dataset": "data/processed/PAIR_test.tsv",
+  "feature_rows": 7997,
+  "sequence_rows": 8000,
+  "feature_unique_pair_ids": 4000,
+  "sequence_unique_pair_ids": 4000,
+  "feature_pair_multiplicities": {
+    "1": 3,
+    "2": 3997
+  },
+  "sequence_pair_multiplicities": {
+    "2": 4000
+  },
+  "pair_ids_only_in_feature_dataset": [],
+  "pair_ids_only_in_sequence_dataset": [],
+  "split_unique_pair_ids": 4000,
+  "feature_vs_split_missing_pair_ids": [],
+  "sequence_vs_split_missing_pair_ids": []
+}

@@ -1,0 +1,11 @@
+original_path,final_path_or_replacement,classification,reason,evidence,scientific_behavior_changed,references_updated
+configs/,archive/legacy/configs/,ARCHIVED,Stub config layer only supported the old placeholder CLI,Repository audit,no,yes
+documentation/chapter_*.tex,archive/manuscript_materials/thesis/current_thesis/,ARCHIVED,Thesis-era manuscript materials removed from canonical software surface,Researcher decision 9,no,yes
+documentation/draft/,archive/manuscript_materials/drafts/thesis_drafts/,ARCHIVED,Historical draft tree archived,Repository audit,no,yes
+documentation/defense/,archive/manuscript_materials/defense/defense/,ARCHIVED,Defense materials removed from canonical software surface,Researcher decision 9,no,yes
+notebooks/archive/non_pair/,notebooks/archive/non_pair/,ARCHIVED,Older non-pair notebooks preserved outside publication notebook set,Researcher decision 3,no,yes
+reports/,archive/legacy/results/reports_legacy/,ARCHIVED,Legacy and non-canonical report sprawl removed from active results tree,Repository audit,no,yes
+src/scripts/06_predict_ml.py,archive/legacy/scripts/obsolete_predictors/06_predict_ml.py,ARCHIVED,Non-pair-safe predictor superseded by pair-safe GB filtering,Repository audit,no,yes
+src/scripts/gb_predict_filter.py,archive/legacy/scripts/obsolete_predictors/gb_predict_filter.py,ARCHIVED,Non-pair-safe predictor superseded by pair-safe GB filtering,Repository audit,no,yes
+src/scripts/dl_encode_fastq_pairs.py,archive/legacy/scripts/obsolete_predictors/dl_encode_fastq_pairs.py,ARCHIVED,Legacy duplicate CNN encoder,Repository audit,no,yes
+

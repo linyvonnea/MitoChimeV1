@@ -1,0 +1,69 @@
+% =========================
+% File: 03_methods.tex
+% =========================
+
+\section{Methods}
+\label{sec:methods}
+
+\subsection{Overview}
+Figure~\ref{fig:pipeline_modeling} summarizes the MitoChime workflow: paired-end read simulation, alignment to a mitochondrial reference, (i) tabular feature extraction for classical machine learning and (ii) sequence-only dataset preparation for deep learning, followed by model inference, pair-safe read filtering, and downstream assembly evaluation.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=0.6\textwidth]{pipeline_modeling.pdf}
+  \caption{MitoChime workflow from simulated reads to filtering and assembly evaluation.}
+  \label{fig:pipeline_modeling}
+\end{figure}
+
+\subsection{Data generation and alignment}
+Paired-end Illumina reads were simulated from the \textit{Sardinella lemuru} mitochondrial reference (NC\_039553.1). A total of 40{,}000 paired-end reads were generated, comprising 20{,}000 chimeric and 20{,}000 clean read pairs. Clean read pairs were generated with \texttt{wgsim} (v1.20) at 150\,bp using an error rate of 0.05. Chimeric templates were constructed by concatenating two non-adjacent reference segments, optionally retaining short overlaps to approximate PCR template switching, and were simulated with the same read-length configuration but with the error rate set to 0 to preserve junction signals. Reads were aligned to the reference using \texttt{minimap2} (v2.30-r1287) in short-read mode (\texttt{-ax sr}) and processed with \texttt{samtools} (v1.20) to produce sorted and indexed BAM files. An illustrative example of one read from the dataset is shown in Figure~\ref{fig:dataset_example}.
+
+\begin{figure}[H]
+\centering
+\fbox{
+\parbox{0.92\textwidth}{
+\small
+\textbf{Example data point from the dataset}\\[4pt]
+\texttt{read\_id: NC\_039553.1\_10001\_10492\_5:0:0\_8:0:0\_b77/1}\\
+\texttt{label: 0}\\
+\texttt{seq: GTAAGGCATAGTAAGGCAATGGTGAGGCTGTGTGTGATTGCAGCAGTTCAAATTCACT...}
+}
+}
+\caption{Illustrative example of one record from the simulated dataset. The sequence is truncated for readability.}
+\label{fig:dataset_example}
+\end{figure}
+
+\subsection{Feature and sequence extraction}
+Two complementary input representations were prepared from the same labeled read pairs to support both classical machine learning and deep learning.
+
+The extracted features included: (i) alignment-structure summaries, such as the presence and number of supplementary alignments, distances between aligned segments, strand consistency, mapping quality, and mismatch counts; (ii) clipping features derived from the CIGAR string, including left and right soft clipping, total clipped bases, and an estimated breakpoint position; (iii) sequence-composition discontinuity between the left and right portions of the read, measured using 6-mer profiles; and (iv) microhomology features around the estimated breakpoint, including the longest short overlap and its GC content.
+
+In parallel, for deep learning, the raw nucleotide sequence (length $L=150$) was retained as a separate input for the CNN. Sequences were one-hot encoded at training and inference time, with four base channels (A, C, G, T). Ambiguous bases were represented as all zeros.
+
+\subsection{Modeling and evaluation protocol}
+The labeled dataset was partitioned into train and test splits (80/20) using stratification to preserve the balanced class ratio. Model selection, tuning, and five-fold cross validation were performed on the training split only. Final performance was reported on the held-out test split using accuracy, precision, recall, F1, and ROC--AUC (precision/recall/F1 for the chimeric class).
+
+\paragraph{Classical machine learning (feature-based).}
+Feature-based models were implemented in Python using \texttt{scikit-learn}. An initial benchmark evaluated a panel of classifiers under five-fold stratified cross-validation on the training split, including a dummy baseline, L2-regularized logistic regression, a calibrated linear SVM, k-nearest neighbours, Gaussian Na\"ive Bayes, tree ensembles (Random Forest, ExtraTrees, and bagging with decision trees), and gradient boosting methods (Gradient Boosting (GB), XGBoost, LightGBM, and CatBoost). Based on cross-validation ranking, a subset of competitive model families was carried forward for hyperparameter optimization. Hyperparameters were tuned using randomized search with five-fold stratified cross-validation (\texttt{RandomizedSearchCV}), optimizing chimeric-class F1. Among the feature-based models, a tuned Gradient Boosting classifier achieved the best validation ranking and was used as the primary classical model. The hyperparameter search included the number of estimators, and \texttt{learning\_rate} (selected value 0.2); the selected model was refit on the full training split and evaluated once on the held-out test split.
+\paragraph{Deep learning (sequence-based).}
+A one-dimensional convolutional neural network (CNN1D) was trained using sequence-only input of length $L=150$, represented by one-hot encoding. The architecture comprised three convolutional blocks with 64, 128, and 256 filters (kernel sizes 7, 5, and 3; ReLU activations; max-pooling after the first two blocks), followed by adaptive max pooling and a two-layer MLP head ($256\rightarrow128\rightarrow2$) with dropout (0.2). Training used mini-batches of 128 for up to 30 epochs with learning rate 0.001 and weight decay $10^{-4}$. The selected checkpoint was the model achieving the best held-out F1 during training.
+
+\subsection{Filtering strategy}
+Predicted chimeric reads were removed using a probability threshold $\tau$ on the model's chimeric-class score. For each read pair, a chimeric probability $p$ was assigned, and the pair was retained if $p < \tau$. Pair consistency was enforced by filtering on a normalized base read identifier, ensuring that both mates were retained or removed together in the output FASTQ files.
+
+A threshold of $\tau = 0.5$ was used as the baseline operating point for assembly evaluation because it represents the standard decision boundary for binary classifiers and allows the Gradient Boosting and CNN1D models to be compared under the same filtering rule. This threshold was not optimized separately for each read depth or chimera rate. Therefore, the results should be interpreted as a baseline comparison of model behavior rather than as an optimized filtering strategy. 
+
+\subsection{Assembly and downstream evaluation}
+Assemblies were generated from unfiltered and filtered read sets using \texttt{SPAdes} (v4.2.0). Assembly graphs were summarized using \texttt{Bandage} (v0.8.1) graph statistics. Graph complexity was quantified using graph-level metrics including node and total assembled length, across simulated read depths and chimera rates.
+
+\subsection{Chimeric Detection Pipeline}
+A command-line interface automates preprocessing, model inference, pair-safe filtering, and optional assembly evaluation (see Fig.~\ref{fig:pipeline_cli}) to support reproducible use in mitochondrial assembly workflows.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[height=0.35\textheight]{pipeline_cli.pdf}
+  \caption{MitoChime pipeline for model selection, filtering, and optional assembly evaluation.}
+  \label{fig:pipeline_cli}
+\end{figure}
+
+\FloatBarrier

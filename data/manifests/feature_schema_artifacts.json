@@ -1,0 +1,12 @@
+[
+  {
+    "path": "models/pair_noq_tuned/feature_cols_24.json",
+    "sha256": "4a912ceb032be5beac6e204026087a4dccd035832a0316ceef2dccc5fcb432c7",
+    "size_bytes": 473
+  },
+  {
+    "path": "models/pair_noq_tuned/PAIR_feature_cols.json",
+    "sha256": "0deab82abe3caad19a9aa5884331dba05460615835a7e41aefc8b2533d66fb4d",
+    "size_bytes": 460
+  }
+]

@@ -59,6 +59,16 @@ data/predictions/
 documentation/draft/
 documentation/defense/
 documentation/slides/
+docs/manuscript/**/build/
+docs/manuscript/**/*.aux
+docs/manuscript/**/*.bbl
+docs/manuscript/**/*.blg
+docs/manuscript/**/*.fdb_latexmk
+docs/manuscript/**/*.fls
+docs/manuscript/**/*.log
+docs/manuscript/**/*.out
+docs/manuscript/**/*.pdf
+docs/manuscript/**/texput.log
 
 kaggle_bundle_mitochime.zip
 kaggle_bundle_mitochime/
@@ -66,9 +76,11 @@ kaggle_bundle_mitochime/
 models/*.joblib
 models/*.pkl
 models/deep/
+models/pair_noq_tuned/*.joblib
 models_PAIR_noq_tuned/
 models_noq_tuned/
 models_pair_noq/
 
+archive/duplicate_bundles/
 archive/generated/
 archive/legacy/generated_large/

@@ -1,0 +1,1021 @@
+\documentclass[aspectratio=169,11pt]{beamer}
+
+% -------------------------------------------------
+% Theme and packages
+% -------------------------------------------------
+\usetheme{Madrid}
+\usecolortheme{default}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{amsmath}
+\usepackage{multicol}
+\usepackage{ragged2e}
+
+% -------------------------------------------------
+% Clean academic color palette
+% -------------------------------------------------
+\definecolor{MitoNavy}{HTML}{172033}
+\definecolor{MitoBlue}{HTML}{2F5D8C}
+\definecolor{MitoSlate}{HTML}{475569}
+\definecolor{MitoGray}{HTML}{6B7280}
+\definecolor{MitoLightGray}{HTML}{F3F4F6}
+\definecolor{MitoSoftBlue}{HTML}{EAF2F8}
+\definecolor{MitoGreen}{HTML}{2E7D32}
+\definecolor{MitoRed}{HTML}{B91C1C}
+
+% -------------------------------------------------
+% Beamer styling
+% -------------------------------------------------
+\setbeamercolor{normal text}{fg=MitoNavy,bg=white}
+\setbeamercolor{frametitle}{fg=white,bg=MitoNavy}
+\setbeamercolor{title}{fg=MitoNavy}
+\setbeamercolor{subtitle}{fg=MitoSlate}
+\setbeamercolor{author}{fg=MitoSlate}
+\setbeamercolor{institute}{fg=MitoSlate}
+\setbeamercolor{date}{fg=MitoSlate}
+\setbeamercolor{structure}{fg=MitoBlue}
+
+\setbeamercolor{block title}{fg=white,bg=MitoBlue}
+\setbeamercolor{block body}{fg=MitoNavy,bg=MitoSoftBlue}
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}[frame number]
+
+\setbeamertemplate{itemize item}{\color{MitoBlue}$\blacktriangleright$}
+\setbeamertemplate{itemize subitem}{\color{MitoBlue}$\circ$}
+
+% -------------------------------------------------
+% Typography helpers
+% -------------------------------------------------
+\newcommand{\keyword}[1]{\textcolor{MitoBlue}{\textbf{#1}}}
+
+\newcommand{\metriccard}[3]{
+\begin{block}{#1}
+\centering
+{\Large \textbf{#2}}\\
+\vspace{0.2em}
+{\small #3}
+\end{block}
+}
+
+\newcommand{\sectiondivider}[2]{
+{
+\setbeamertemplate{footline}{}
+\begin{frame}[plain]
+\begin{tikzpicture}[remember picture,overlay]
+    \fill[MitoNavy] (current page.south west) rectangle (current page.north east);
+    \node[align=center,text=white] at (current page.center) {
+        {\huge \textbf{#1}}\\[0.8em]
+        {\large #2}
+    };
+\end{tikzpicture}
+\end{frame}
+}
+}
+
+% -------------------------------------------------
+% Title information
+% -------------------------------------------------
+\title[MitoChime]{MitoChime}
+\subtitle{A Machine Learning Pipeline for Detecting PCR-Induced Chimeric Reads in Mitochondrial Illumina Data}
+
+\author{
+Duranne Duran \and
+Yvonne Lin \and
+Daniella Pailden
+}
+
+\institute{
+University of the Philippines Visayas\\
+Division of Physical Sciences and Mathematics
+}
+
+\date{Special Problem Defense}
+
+\newcommand{\presenters}{Duranne Duran \quad $\cdot$ \quad Yvonne Lin \quad $\cdot$ \quad Daniella Pailden}
+
+\begin{document}
+
+% -------------------------------------------------
+% Slide 1: Title
+% -------------------------------------------------
+{
+\setbeamertemplate{footline}{}
+\begin{frame}[plain]
+\vspace{1.1cm}
+
+\begin{center}
+{\Large \textcolor{MitoSlate}{Special Problem Defense}}\\[1.2em]
+
+{\Huge \textbf{MitoChime}}\\[0.6em]
+
+{\large A Machine Learning Pipeline for Detecting PCR-Induced}\\
+{\large Chimeric Reads in Mitochondrial Illumina Data}\\[1.6em]
+
+\rule{0.65\linewidth}{0.5pt}\\[1.2em]
+
+{\normalsize
+\presenters
+}\\[0.7em]
+
+{\small
+University of the Philippines Visayas\\
+Division of Physical Sciences and Mathematics
+}
+
+\end{center}
+\end{frame}
+}
+
+% -------------------------------------------------
+% Slide 2: Hook
+% -------------------------------------------------
+\begin{frame}{Introduction}
+
+\centering
+
+\begin{block}{Four simulated \textit{Sardinella lemuru} mtDNA short reads}
+\small
+\ttfamily
+\begin{tabular}{p{0.13\textwidth} p{0.76\textwidth}}
+Read 1 &
+TCAGCCTTTACCAAGGCCCCCACCCTTGCGGCCCTCGCCTGCTTAATTTTACTTTCTTA... \\[0.8em]
+
+Read 2 &
+TAAGTAAGAACTAGTAGGATCGAGGCCTTCCCGTCTAGATAGGCGTTGGCTTAATTGCA... \\[0.8em]
+
+Read 3 &
+ATAGGGCAGAAGGCCTAGCATGTTAATGGTAAATAGGAAAACCATTAGAGACGTAAATG... \\[0.8em]
+
+Read 4 &
+GAGGTGGCGAAAGTCAGCGTGGTTCCCAGTCCAAGGCTCATCAGCAAGACGGTTAGGCT...
+\end{tabular}
+\end{block}
+
+\vspace{0.6em}
+
+\end{frame}
+
+
+\begin{frame}{Introduction}
+
+\centering
+
+\begin{block}{Four simulated \textit{Sardinella lemuru} mtDNA short reads}
+\small
+\ttfamily
+\begin{tabular}{p{0.13\textwidth} p{0.76\textwidth}}
+Read 1 &
+TCAGCCTTTACCAAGGCCCCCACCCTTGCGGCCCTCGCCTGCTTAATTTTACTTTCTTA... \\[0.8em]
+
+Read 2 &
+TAAGTAAGAACTAGTAGGATCGAGGCCTTCCCGTCTAGATAGGCGTTGGCTTAATTGCA... \\[0.8em]
+
+Read 3 &
+ATAGGGCAGAAGGCCTAGCATGTTAATGGTAAATAGGAAAACCATTAGAGACGTAAATG... \\[0.8em]
+
+Read 4 &
+GAGGTGGCGAAAGTCAGCGTGGTTCCCAGTCCAAGGCTCATCAGCAAGACGGTTAGGCT...
+\end{tabular}
+\end{block}
+
+\vspace{0.6em}
+
+\normalfont
+\large
+\textbf{Question:} Out of these short reads, which ones are chimeric?
+
+\end{frame}
+
+% -------------------------------------------------
+% Slide 3: Real-world problem
+% -------------------------------------------------
+\begin{frame}{The Problem}
+
+\centering
+
+\includegraphics[
+    width=0.88\textwidth,
+    height=0.72\textheight,
+    keepaspectratio
+]{figures/pcr_image.png}
+
+\vspace{0.6em}
+
+\small
+\textit{Schematic illustration of PCR-induced chimera formation through incomplete extension and template switching.}
+
+\end{frame}
+
+
+
+\begin{frame}{The Problem}
+
+\centering
+
+\includegraphics[
+    width=0.88\textwidth,
+    height=0.72\textheight,
+    keepaspectratio
+]{figures/pcr_chim2.png}
+
+\vspace{0.6em}
+
+\small
+\textit{Schematic illustration of PCR-induced chimera formation through incomplete extension and template switching.}
+
+\end{frame}
+
+
+
+\begin{frame}{The Problem}
+
+\centering
+
+\includegraphics[
+    width=0.88\textwidth,
+    height=0.72\textheight,
+    keepaspectratio
+]{figures/pcr_chim3.png}
+
+\vspace{0.6em}
+
+\small
+\textit{Schematic illustration of PCR-induced chimera formation through incomplete extension and template switching.}
+
+\end{frame}
+
+% -------------------------------------------------
+% Slide 4: Implications
+% -------------------------------------------------
+\begin{frame}{Implications}
+
+\begin{block}{Assembly quality}
+\begin{itemize}
+    \item Fragmented or failed mitochondrial assemblies
+    \item Reduced reliability of mitochondrial genomics workflows
+\end{itemize}
+\end{block}
+
+\vspace{0.8em}
+
+\begin{block}{Research impact}
+\begin{itemize}
+    \item Limited downstream analyses in fisheries, population genetics, and evolution
+    \item Wasted sequencing effort, computing time, and researcher labor
+\end{itemize}
+\end{block}
+
+\end{frame}
+
+% -------------------------------------------------
+% Slide 5: Existing approaches
+% -------------------------------------------------
+\begin{frame}{Existing approaches}
+
+\scriptsize
+\renewcommand{\arraystretch}{1.35}
+
+\begin{table}
+\centering
+\begin{tabular}{p{0.23\textwidth} p{0.30\textwidth} p{0.37\textwidth}}
+\hline
+\textbf{Tool / Approach} & \textbf{Main focus} & \textbf{Gap for this study} \\
+\hline
+UCHIME / UCHIME2 &
+Amplicon chimeras &
+Reference/abundance dependent \\
+
+DADA2 &
+ASV-level filtering &
+Not read-level mtDNA filtering \\
+
+CATCh &
+16S rRNA ensemble ML &
+Not for mtDNA; inconsistent \\
+
+ChimPipe &
+RNA-seq fusion/chimera detection &
+Not PCR-induced mtDNA artifacts \\
+
+DL-based tools &
+DNA sequence motif prediction &
+Few to no tools for chimera detection \\
+
+\textbf{MitoChime} &
+\textbf{Read-level mtDNA chimeras} &
+\textbf{Pre-assembly ML/DL filtering} \\
+\hline
+\end{tabular}
+\end{table}
+
+\vspace{0.5em}
+
+\centering
+\footnotesize
+Most existing tools target amplicon, ASV, or RNA-seq chimeras; MitoChime targets PCR-induced mitochondrial short-read artifacts.
+
+\end{frame}
+
+% -------------------------------------------------
+% Slide 7: Study problem
+% -------------------------------------------------
+\begin{frame}{Study problem}
+
+\begin{center}
+\Large
+Can machine learning detect PCR-induced chimeric reads\\
+\keyword{before mitochondrial genome assembly}?
+\end{center}
+
+\vspace{1.5em}
+
+\begin{columns}[T]
+\column{0.48\textwidth}
+\begin{block}{Input}
+Simulated clean and chimeric paired-end Illumina reads from \textit{S. lemuru}
+\end{block}
+
+\column{0.48\textwidth}
+\begin{block}{Output}
+A modular pipeline that predicts and filters suspected chimeric reads
+\end{block}
+\end{columns}
+
+\end{frame}
+
+% -------------------------------------------------
+% Slide 8: Scope and limitations
+% -------------------------------------------------
+\begin{frame}{Scope and limitations}
+
+\begin{columns}[T]
+\column{0.48\textwidth}
+\begin{block}{Included}
+\begin{itemize}
+    \item \textit{Sardinella lemuru}
+    \item mitochondrial Illumina reads
+    \item PCR-induced chimeras
+    \item simulated labelled datasets
+\end{itemize}
+\end{block}
+
+\column{0.48\textwidth}
+\begin{block}{Excluded}
+\begin{itemize}
+    \item long-read sequencing
+    \item NUMTs
+    \item naturally occurring chimeras
+    \item multi-species model training
+\end{itemize}
+\end{block}
+\end{columns}
+
+\vspace{0.9em}
+\centering
+\large
+The study prioritized a focused and controlled evaluation setting.
+
+\end{frame}
+
+% -------------------------------------------------
+% Slide 9: Section divider
+% -------------------------------------------------
+\sectiondivider{Methodology}{From simulated reads to model-based filtering}
+
+% -------------------------------------------------
+% Slide 10: Workflow
+% -------------------------------------------------
+\begin{frame}{MitoChime workflow}
+
+\centering
+\includegraphics[width=0.70\linewidth]{figures/methodology.png}
+
+\vspace{0.6em}
+
+\begin{block}{Overview}
+The workflow generated labelled reads, extracted read-level evidence, trained models, filtered suspected chimeras, and evaluated downstream assembly behavior.
+\end{block}
+
+\end{frame}
+
+% -------------------------------------------------
+% Slide 11: Data construction
+% -------------------------------------------------
+\begin{frame}{Data construction}
+
+\begin{columns}[T]
+\column{0.48\textwidth}
+\begin{block}{Clean reads}
+Simulated from the \textit{S. lemuru} mitochondrial reference genome.
+\end{block}
+
+\column{0.48\textwidth}
+\begin{block}{Chimeric reads}
+Generated by joining non-adjacent mitochondrial segments to mimic PCR template switching.
+\end{block}
+\end{columns}
+
+\vspace{1.2em}
+
+\centering
+\large
+Labels: \textcolor{MitoGreen}{clean = 0} \quad and \quad \textcolor{MitoRed}{chimeric = 1}
+
+\end{frame}
+
+% -------------------------------------------------
+% Slide 12: Feature extraction
+% -------------------------------------------------
+\begin{frame}{Feature extraction}
+
+\centering
+\includegraphics[width=0.88\linewidth]{figures/feature_families.pdf}
+
+\vspace{0.8em}
+
+\begin{block}{Feature representation}
+Each read was converted into a set of 23 numeric predictors describing alignment structure, clipping behavior, sequence composition, microhomology, and mapping quality.
+\end{block}
+
+\end{frame}
+% -------------------------------------------------
+% Slide 12.5: Dataset representation
+% -------------------------------------------------
+\begin{frame}{Dataset representation}
+
+\begin{center}
+\large
+The labelled reads were prepared in two dataset formats.
+\end{center}
+
+\vspace{0.6em}
+
+\begin{columns}[T,onlytextwidth]
+
+\column{0.49\textwidth}
+\centering
+\includegraphics[width=\linewidth]{figures/sequence_dataset.png}
+
+\vspace{0.4em}
+
+{\small \textbf{Sequence dataset}\\
+For sequence-based deep learning models}
+
+\column{0.49\textwidth}
+\centering
+\includegraphics[width=\linewidth]{figures/feature_matrix.png}
+
+\vspace{0.4em}
+
+{\small \textbf{Feature matrix}\\
+For machine learning models}
+
+\end{columns}
+
+\end{frame}
+
+% -------------------------------------------------
+% Slide 13: Models
+% -------------------------------------------------
+\begin{frame}{Models evaluated}
+
+\begin{columns}[T]
+\column{0.32\textwidth}
+\begin{block}{Gradient Boosting}
+Feature-based model using engineered alignment and sequence-derived predictors.
+\end{block}
+
+\column{0.32\textwidth}
+\begin{block}{1D CNN}
+Sequence-based model using one-hot encoded nucleotide reads.
+\end{block}
+
+\column{0.32\textwidth}
+\begin{block}{BiGRU}
+Sequence-based model using ordered k-mer tokens.
+\end{block}
+\end{columns}
+
+\vspace{1em}
+
+\centering
+\includegraphics[width=0.72\linewidth]{figures/model_architecture.pdf}
+
+\end{frame}
+
+% -------------------------------------------------
+% Slide 14: Evaluation
+% -------------------------------------------------
+\begin{frame}{Evaluation strategy}
+
+\begin{columns}[T]
+\column{0.48\textwidth}
+\begin{block}{Read-level evaluation}
+\begin{itemize}
+    \item Accuracy
+    \item Precision
+    \item Recall
+    \item F1-score
+    \item ROC--AUC
+\end{itemize}
+\end{block}
+
+\column{0.48\textwidth}
+\begin{block}{Assembly-level validation}
+\begin{itemize}
+    \item Read retention
+    \item Number of nodes
+    \item Assembly graph structure
+    \item Contiguity after filtering
+\end{itemize}
+\end{block}
+\end{columns}
+
+\vspace{0.9em}
+
+\centering
+\large
+The study evaluated both prediction quality and downstream utility.
+
+\end{frame}
+
+% -------------------------------------------------
+% Slide 15: Section divider
+% -------------------------------------------------
+\sectiondivider{Results and Discussion}{Classification performance and assembly behavior}
+
+
+\begin{frame}{Training Behavior of CNN and BiGRU}
+\begin{columns}
+\column{0.5\textwidth}
+\centering
+\includegraphics[width=0.90\linewidth]{figures/training_cnn.png}\\
+\small CNN
+
+\column{0.5\textwidth}
+\centering
+\includegraphics[width=0.90\linewidth]{figures/training_rnn.png}\\
+\small BiGRU
+\end{columns}
+
+\end{frame}
+
+% -------------------------------------------------
+% Slide 16: Classification results
+% -------------------------------------------------
+\begin{frame}{Classification performance}
+
+\centering
+\includegraphics[width=0.72\linewidth]{figures/held_out_compare.png}
+
+
+\end{frame}
+
+\begin{frame}{Classification performance}
+
+\begin{table}
+\centering
+\small
+\begin{tabular}{lccc}
+\toprule
+Model & F1-score & ROC--AUC & Runtime \\
+\midrule
+Gradient Boosting & 0.7765 & 0.8459 & 0.50 min \\
+1D CNN & 0.9135 & 0.9607 & 1.39 min \\
+BiGRU & 0.9523 & 0.9849 & 5.51 min \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\end{frame}
+
+% -------------------------------------------------
+% Slide 17: Model behavior
+% -------------------------------------------------
+\begin{frame}{Model behavior}
+
+\begin{itemize}
+    \item \textbf{Gradient Boosting} — Conservative filtering; higher read retention
+    \item \textbf{CNN} — Sensitive model; more aggressive filtering
+    \item \textbf{BiGRU} — Highest F1 score; best read-level performance
+\end{itemize}
+
+\end{frame}
+
+% -------------------------------------------------
+% Slide 18: Error patterns
+% -------------------------------------------------
+\begin{frame}{Error patterns}
+
+\begin{columns}
+\column{0.33\textwidth}
+\centering
+\includegraphics[width=0.90\linewidth]{figures/gb_confusion_matrix.png}\\
+\small Gradient Boosting
+
+\column{0.33\textwidth}
+\centering
+\includegraphics[width=0.90\linewidth]{figures/cnn_confusion_matrix.png}\\
+\small CNN
+
+\column{0.33\textwidth}
+\centering
+\includegraphics[width=0.90\linewidth]{figures/rnn_confusion_matrix.png}\\
+\small BiGRU
+\end{columns}
+
+\vspace{0.5em}
+
+\centering
+\footnotesize
+\textit{\textit{These classification results were reviewed with PGC Visayas and were considered suitable for the intended mitochondrial assembly workflow.}}
+
+\end{frame}
+
+% -------------------------------------------------
+% Slide 19: Feature importance
+% -------------------------------------------------
+\begin{frame}{Feature importance}
+
+\centering
+\includegraphics[
+    width=\textwidth,
+    height=0.72\textheight,
+    keepaspectratio
+]{figures/gb_features.png}
+
+\vspace{0.35em}
+
+\begin{minipage}{0.96\textwidth}
+\footnotesize
+Most informative predictors: 
+\textbf{total clipped bases}, 
+\textbf{k-mer Jensen--Shannon divergence}, 
+\textbf{k-mer cosine difference}, and 
+\textbf{left soft clipping}.
+\end{minipage}
+
+\end{frame}
+
+\begin{frame}{Feature Family Importance}
+
+\begin{table}
+\centering
+\small
+\begin{tabular}{lrrr}
+\hline
+\textbf{Family} & \textbf{Importance Sum} & \textbf{Importance Mean} & \textbf{nFeatures} \\
+\hline
+Clipping & 0.133830 & 0.033458 & 4 \\
+K-mer jump & 0.096264 & 0.048132 & 2 \\
+Other & 0.003676 & 0.001225 & 3 \\
+Microhomology & 0.000347 & 0.000174 & 2 \\
+SA structure & -0.000859 & -0.000066 & 13 \\
+\hline
+\end{tabular}
+\end{table}
+
+\end{frame}
+
+% -------------------------------------------------
+% Slide 20: Assembly validation high coverage
+% -------------------------------------------------
+\begin{frame}{Assembly validation: high coverage}
+
+\begin{columns}
+\column{0.58\textwidth}
+\centering
+\includegraphics[width=0.80\linewidth]{figures/assembly_20k_50.png}
+
+\column{0.38\textwidth}
+\large
+20K reads, 50\% chimeras
+
+\vspace{0.7em}
+
+\normalsize
+\begin{itemize}
+    \item Unfiltered assembly showed severe graph complexity.
+    \item Filtering simplified the graph.
+    \item CNN produced the simplest graph.
+    \item GB retained more reads.
+\end{itemize}
+\end{columns}
+
+\end{frame}
+
+% -------------------------------------------------
+% Slide 21: Assembly validation low coverage
+% -------------------------------------------------
+\begin{frame}{Assembly validation: low coverage}
+
+\begin{columns}
+\column{0.58\textwidth}
+\centering
+\includegraphics[width=0.80\linewidth]{figures/assembly_3200_50.png}
+
+\column{0.38\textwidth}
+\large
+3,200 reads, 50\% chimeras
+
+\vspace{0.7em}
+
+\normalsize
+At low read depth, aggressive filtering may remove too much read support and cause fragmentation.
+
+\vspace{0.8em}
+
+\begin{block}{Practical implication}
+The safest model depends on coverage and chimera proportion.
+\end{block}
+\end{columns}
+
+\end{frame}
+
+% -------------------------------------------------
+% Slide 22: Recommendations
+% -------------------------------------------------
+\begin{frame}{Recommendations: Practical Use}
+
+\begin{itemize}
+    \item Use \textbf{Gradient Boosting} when read depth is low or interpretability is important.
+    \item Use \textbf{BiGRU} when read-level classification performance is the priority.
+    \item \textbf{CNN} may be useful in high-coverage and high-chimera conditions.
+    \item Deep learning models performed better, but their black-box nature makes interpretability a tradeoff.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Recommendations: Future Work}
+
+\begin{itemize}
+    \item Test on real mitochondrial datasets.
+    \item Evaluate realistic class imbalance.
+    \item Add varied sequencing-error profiles.
+    \item Explore hybrid feature-sequence models.
+\end{itemize}
+
+\end{frame}
+
+% -------------------------------------------------
+% Slide 23: Summary
+% -------------------------------------------------
+\begin{frame}{Summary}
+
+\large
+\begin{enumerate}
+    \item PCR-induced chimeras can disrupt mitochondrial genome assembly.
+    \item Existing tools do not directly address this read-level setting.
+    \item MitoChime detects suspected chimeric reads before assembly.
+    \item BiGRU achieved the strongest classification performance.
+    \item Model choice should consider both accuracy and read retention.
+\end{enumerate}
+
+\end{frame}
+
+% -------------------------------------------------
+% Slide 24: Final title
+% -------------------------------------------------
+{
+\setbeamertemplate{footline}{}
+\begin{frame}[plain]
+\vspace{1.2cm}
+
+\begin{center}
+{\Huge \textbf{MitoChime}}\\[0.7em]
+
+{\large A Machine Learning Pipeline for Detecting PCR-Induced}\\
+{\large Chimeric Reads in Mitochondrial Illumina Data}\\[1.5em]
+
+\rule{0.65\linewidth}{0.5pt}\\[1.2em]
+
+{\normalsize
+\presenters
+}\\[1.5em]
+
+{\large Thank you.}
+\end{center}
+
+\end{frame}
+}
+
+
+% -------------------------------------------------
+% Appendix
+% -------------------------------------------------
+\appendix
+
+{
+\setbeamertemplate{footline}{}
+\begin{frame}[plain]
+\begin{tikzpicture}[remember picture,overlay]
+    \fill[MitoNavy] (current page.south west) rectangle (current page.north east);
+    \node[align=center,text=white] at (current page.center) {
+        {\Huge \textbf{Appendix}}\\[0.8em]
+        {\large Supplementary model settings, EDA figures, and assembly validation}
+    };
+\end{tikzpicture}
+\end{frame}
+}
+% -------------------------------------------------
+% Appendix Slide: Final Model Parameters
+% -------------------------------------------------
+\begin{frame}{Appendix: Final Model Parameters}
+
+\scriptsize
+\renewcommand{\arraystretch}{1.45}
+
+\begin{table}
+\centering
+\begin{tabular}{p{0.20\textwidth} p{0.28\textwidth} p{0.43\textwidth}}
+\toprule
+\textbf{Model} & \textbf{Input} & \textbf{Parameters} \\
+\midrule
+
+Gradient Boosting &
+23 engineered features &
+400 estimators; learning rate = 0.2; max depth = 3; min samples leaf = 4 \\
+
+1D CNN &
+One-hot DNA sequence, $L = 150$ &
+Conv filters: 64 $\rightarrow$ 128 $\rightarrow$ 256; kernels: 7, 5, 3; dropout = 0.2 \\
+
+BiGRU &
+4-mer tokens, 147 tokens/read &
+embedding = 64; hidden = 256; bidirectional; 1 layer \\
+
+\bottomrule
+\end{tabular}
+\end{table}
+
+\end{frame}
+
+% -------------------------------------------------
+% Appendix Slide: EDA Summary
+% -------------------------------------------------
+\begin{frame}{Appendix: EDA Summary}
+
+\centering
+\includegraphics[
+    width=0.95\textwidth,
+    height=0.78\textheight,
+    keepaspectratio
+]{figures/eda_summary.png}
+
+\end{frame}
+
+% -------------------------------------------------
+% Appendix Slide: Feature Boxplots
+% -------------------------------------------------
+\begin{frame}{Appendix: Feature Boxplots}
+
+\centering
+\includegraphics[
+    width=0.95\textwidth,
+    height=0.78\textheight,
+    keepaspectratio
+]{figures/boxplots.png}
+
+\end{frame}
+
+% -------------------------------------------------
+% Appendix Slide: 3,200 reads
+% -------------------------------------------------
+\begin{frame}{Appendix: External Assembly Graphs (3,200 reads)}
+
+\centering
+\begin{tabular}{cc}
+\includegraphics[
+    width=0.45\linewidth,
+    height=0.32\textheight,
+    keepaspectratio
+]{figures/3200_5.png} &
+\includegraphics[
+    width=0.45\linewidth,
+    height=0.32\textheight,
+    keepaspectratio
+]{figures/3200_10.png} \\
+
+{\scriptsize 5\% chimeras} & {\scriptsize 10\% chimeras} \\[0.6em]
+
+\includegraphics[
+    width=0.45\linewidth,
+    height=0.32\textheight,
+    keepaspectratio
+]{figures/3200_15.png} &
+\includegraphics[
+    width=0.45\linewidth,
+    height=0.32\textheight,
+    keepaspectratio
+]{figures/3200_50.png} \\
+
+{\scriptsize 15\% chimeras} & {\scriptsize 50\% chimeras}
+\end{tabular}
+
+\end{frame}
+
+% -------------------------------------------------
+% Appendix Slide: 10,000 reads
+% -------------------------------------------------
+\begin{frame}{Appendix: External Assembly Graphs (10,000 reads)}
+
+\centering
+\begin{tabular}{cc}
+\includegraphics[
+    width=0.45\linewidth,
+    height=0.32\textheight,
+    keepaspectratio
+]{figures/10k_5.png} &
+\includegraphics[
+    width=0.45\linewidth,
+    height=0.32\textheight,
+    keepaspectratio
+]{figures/10k_10.png} \\
+
+{\scriptsize 5\% chimeras} & {\scriptsize 10\% chimeras} \\[0.6em]
+
+\includegraphics[
+    width=0.45\linewidth,
+    height=0.32\textheight,
+    keepaspectratio
+]{figures/10k_15.png} &
+\includegraphics[
+    width=0.45\linewidth,
+    height=0.32\textheight,
+    keepaspectratio
+]{figures/10k_50.png} \\
+
+{\scriptsize 15\% chimeras} & {\scriptsize 50\% chimeras}
+\end{tabular}
+
+\end{frame}
+
+% -------------------------------------------------
+% Appendix Slide: 20,000 reads
+% -------------------------------------------------
+\begin{frame}{Appendix: External Assembly Graphs (20,000 reads)}
+
+\centering
+\begin{tabular}{cc}
+\includegraphics[
+    width=0.45\linewidth,
+    height=0.32\textheight,
+    keepaspectratio
+]{figures/20k_5.png} &
+\includegraphics[
+    width=0.45\linewidth,
+    height=0.32\textheight,
+    keepaspectratio
+]{figures/20k_10.png} \\
+
+{\scriptsize 5\% chimeras} & {\scriptsize 10\% chimeras} \\[0.6em]
+
+\includegraphics[
+    width=0.45\linewidth,
+    height=0.32\textheight,
+    keepaspectratio
+]{figures/20k_15.png} &
+\includegraphics[
+    width=0.45\linewidth,
+    height=0.32\textheight,
+    keepaspectratio
+]{figures/20k_50.png} \\
+
+{\scriptsize 15\% chimeras} & {\scriptsize 50\% chimeras}
+\end{tabular}
+
+\end{frame}
+
+\begin{frame}{Appendix: Tuned Metrics}
+
+\centering
+\includegraphics[
+    width=0.95\textwidth,
+    height=0.78\textheight,
+    keepaspectratio
+]{figures/tuned.png}
+
+\end{frame}
+
+\begin{frame}{Appendix: Complete Metrics}
+
+\centering
+\includegraphics[
+    width=0.95\textwidth,
+    height=0.78\textheight,
+    keepaspectratio
+]{figures/accuracy.png}
+
+\end{frame}
+
+
+
+\end{document}

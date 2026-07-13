@@ -1,0 +1,5 @@
+read_id	label	seq
+exampleA/1	0	ACGTACGT
+exampleA/2	0	TGCATGCA
+exampleB/1	1	TTTTCCCC
+exampleB/2	1	CCCCAAAA

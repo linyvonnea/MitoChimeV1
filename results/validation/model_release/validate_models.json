@@ -1,0 +1,132 @@
+{
+  "repo_root": "/private/tmp/mitochime-model-release.ZeHUCT/MitoChimeV1-fresh",
+  "manifest_path": "/private/tmp/mitochime-model-release.ZeHUCT/MitoChimeV1-fresh/models/metadata/canonical_model_artifacts.json",
+  "python_executable": "/private/tmp/mitochime-model-release.ZeHUCT/MitoChimeV1-fresh/.venv/bin/python",
+  "python_version": "3.12.5",
+  "dependency_versions": {
+    "numpy": "1.26.4",
+    "pandas": "2.2.2",
+    "joblib": "1.5.3",
+    "scikit-learn": "1.5.2",
+    "torch": "2.13.0"
+  },
+  "models": {
+    "gb": {
+      "family": "tuned Gradient Boosting",
+      "artifact": {
+        "path": "models/pair_noq_tuned/gradient_boosting_tuned.joblib",
+        "absolute_path": "/private/tmp/mitochime-model-release.ZeHUCT/MitoChimeV1-fresh/models/pair_noq_tuned/gradient_boosting_tuned.joblib",
+        "expected_size_bytes": 513003,
+        "observed_size_bytes": 513003,
+        "size_matches": true,
+        "expected_sha256": "952d9b433decd1874a7054cb5e6977a5a8813def3cf0f001925ca2804eb256eb",
+        "observed_sha256": "952d9b433decd1874a7054cb5e6977a5a8813def3cf0f001925ca2804eb256eb",
+        "sha256_matches": true
+      },
+      "expected_input": {
+        "type": "tabular",
+        "shape": [
+          4,
+          24
+        ],
+        "feature_schema_path": "models/pair_noq_tuned/feature_cols_24.json"
+      },
+      "load_check": {
+        "class_name": "GradientBoostingClassifier",
+        "n_features_in": 24
+      },
+      "smoke_prediction": {
+        "rows": 4,
+        "probabilities": [
+          0.00404099,
+          0.00497545,
+          0.04662911,
+          0.0343199
+        ]
+      },
+      "status": "PASS"
+    },
+    "cnn": {
+      "family": "CNN1D",
+      "artifact": {
+        "path": "models/deep/cnn_final_L150_seed42_fixedep25/cnn_final.pt",
+        "absolute_path": "/private/tmp/mitochime-model-release.ZeHUCT/MitoChimeV1-fresh/models/deep/cnn_final_L150_seed42_fixedep25/cnn_final.pt",
+        "expected_size_bytes": 703589,
+        "observed_size_bytes": 703589,
+        "size_matches": true,
+        "expected_sha256": "e243a39299364f692702adac528aba05247965d429550cd25a36d7247381620c",
+        "observed_sha256": "e243a39299364f692702adac528aba05247965d429550cd25a36d7247381620c",
+        "sha256_matches": true
+      },
+      "expected_input": {
+        "type": "one_hot_sequence",
+        "shape": [
+          4,
+          4,
+          150
+        ]
+      },
+      "load_check": {
+        "class_name": "CNN1D",
+        "in_channels": 4,
+        "checkpoint_keys": [
+          "args",
+          "model_state"
+        ]
+      },
+      "smoke_prediction": {
+        "rows": 4,
+        "probabilities": [
+          0.0550387,
+          0.00324957,
+          0.84458447,
+          0.79305315
+        ]
+      },
+      "status": "PASS"
+    },
+    "bigru": {
+      "family": "BiGRU k-mer",
+      "artifact": {
+        "path": "models/deep/rnnkmer_bigru_final_L150_seed42/rnn_kmer_gru_best.pt",
+        "absolute_path": "/private/tmp/mitochime-model-release.ZeHUCT/MitoChimeV1-fresh/models/deep/rnnkmer_bigru_final_L150_seed42/rnn_kmer_gru_best.pt",
+        "expected_size_bytes": 2313722,
+        "observed_size_bytes": 2313722,
+        "size_matches": true,
+        "expected_sha256": "c9a8688eab1052fe987dc9bfd3e9c4959e500abb6cf99792f10f4cf589a869ae",
+        "observed_sha256": "c9a8688eab1052fe987dc9bfd3e9c4959e500abb6cf99792f10f4cf589a869ae",
+        "sha256_matches": true
+      },
+      "expected_input": {
+        "type": "kmer_tokens",
+        "shape": [
+          4,
+          147
+        ],
+        "k": 4,
+        "L_kmers": 147
+      },
+      "load_check": {
+        "class_name": "RNNKmerClassifier",
+        "vocab_size": 257,
+        "bidirectional": true,
+        "pool": "last"
+      },
+      "smoke_prediction": {
+        "rows": 4,
+        "probabilities": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "status": "PASS"
+    }
+  },
+  "summary": {
+    "passed_models": 3,
+    "failed_models": 0,
+    "success": true
+  }
+}

@@ -1,0 +1,4 @@
+mode	family	status	smoke_rows	probabilities
+gb	tuned Gradient Boosting	PASS	4	0.00404099,0.00497545,0.04662911,0.0343199
+cnn	CNN1D	PASS	4	0.0550387,0.00324957,0.84458447,0.79305315
+bigru	BiGRU k-mer	PASS	4	1.0,1.0,1.0,1.0

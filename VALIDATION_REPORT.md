@@ -130,7 +130,8 @@ Release-candidate remediation was validated from a new temporary clone of commit
 
 Canonical clone-and-run model distribution was finalized after the original release-candidate audit.
 
+- validated commit: `be324160e08b78ab0804268a7d5fbc6037ab0673` on `publication/nids-cleanup`
 - tracked artifacts now include `models/pair_noq_tuned/gradient_boosting_tuned.joblib`, `models/deep/cnn_final_L150_seed42_fixedep25/cnn_final.pt`, and `models/deep/rnnkmer_bigru_final_L150_seed42/rnn_kmer_gru_best.pt`
 - `mitochime validate-models` now verifies SHA-256 digests against `models/metadata/canonical_model_artifacts.json`, confirms the expected feature schema or tensor shape for each family, loads all three models, and records a small smoke prediction
-- clone-and-run validation evidence for the tracked-model release is stored under `results/validation/model_release/`
+- fresh-clone validation with `pip install -e ".[classical,deep,dev]"`, `python -m compileall src scripts tests`, `pytest -q`, CLI help, `report-environment`, and `validate-models` passed; evidence is stored under `results/validation/model_release/`
 - combined `BOTH` or `ALL` inference validation was not run because no such combined mode is currently implemented in the public CLI or canonical Bash wrappers

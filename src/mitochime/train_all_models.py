@@ -40,8 +40,8 @@ import os
 from typing import Dict, Any, List
 
 import joblib
-import numpy as np
 import pandas as pd
+import numpy as np
 from sklearn.impute import SimpleImputer
 from sklearn.metrics import (
     accuracy_score,
@@ -56,6 +56,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 
 from .data_utils import prepare_X_y
+from .feature_schema import CANONICAL_PAIR_NOQ_FEATURE_COLUMNS
 from .model_zoo import get_model_zoo
 
 
@@ -111,8 +112,14 @@ def main() -> None:
     train_df = pd.read_csv(args.train, sep="\t")
     test_df = pd.read_csv(args.test, sep="\t")
 
-    X_train, y_train = prepare_X_y(train_df)
-    X_test, y_test = prepare_X_y(test_df)
+    X_train, y_train = prepare_X_y(
+        train_df,
+        expected_features=CANONICAL_PAIR_NOQ_FEATURE_COLUMNS,
+    )
+    X_test, y_test = prepare_X_y(
+        test_df,
+        expected_features=CANONICAL_PAIR_NOQ_FEATURE_COLUMNS,
+    )
 
     print(f"Train size: {X_train.shape}, positive={y_train.sum()}")
     print(f"Test  size: {X_test.shape}, positive={y_test.sum()}")
@@ -211,7 +218,11 @@ def main() -> None:
     summary_df = pd.DataFrame(all_metrics)
     summary_tsv = os.path.join(args.reports_dir, "metrics_summary.tsv")
     summary_df.to_csv(summary_tsv, sep="\t", index=False)
+    feature_order_path = os.path.join(args.models_dir, "feature_cols_24.json")
+    with open(feature_order_path, "w") as handle:
+        json.dump(CANONICAL_PAIR_NOQ_FEATURE_COLUMNS, handle, indent=2)
     print(f"\nWrote summary metrics table: {summary_tsv}")
+    print(f"Wrote canonical feature order: {feature_order_path}")
 
 
 if __name__ == "__main__":

@@ -4,9 +4,28 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mitochime"
-version = "0.0.1"
+version = "0.1.0"
+description = "Pair-safe mitochondrial chimera detection workflow for Illumina reads."
+readme = "README.md"
 requires-python = ">=3.10"
-dependencies = []
+dependencies = [
+  "numpy",
+  "pandas",
+  "scikit-learn",
+  "joblib",
+  "pysam",
+  "biopython",
+  "pyyaml",
+  "tqdm",
+]
+
+[project.optional-dependencies]
+classical = ["xgboost", "lightgbm", "catboost"]
+deep = ["torch"]
+dev = ["pytest"]
+
+[project.scripts]
+mitochime = "mitochime.cli:main"
 
 [tool.setuptools]
 package-dir = {"" = "src"}
@@ -14,10 +33,6 @@ package-dir = {"" = "src"}
 [tool.setuptools.packages.find]
 where = ["src"]
 
-[tool.flake8]
-max-line-length = 88
-extend-ignore = ["E203", "W503"]  # matches Black
+[tool.pytest.ini_options]
+testpaths = ["tests"]
 
-[tool.isort]
-profile = "black"
-line_length = 88

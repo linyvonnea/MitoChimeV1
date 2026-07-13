@@ -1,0 +1,27 @@
+[
+  {
+    "path": "models/pair_noq_tuned/gradient_boosting_tuned.joblib",
+    "size_bytes": 513003,
+    "sha256": "952d9b433decd1874a7054cb5e6977a5a8813def3cf0f001925ca2804eb256eb"
+  },
+  {
+    "path": "models/pair_noq_tuned/feature_cols_24.json",
+    "size_bytes": 473,
+    "sha256": "4a912ceb032be5beac6e204026087a4dccd035832a0316ceef2dccc5fcb432c7"
+  },
+  {
+    "path": "models/pair_noq_tuned/PAIR_feature_cols.json",
+    "size_bytes": 460,
+    "sha256": "0deab82abe3caad19a9aa5884331dba05460615835a7e41aefc8b2533d66fb4d"
+  },
+  {
+    "path": "models/deep/cnn_final_L150_seed42_fixedep25/cnn_final.pt",
+    "size_bytes": 703589,
+    "sha256": "e243a39299364f692702adac528aba05247965d429550cd25a36d7247381620c"
+  },
+  {
+    "path": "models/deep/rnnkmer_bigru_final_L150_seed42/rnn_kmer_gru_best.pt",
+    "size_bytes": 2313722,
+    "sha256": "c9a8688eab1052fe987dc9bfd3e9c4959e500abb6cf99792f10f4cf589a869ae"
+  }
+]

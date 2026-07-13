@@ -16,41 +16,20 @@ PYTHONPATH=src python3 -m mitochime.deep_learning.make_seq_tsv_infer \
 from __future__ import annotations
 
 import argparse
-import gzip
 from pathlib import Path
 from typing import Iterable, Tuple
 
+from ..utils.read_ids import infer_mate_from_header, mate_specific_read_id, normalize_base_read_id, normalize_read_token
 
-def open_text(path: str, mode: str = "rt"):
-    return gzip.open(path, mode) if path.endswith(".gz") else open(path, mode)
-
-
-def normalize_header_to_read_id(header: str) -> str:
-    """
-    Keep the first token, drop '@', keep /1 or /2 if present.
-    """
-    h = header.strip().split()[0]
-    if h.startswith("@"):
-        h = h[1:]
-    return h
+from ..utils.fastq import iter_fastq as iter_fastq_records_raw
 
 
 def iter_fastq(path: str) -> Iterable[Tuple[str, str]]:
     """
     Yield (read_id, seq) from FASTQ.
     """
-    with open_text(path, "rt") as f:
-        while True:
-            h = f.readline()
-            if not h:
-                break
-            seq = f.readline()
-            plus = f.readline()
-            qual = f.readline()
-            if not qual:
-                break
-            rid = normalize_header_to_read_id(h)
-            yield rid, seq.strip()
+    for record in iter_fastq_records(path):
+        yield record
 
 
 def pad_or_trim(seq: str, L: int) -> str:
@@ -58,6 +37,13 @@ def pad_or_trim(seq: str, L: int) -> str:
     if len(seq) >= L:
         return seq[:L]
     return seq + ("N" * (L - len(seq)))
+
+
+def iter_fastq_records(path: str) -> Iterable[Tuple[str, str]]:
+    """Yield `(read_id, seq)` pairs from FASTQ records."""
+
+    for record in iter_fastq_records_raw(path):
+        yield normalize_read_token(record.header), record.sequence.strip()
 
 
 def main() -> None:
@@ -71,12 +57,11 @@ def main() -> None:
     out_path = Path(args.out)
     out_path.parent.mkdir(parents=True, exist_ok=True)
 
-    # Read R1 into dict by base_id to ensure pairing consistency
-    # (We only keep bases that exist in BOTH R1 and R2.)
     r1_map = {}
     for rid, seq in iter_fastq(args.r1):
-        base = rid[:-2] if rid.endswith("/1") or rid.endswith("/2") else rid
-        r1_map[base] = (rid, pad_or_trim(seq, args.L))
+        base = normalize_base_read_id(rid)
+        mate = infer_mate_from_header(rid) or "1"
+        r1_map[base] = (mate_specific_read_id(base, mate), pad_or_trim(seq, args.L))
 
     rows = []
     kept_pairs = 0
@@ -84,18 +69,14 @@ def main() -> None:
 
     for rid2, seq2 in iter_fastq(args.r2):
         scanned_r2 += 1
-        base = rid2[:-2] if rid2.endswith("/1") or rid2.endswith("/2") else rid2
+        base = normalize_base_read_id(rid2)
         if base not in r1_map:
             continue
 
         rid1, seq1 = r1_map[base]
         seq2 = pad_or_trim(seq2, args.L)
 
-        # Ensure read_id suffixes exist (force /1 and /2)
-        if not rid1.endswith("/1"):
-            rid1 = base + "/1"
-        if not rid2.endswith("/2"):
-            rid2 = base + "/2"
+        rid2 = mate_specific_read_id(base, infer_mate_from_header(rid2) or "2")
 
         rows.append((rid1, seq1))
         rows.append((rid2, seq2))

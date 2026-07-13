@@ -10,9 +10,53 @@ import sys
 from pathlib import Path
 
 
-REPO_ROOT = Path(__file__).resolve().parents[2]
+PACKAGE_ROOT = Path(__file__).resolve().parent
 PYTHON = sys.executable
-ENV = {**os.environ, "PYTHONPATH": str(REPO_ROOT / "src")}
+
+
+def _looks_like_repo_root(path: Path) -> bool:
+    return (
+        path.is_dir()
+        and (path / "pyproject.toml").is_file()
+        and (path / "src" / "mitochime").is_dir()
+        and (path / "scripts").is_dir()
+    )
+
+
+def _detect_repo_root() -> Path | None:
+    env_root = os.environ.get("MITOCHIME_REPO_ROOT")
+    if env_root:
+        candidate = Path(env_root).expanduser().resolve()
+        if _looks_like_repo_root(candidate):
+            return candidate
+
+    candidates = [Path.cwd(), *Path.cwd().parents]
+    editable_candidate = PACKAGE_ROOT.parents[1]
+    if editable_candidate not in candidates:
+        candidates.insert(0, editable_candidate)
+
+    for candidate in candidates:
+        candidate = candidate.resolve()
+        if _looks_like_repo_root(candidate):
+            return candidate
+    return None
+
+
+REPO_ROOT = _detect_repo_root()
+ENV = {**os.environ}
+if REPO_ROOT is not None:
+    ENV["PYTHONPATH"] = str(REPO_ROOT / "src")
+
+
+def _require_repo_root(command_name: str) -> Path:
+    if REPO_ROOT is None:
+        raise SystemExit(
+            "[ERROR] "
+            f"{command_name} requires a cloned MitoChime repository checkout containing "
+            "`pyproject.toml`, `src/`, and `scripts/`. Run the command from the repository root "
+            "or set MITOCHIME_REPO_ROOT."
+        )
+    return REPO_ROOT
 
 
 def _existing_file(path: str, *, label: str) -> Path:
@@ -30,7 +74,7 @@ def _existing_dir(path: str, *, label: str) -> Path:
 
 
 def _run(command: list[str]) -> int:
-    completed = subprocess.run(command, cwd=REPO_ROOT, env=ENV, check=False)
+    completed = subprocess.run(command, cwd=REPO_ROOT or Path.cwd(), env=ENV, check=False)
     if completed.returncode != 0:
         raise SystemExit(completed.returncode)
     return completed.returncode
@@ -167,10 +211,11 @@ def cmd_train_bigru(args: argparse.Namespace) -> int:
 
 def cmd_extract_features(args: argparse.Namespace) -> int:
     _existing_file(args.bam, label="input BAM")
+    repo_root = _require_repo_root("extract-features")
     return _run(
         [
             PYTHON,
-            str(REPO_ROOT / "scripts" / "data_prep" / "extract_features.py"),
+            str(repo_root / "scripts" / "data_prep" / "extract_features.py"),
             "--bam",
             args.bam,
             "--out",
@@ -188,10 +233,11 @@ def cmd_extract_features(args: argparse.Namespace) -> int:
 def cmd_filter(args: argparse.Namespace) -> int:
     _existing_file(args.r1, label="R1 FASTQ")
     _existing_file(args.r2, label="R2 FASTQ")
+    repo_root = _require_repo_root("filter")
     script_map = {
-        "gb": REPO_ROOT / "scripts" / "inference" / "run_pipeline_gb.sh",
-        "cnn": REPO_ROOT / "scripts" / "inference" / "run_pipeline_cnn.sh",
-        "bigru": REPO_ROOT / "scripts" / "inference" / "run_pipeline_rnnkmer.sh",
+        "gb": repo_root / "scripts" / "inference" / "run_pipeline_gb.sh",
+        "cnn": repo_root / "scripts" / "inference" / "run_pipeline_cnn.sh",
+        "bigru": repo_root / "scripts" / "inference" / "run_pipeline_rnnkmer.sh",
     }
     command = ["bash", str(script_map[args.mode]), args.r1, args.r2, args.run_name, str(args.threshold)]
     if args.mode == "gb":
@@ -200,9 +246,10 @@ def cmd_filter(args: argparse.Namespace) -> int:
 
 
 def cmd_validate_pairs(args: argparse.Namespace) -> int:
+    repo_root = _require_repo_root("validate-pairs")
     command = [
         PYTHON,
-        str(REPO_ROOT / "scripts" / "validation" / "validate_pair_integrity.py"),
+        str(repo_root / "scripts" / "validation" / "validate_pair_integrity.py"),
         "--feature-dataset",
         args.feature_dataset,
         "--sequence-dataset",
@@ -218,7 +265,8 @@ def cmd_validate_pairs(args: argparse.Namespace) -> int:
 def cmd_report_environment(_: argparse.Namespace) -> int:
     external_tools = ["minimap2", "samtools", "seqkit", "spades.py", "get_organelle_from_reads.py", "wgsim"]
     print(f"Python executable: {PYTHON}")
-    print(f"Repository root: {REPO_ROOT}")
+    print(f"Package root: {PACKAGE_ROOT}")
+    print(f"Repository root: {REPO_ROOT or 'NOT DETECTED'}")
     print("External tools:")
     for tool in external_tools:
         print(f"  {tool}: {shutil.which(tool) or 'NOT FOUND'}")

@@ -13,6 +13,7 @@ BIGRU_MODELS ?= models/deep/rnnkmer_bigru_final_L150_seed42
 BIGRU_REPORTS ?= results/metrics/deep/rnnkmer_bigru_final_L150_seed42
 FEATURE_DATASET ?= data/processed/PAIR_train.tsv
 SEQUENCE_DATASET ?= data/processed/PAIR_train_seq_L150.tsv
+SPLIT_DATASET ?= data/processed/PAIR_train.tsv
 INTEGRITY_REPORT ?= results/validation/pair_integrity_train.json
 
 help:
@@ -30,7 +31,7 @@ report-environment:
 	$(PYTHON) -m mitochime.cli report-environment
 
 validate-pairs:
-	$(PYTHON) -m mitochime.cli validate-pairs --feature-dataset $(FEATURE_DATASET) --sequence-dataset $(SEQUENCE_DATASET) --report-json $(INTEGRITY_REPORT)
+	$(PYTHON) -m mitochime.cli validate-pairs --feature-dataset $(FEATURE_DATASET) --sequence-dataset $(SEQUENCE_DATASET) --split-dataset $(SPLIT_DATASET) --report-json $(INTEGRITY_REPORT)
 
 train-classical:
 	$(PYTHON) -m mitochime.cli train-classical --train $(TRAIN) --test $(TEST) --models-dir $(GB_MODELS) --reports-dir $(GB_REPORTS)
@@ -49,4 +50,3 @@ filter-cnn:
 
 filter-bigru:
 	@echo "Use: bash scripts/inference/run_pipeline_rnnkmer.sh <R1> <R2> <RUN_NAME> [THRESH]"
-

@@ -1,0 +1,4 @@
+=====  results/validation/pair_integrity_train.json results/validation/pair_integrity_train_independent.json
+equal True
+=====  results/validation/pair_integrity_test.json results/validation/pair_integrity_test_independent.json
+equal True

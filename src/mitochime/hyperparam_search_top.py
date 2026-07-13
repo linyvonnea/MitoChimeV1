@@ -21,8 +21,8 @@ Usage
 # PYTHONPATH=src python3 -m mitochime.hyperparam_search_top \
   --train data/processed/PAIR_train_noq.tsv \
   --test  data/processed/PAIR_test_noq.tsv \
-  --models-dir models_PAIR_noq_tuned \
-  --reports-dir reports/hparam_tuning_PAIR_noq
+  --models-dir models/pair_noq_tuned \
+  --reports-dir results/metrics/classical/tuned_pair_noq
 """
 
 from __future__ import annotations

@@ -1,0 +1,9 @@
+Targets:
+  report-environment  Report Python and external tool availability
+  validate-pairs      Write the pair-integrity audit report
+  train-classical     Train the baseline classical comparison panel
+  train-cnn           Train the canonical CNN1D model
+  train-bigru         Train the canonical BiGRU k-mer model
+  filter-gb           Run the pair-safe GB inference/filtering pipeline
+  filter-cnn          Run the pair-safe CNN inference/filtering pipeline
+  filter-bigru        Run the pair-safe BiGRU inference/filtering pipeline

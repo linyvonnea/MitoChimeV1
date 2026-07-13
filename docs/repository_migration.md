@@ -10,4 +10,4 @@ Highlights:
 - introduced authoritative read-ID and feature-schema helpers
 - added validation scripts and focused tests
 
-See [MIGRATION_REPORT.md](/Users/yvonnelin/Desktop/MitoChimeV1/MIGRATION_REPORT.md) for the detailed record.
+See [MIGRATION_REPORT.md](../MIGRATION_REPORT.md) for the detailed record.

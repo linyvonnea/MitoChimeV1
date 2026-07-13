@@ -10,7 +10,7 @@ CNN_MODEL="models/deep/cnn_final_L150_seed42_fixedep25/cnn_final.pt"
 export CNN_MODEL
 
 ASM_ROOT="data/assemblies_spades/final_run"
-REPORT_ROOT="reports/final_run"
+REPORT_ROOT="results/tables"
 
 DATASETS=(
   "10K_final_5   data/external_test/10K_final_5_R1.fastq.gz   data/external_test/10K_final_5_R2.fastq.gz"
@@ -54,13 +54,13 @@ for entry in "${DATASETS[@]}"; do
 
   # UNFILTERED
   UNF_ASM="${ASM_ROOT}/${BASE}_unfiltered/spades"
-  bash src/scripts/run_spades.sh "$R1" "$R2" "$UNF_ASM" "$THREADS" ""
+  bash scripts/assembly/run_spades.sh "$R1" "$R2" "$UNF_ASM" "$THREADS" ""
   read CNUM CTOT CMAX <<<"$(contig_stats "$UNF_ASM/contigs.fasta")"
   echo -e "${BASE}\tUNFILTERED\tNA\t${IN_READS}\t${IN_READS}\t100.000\t${CNUM}\t${CTOT}\t${CMAX}\t${UNF_ASM}/contigs.fasta" >> "$OUT"
 
   # GB
   GB_RUN="${BASE}_gb_${TAG}"
-  bash src/scripts/run_pipeline_gb.sh "$R1" "$R2" "$GB_RUN" "$T" "$THREADS" "$REF"
+  bash scripts/inference/run_pipeline_gb.sh "$R1" "$R2" "$GB_RUN" "$T" "$THREADS" "$REF"
   GB_R1="data/filtered_reads/${GB_RUN}/${GB_RUN}.gb.filtered_R1.fastq.gz"
   GB_R2="data/filtered_reads/${GB_RUN}/${GB_RUN}.gb.filtered_R2.fastq.gz"
   OUT_READS=$(num_reads "$GB_R1")
@@ -71,13 +71,13 @@ print(f"{(outr/inr)*100:.3f}")
 PY
 )
   GB_ASM="${ASM_ROOT}/${GB_RUN}/spades"
-  bash src/scripts/run_spades.sh "$GB_R1" "$GB_R2" "$GB_ASM" "$THREADS" ""
+  bash scripts/assembly/run_spades.sh "$GB_R1" "$GB_R2" "$GB_ASM" "$THREADS" ""
   read CNUM CTOT CMAX <<<"$(contig_stats "$GB_ASM/contigs.fasta")"
   echo -e "${BASE}\tGB\t${T}\t${IN_READS}\t${OUT_READS}\t${PCT}\t${CNUM}\t${CTOT}\t${CMAX}\t${GB_ASM}/contigs.fasta" >> "$OUT"
 
   # CNN
   CNN_RUN="${BASE}_cnn_fixedep25_${TAG}"
-  CHECK_SAMPLE=0 bash src/scripts/run_pipeline_cnn.sh "$R1" "$R2" "$CNN_RUN" "$T"
+  CHECK_SAMPLE=0 bash scripts/inference/run_pipeline_cnn.sh "$R1" "$R2" "$CNN_RUN" "$T"
   CNN_R1="data/filtered_reads/${CNN_RUN}/${CNN_RUN}.cnn.filtered_R1.fastq.gz"
   CNN_R2="data/filtered_reads/${CNN_RUN}/${CNN_RUN}.cnn.filtered_R2.fastq.gz"
   OUT_READS=$(num_reads "$CNN_R1")
@@ -88,7 +88,7 @@ print(f"{(outr/inr)*100:.3f}")
 PY
 )
   CNN_ASM="${ASM_ROOT}/${CNN_RUN}/spades"
-  bash src/scripts/run_spades.sh "$CNN_R1" "$CNN_R2" "$CNN_ASM" "$THREADS" ""
+  bash scripts/assembly/run_spades.sh "$CNN_R1" "$CNN_R2" "$CNN_ASM" "$THREADS" ""
   read CNUM CTOT CMAX <<<"$(contig_stats "$CNN_ASM/contigs.fasta")"
   echo -e "${BASE}\tCNN_fixedep25\t${T}\t${IN_READS}\t${OUT_READS}\t${PCT}\t${CNUM}\t${CTOT}\t${CMAX}\t${CNN_ASM}/contigs.fasta" >> "$OUT"
 done

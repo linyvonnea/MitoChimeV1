@@ -1,0 +1,15 @@
+PASS	0.00s	mitochime	
+PASS	0.02s	mitochime.cli	
+PASS	0.43s	mitochime.feature_schema	
+PASS	0.00s	mitochime.filtering	
+PASS	0.00s	mitochime.utils.read_ids	
+PASS	0.00s	mitochime.utils.fastq	
+PASS	4.44s	mitochime.build_pair_splits	
+PASS	0.00s	mitochime.data_utils	
+PASS	0.00s	mitochime.make_noq_datasets_pair	
+FAIL	5.03s	mitochime.train_all_models	ModuleNotFoundError: No module named 'xgboost'
+FAIL	0.00s	mitochime.hyperparam_search_top	ModuleNotFoundError: No module named 'xgboost'
+PASS	0.00s	mitochime.deep_learning.make_seq_tsv	
+PASS	0.00s	mitochime.deep_learning.make_seq_tsv_infer	
+FAIL	0.00s	mitochime.deep_learning.train_deep	ModuleNotFoundError: No module named 'torch'
+FAIL	0.00s	mitochime.deep_learning.predict_deep	ModuleNotFoundError: No module named 'torch'

@@ -1,0 +1,137 @@
+===== mitochime extract-features --help =====
+usage: mitochime extract-features [-h] --bam BAM --out OUT --label LABEL
+                                  [--k K] [--micro-window MICRO_WINDOW]
+
+options:
+  -h, --help            show this help message and exit
+  --bam BAM             Coordinate-sorted BAM file.
+  --out OUT             Output feature TSV.
+  --label LABEL         Class label to assign (0, 1, or -1).
+  --k K                 k-mer size used for composition features.
+  --micro-window MICRO_WINDOW
+                        Window size for microhomology extraction around the
+                        inferred breakpoint.
+===== mitochime build-dataset --help =====
+usage: mitochime build-dataset [-h] --clean CLEAN --chim CHIM --out-all
+                               OUT_ALL --train TRAIN --test TEST
+                               [--test-size TEST_SIZE]
+                               [--random-state RANDOM_STATE]
+
+options:
+  -h, --help            show this help message and exit
+  --clean CLEAN
+  --chim CHIM
+  --out-all OUT_ALL
+  --train TRAIN
+  --test TEST
+  --test-size TEST_SIZE
+  --random-state RANDOM_STATE
+===== mitochime split --help =====
+usage: mitochime split [-h] --all-reads ALL_READS --out-train OUT_TRAIN
+                       --out-test OUT_TEST [--test-size TEST_SIZE]
+                       [--random-state RANDOM_STATE]
+
+options:
+  -h, --help            show this help message and exit
+  --all-reads ALL_READS
+  --out-train OUT_TRAIN
+  --out-test OUT_TEST
+  --test-size TEST_SIZE
+  --random-state RANDOM_STATE
+===== mitochime train-classical --help =====
+usage: mitochime train-classical [-h] --train TRAIN --test TEST --models-dir
+                                 MODELS_DIR --reports-dir REPORTS_DIR
+
+options:
+  -h, --help            show this help message and exit
+  --train TRAIN
+  --test TEST
+  --models-dir MODELS_DIR
+  --reports-dir REPORTS_DIR
+===== mitochime train-cnn --help =====
+usage: mitochime train-cnn [-h] --train-tsv TRAIN_TSV --test-tsv TEST_TSV
+                           --out-dir OUT_DIR --reports-dir REPORTS_DIR [--L L]
+                           [--batch BATCH] [--epochs EPOCHS] [--lr LR]
+                           [--weight-decay WEIGHT_DECAY] [--seed SEED] [--k K]
+                           [--L-kmers L_KMERS] [--embed-dim EMBED_DIM]
+                           [--hidden HIDDEN] [--rnn-layers RNN_LAYERS]
+                           [--pool {last,mean,max}]
+
+options:
+  -h, --help            show this help message and exit
+  --train-tsv TRAIN_TSV
+  --test-tsv TEST_TSV
+  --out-dir OUT_DIR
+  --reports-dir REPORTS_DIR
+  --L L
+  --batch BATCH
+  --epochs EPOCHS
+  --lr LR
+  --weight-decay WEIGHT_DECAY
+  --seed SEED
+  --k K
+  --L-kmers L_KMERS
+  --embed-dim EMBED_DIM
+  --hidden HIDDEN
+  --rnn-layers RNN_LAYERS
+  --pool {last,mean,max}
+===== mitochime train-bigru --help =====
+usage: mitochime train-bigru [-h] --train-tsv TRAIN_TSV --test-tsv TEST_TSV
+                             --out-dir OUT_DIR --reports-dir REPORTS_DIR
+                             [--L L] [--batch BATCH] [--epochs EPOCHS]
+                             [--lr LR] [--weight-decay WEIGHT_DECAY]
+                             [--seed SEED] [--k K] [--L-kmers L_KMERS]
+                             [--embed-dim EMBED_DIM] [--hidden HIDDEN]
+                             [--rnn-layers RNN_LAYERS]
+                             [--pool {last,mean,max}]
+
+options:
+  -h, --help            show this help message and exit
+  --train-tsv TRAIN_TSV
+  --test-tsv TEST_TSV
+  --out-dir OUT_DIR
+  --reports-dir REPORTS_DIR
+  --L L
+  --batch BATCH
+  --epochs EPOCHS
+  --lr LR
+  --weight-decay WEIGHT_DECAY
+  --seed SEED
+  --k K
+  --L-kmers L_KMERS
+  --embed-dim EMBED_DIM
+  --hidden HIDDEN
+  --rnn-layers RNN_LAYERS
+  --pool {last,mean,max}
+===== mitochime filter --help =====
+usage: mitochime filter [-h] --mode {gb,cnn,bigru} --r1 R1 --r2 R2 --run-name
+                        RUN_NAME [--threshold THRESHOLD] [--threads THREADS]
+                        [--reference REFERENCE]
+
+options:
+  -h, --help            show this help message and exit
+  --mode {gb,cnn,bigru}
+  --r1 R1
+  --r2 R2
+  --run-name RUN_NAME
+  --threshold THRESHOLD
+  --threads THREADS     Used by the GB pipeline.
+  --reference REFERENCE
+                        Reference FASTA used by the GB pipeline.
+===== mitochime validate-pairs --help =====
+usage: mitochime validate-pairs [-h] --feature-dataset FEATURE_DATASET
+                                --sequence-dataset SEQUENCE_DATASET
+                                [--split-dataset SPLIT_DATASET] --report-json
+                                REPORT_JSON
+
+options:
+  -h, --help            show this help message and exit
+  --feature-dataset FEATURE_DATASET
+  --sequence-dataset SEQUENCE_DATASET
+  --split-dataset SPLIT_DATASET
+  --report-json REPORT_JSON
+===== mitochime report-environment --help =====
+usage: mitochime report-environment [-h]
+
+options:
+  -h, --help  show this help message and exit

@@ -57,7 +57,7 @@ Optional extras:
 - deep models: `torch`
 - development and tests: `pip install -r requirements-dev.txt`
 
-Conda environment manifests remain available in [environment.yml](/Users/yvonnelin/Desktop/MitoChimeV1/environment.yml) and [environment.arm.yml](/Users/yvonnelin/Desktop/MitoChimeV1/environment.arm.yml).
+Conda environment manifests remain available in [environment.yml](environment.yml) and [environment.arm.yml](environment.arm.yml).
 
 ## External Tools
 
@@ -70,11 +70,12 @@ The canonical workflow may require:
 - `spades.py`
 - `GetOrganelle`
 
-See [docs/reproducibility.md](/Users/yvonnelin/Desktop/MitoChimeV1/docs/reproducibility.md) for tool notes and current reproduction limits.
+See [docs/reproducibility.md](docs/reproducibility.md) for tool notes and current reproduction limits.
 
 ## Quick Start
 
 The example data are synthetic smoke-test inputs, not publication data.
+Run the quick-start commands from the repository root so the CLI can find the retained operational scripts.
 
 ```bash
 python3 -m mitochime.cli report-environment
@@ -113,14 +114,15 @@ python3 -m mitochime.cli validate-pairs \
 
 The publication tabular feature datasets and deep sequence datasets share pair-level split assignments but not perfectly identical mate-row sets. Fifteen pair IDs are missing one mate in the feature-derived tables while the sequence TSVs reconstruct both mates from FASTQ. This is preserved intentionally and documented in:
 
-- [docs/data_integrity.md](/Users/yvonnelin/Desktop/MitoChimeV1/docs/data_integrity.md)
-- [docs/reproducibility.md](/Users/yvonnelin/Desktop/MitoChimeV1/docs/reproducibility.md)
-- [results/validation](/Users/yvonnelin/Desktop/MitoChimeV1/results/validation)
+- [docs/data_integrity.md](docs/data_integrity.md)
+- [docs/reproducibility.md](docs/reproducibility.md)
+- [results/validation](results/validation)
 
 ## Reproducibility Status
 
 - Classical pair-noq training is structurally reproducible from retained code and processed datasets.
 - Deep training now exposes only verified modes, but reruns still depend on local `torch` and retained sequence datasets.
+- Tracked clones include model metadata and retained metrics, but not the large trained model binaries under `models/`.
 - External assembly reproduction still depends on non-repo data access and external bioinformatics tools.
 - This cleanup pass does not declare the repository public-release ready yet.
 
@@ -144,9 +146,8 @@ Placeholders:
 
 ## Authors
 
-See [AUTHORS.md](/Users/yvonnelin/Desktop/MitoChimeV1/AUTHORS.md).
+See [AUTHORS.md](AUTHORS.md).
 
 ## License
 
-See [LICENSE](/Users/yvonnelin/Desktop/MitoChimeV1/LICENSE). A final open-source license selection is still pending.
-
+See [LICENSE](LICENSE). A final open-source license selection is still pending.

@@ -1,0 +1,6 @@
+minimap2	NOT_FOUND
+samtools	NOT_FOUND
+seqkit	NOT_FOUND
+spades.py	NOT_FOUND
+get_organelle_from_reads.py	NOT_FOUND
+wgsim	NOT_FOUND

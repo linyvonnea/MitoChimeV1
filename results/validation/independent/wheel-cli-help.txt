@@ -1,0 +1,24 @@
+usage: mitochime [-h]
+                 {extract-features,build-dataset,split,train-classical,train-cnn,train-bigru,filter,validate-pairs,report-environment}
+                 ...
+
+Thin command-line interface for the verified MitoChime workflow.
+
+positional arguments:
+  {extract-features,build-dataset,split,train-classical,train-cnn,train-bigru,filter,validate-pairs,report-environment}
+    extract-features    Extract the canonical 30-column feature table.
+    build-dataset       Build all_reads/train/test from clean and chimeric
+                        features.
+    split               Create the pair-aware train/test split.
+    train-classical     Train the baseline classical-model comparison panel.
+    train-cnn           Train the canonical CNN1D model.
+    train-bigru         Train the canonical BiGRU k-mer model.
+    filter              Run one of the verified pair-safe inference/filtering
+                        pipelines.
+    validate-pairs      Audit pair-level integrity across publication
+                        datasets.
+    report-environment  Report Python and external bioinformatics tool
+                        availability.
+
+options:
+  -h, --help            show this help message and exit

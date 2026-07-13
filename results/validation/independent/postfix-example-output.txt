@@ -1,0 +1,22 @@
+exists True size 596
+{
+  "feature_dataset": "data/example/example_pair_features.tsv",
+  "sequence_dataset": "data/example/example_pair_seq.tsv",
+  "split_dataset": "data/example/example_pair_split.tsv",
+  "feature_rows": 4,
+  "sequence_rows": 4,
+  "feature_unique_pair_ids": 2,
+  "sequence_unique_pair_ids": 2,
+  "feature_pair_multiplicities": {
+    "2": 2
+  },
+  "sequence_pair_multiplicities": {
+    "2": 2
+  },
+  "pair_ids_only_in_feature_dataset": [],
+  "pair_ids_only_in_sequence_dataset": [],
+  "split_unique_pair_ids": 2,
+  "feature_vs_split_missing_pair_ids": [],
+  "sequence_vs_split_missing_pair_ids": []
+}
+

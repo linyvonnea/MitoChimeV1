@@ -1,0 +1,38 @@
+=====  data/example/example_pair_features.tsv
+exists True size 761
+read_id	label	read_length	mean_base_quality	ref_name	ref_start_1based	strand	mapq	cigar	has_sa	sa_count	num_segments	sa_diff_contig	sa_min_delta_pos	sa_max_delta_pos	sa_mean_delta_pos	sa_same_strand_count	sa_opp_strand_count	sa_max_mapq	sa_mean_mapq	sa_min_nm	sa_mean_nm	softclip_left	softclip_right	total_clipped_bases	breakpoint_read_pos	kmer_cosine_diff	kmer_js_divergence	microhomology_length	microhomology_gc
+exampleA/1	0	8	35.0	chrM	1	+	60	8M	0	0	1	0	0	0	0	0	0	60	60	0	0	0	0	0	4	0.0	0.0	0	0.0
+exampleA/2	0	8	35.0	chrM	9	-	60	8M	0	0	1	0	0	0	0	0	0	60	60	0	0	0	0	0	4	0.0	0.0	0	0.0
+exampleB/1	1	8	35.0	chrM	17	+	42	6M2S	1	1	2	1	3	8	5	1	0	42	35	1	1	0	2	2	6	0.4	0.2	2	0.5
+=====  data/example/example_pair_seq.tsv
+exists True size 106
+read_id	label	seq
+exampleA/1	0	ACGTACGT
+exampleA/2	0	TGCATGCA
+exampleB/1	1	TTTTCCCC
+=====  data/example/example_pair_split.tsv
+exists True size 37
+read_id	label
+exampleA	0
+exampleB	1
+
+=====  data/example/example_pairs_R1.fastq
+exists True size 65
+@exampleA/1
+ACGTACGT
++
+IIIIIIII
+@exampleB/1
+TTTTCCCC
++
+IIIIIIII
+=====  data/example/example_pairs_R2.fastq
+exists True size 65
+@exampleA/2
+TGCATGCA
++
+IIIIIIII
+@exampleB/2
+CCCCAAAA
++
+IIIIIIII

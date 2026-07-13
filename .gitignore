@@ -83,6 +83,12 @@ models/pair_noq_tuned/*.joblib
 models_PAIR_noq_tuned/
 models_noq_tuned/
 models_pair_noq/
+!models/deep/
+!models/deep/cnn_final_L150_seed42_fixedep25/
+!models/deep/cnn_final_L150_seed42_fixedep25/cnn_final.pt
+!models/deep/rnnkmer_bigru_final_L150_seed42/
+!models/deep/rnnkmer_bigru_final_L150_seed42/rnn_kmer_gru_best.pt
+!models/pair_noq_tuned/gradient_boosting_tuned.joblib
 
 archive/duplicate_bundles/
 archive/generated/

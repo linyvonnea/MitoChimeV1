@@ -37,7 +37,9 @@ Large run outputs, manuscript drafts, defense material, duplicate bundles, and u
 │   ├── refs/
 │   └── manifests/
 ├── models/
-│   └── metadata/
+│   ├── deep/
+│   ├── metadata/
+│   └── pair_noq_tuned/
 ├── results/
 ├── notebooks/
 ├── docs/
@@ -48,11 +50,12 @@ Large run outputs, manuscript drafts, defense material, duplicate bundles, and u
 
 ```bash
 python3 -m pip install --upgrade pip
-python3 -m pip install .
+python3 -m pip install -e ".[classical,deep,dev]"
 ```
 
 Optional dependency groups:
 
+- base package only: `python3 -m pip install .`
 - classical comparison panel: `python3 -m pip install ".[classical]"`
 - deep-learning commands and inference: `python3 -m pip install ".[deep]"`
 - development and tests: `python3 -m pip install -e ".[dev]"`
@@ -77,10 +80,12 @@ Run `python3 -m mitochime.cli report-environment` after installation to see whic
 
 ## Quick Start
 
-The example data are synthetic smoke-test inputs, not publication data. These commands work from a tracked clone without trained model binaries or external FASTQs:
+The example data are synthetic smoke-test inputs, not publication data. These commands work from a fresh tracked clone:
 
 ```bash
 python3 -m mitochime.cli report-environment
+python3 -m mitochime.cli validate-models \
+  --report-json results/validation/example_model_validation.json
 python3 -m mitochime.cli validate-pairs \
   --feature-dataset data/example/example_pair_features.tsv \
   --sequence-dataset data/example/example_pair_seq.tsv \
@@ -91,8 +96,8 @@ python3 -m mitochime.cli validate-pairs \
 ## Practical Use After Cloning
 
 1. Clone the repository and install the base package with `python3 -m pip install .`.
-2. Run `python3 -m mitochime.cli report-environment` and decide whether you also need `.[classical]`, `.[deep]`, or both.
-3. Supply trained model artifacts if you want GB, CNN, or BiGRU inference. See [docs/models.md](docs/models.md) and [models/MODEL_MANIFEST.tsv](models/MODEL_MANIFEST.tsv).
+2. Run `python3 -m mitochime.cli report-environment` and decide whether you only need the base package or the full `.[classical,deep,dev]` researcher setup.
+3. Run `python3 -m mitochime.cli validate-models` to confirm the tracked GB, CNN, and BiGRU artifacts match their recorded SHA-256 checksums and still load.
 4. Install external tools and supply external FASTQs only for the workflow stages that need them.
 
 ## Canonical Workflow
@@ -118,7 +123,9 @@ Immediate clone behavior:
 - runnable after base install: CLI help, `report-environment`, pair-integrity validation, schema-aware utilities, smoke-test example data
 - requires `.[classical]`: baseline/tuned classical comparison workflows
 - requires `.[deep]`: CNN and BiGRU training or inference workflows
-- requires trained model artifacts: `mitochime filter --mode {gb,cnn,bigru}` and the corresponding Bash wrappers
+- tracked canonical pretrained models included in Git: `gradient_boosting_tuned.joblib`, `cnn_final.pt`, and `rnn_kmer_gru_best.pt`
+- requires tracked model artifacts plus optional deps: `mitochime validate-models`
+- requires tracked model artifacts plus external tools and FASTQs: `mitochime filter --mode {gb,cnn,bigru}` and the corresponding Bash wrappers
 - requires external FASTQs plus bioinformatics tools: end-to-end filtering and assembly comparison workflows
 
 ## Decision Thresholds
@@ -139,7 +146,7 @@ The publication tabular feature datasets and deep sequence datasets share pair-l
 
 - Classical pair-noq training is structurally reproducible from retained code and processed datasets.
 - Deep training exposes only verified modes, but reruns still depend on local `torch` and retained sequence datasets.
-- Tracked clones retain model metadata, feature schemas, and published metrics, but not the trained `.joblib` or `.pt` binaries.
+- Tracked clones now retain the three canonical pretrained inference artifacts plus their checksum manifest and feature schemas.
 - External assembly reproduction still depends on non-repo data access and external bioinformatics tools.
 - Saved publication tables, metrics, and figures are retained release artifacts; this repository does not claim they were regenerated during this remediation pass.
 - The repository is technically smoke-testable, but it does not claim full NiDS publication reproduction.
@@ -149,7 +156,7 @@ The publication tabular feature datasets and deep sequence datasets share pair-l
 - External FASTQ licensing and hosting decisions remain unresolved.
 - The transformer branch is preserved only as review-needed material.
 - Several large archived PDFs and legacy datasets are still tracked and should be reviewed before a public GitHub push.
-- Licensing, archive DOI, and final release locations for trained models remain researcher decisions.
+- Licensing and archive DOI remain researcher decisions.
 
 ## Citation
 

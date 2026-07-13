@@ -371,6 +371,19 @@ def cmd_validate_pairs(args: argparse.Namespace) -> int:
     return _run(command)
 
 
+def cmd_validate_models(args: argparse.Namespace) -> int:
+    repo_root = _require_repo_root("validate-models")
+    command = [
+        PYTHON,
+        str(repo_root / "scripts" / "validation" / "validate_models.py"),
+    ]
+    if args.manifest:
+        command.extend(["--manifest", args.manifest])
+    if args.report_json:
+        command.extend(["--report-json", args.report_json])
+    return _run(command)
+
+
 def cmd_report_environment(_: argparse.Namespace) -> int:
     external_tools = {
         "minimap2": ["--version"],
@@ -499,6 +512,20 @@ def build_parser() -> argparse.ArgumentParser:
     validate_parser.add_argument("--split-dataset")
     validate_parser.add_argument("--report-json", required=True)
     validate_parser.set_defaults(func=cmd_validate_pairs)
+
+    validate_models_parser = subparsers.add_parser(
+        "validate-models",
+        help="Verify tracked canonical model artifacts, checksums, and smoke predictions.",
+    )
+    validate_models_parser.add_argument(
+        "--manifest",
+        help="Override the default canonical JSON checksum manifest path.",
+    )
+    validate_models_parser.add_argument(
+        "--report-json",
+        help="Optional machine-readable report path.",
+    )
+    validate_models_parser.set_defaults(func=cmd_validate_models)
 
     env_parser = subparsers.add_parser("report-environment", help="Report Python and external bioinformatics tool availability.")
     env_parser.set_defaults(func=cmd_report_environment)

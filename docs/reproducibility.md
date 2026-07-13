@@ -11,7 +11,8 @@ Workflow boundary summary:
 - base install only: CLI help, environment reporting, pair-integrity validation, schema-aware utilities, example smoke-test data
 - `.[classical]`: baseline and tuned classical comparison workflows
 - `.[deep]`: CNN and BiGRU training or inference workflows
-- trained model artifacts required: GB, CNN, and BiGRU filtering wrappers
+- tracked canonical pretrained models: GB, CNN, and BiGRU checkpoints are included directly in the repository
+- `mitochime validate-models`: requires the tracked checkpoints plus the corresponding optional Python dependencies
 - external FASTQs required: publication-scale filtering and assembly comparison runs
 
 External tool boundaries:
@@ -31,3 +32,4 @@ Important caveats:
 - exact licensing and hosting for external evaluation datasets are still unresolved
 
 Use `mitochime report-environment` to inspect local tool availability.
+Use `mitochime validate-models` to confirm that the tracked canonical checkpoints still match their recorded checksums and load successfully.

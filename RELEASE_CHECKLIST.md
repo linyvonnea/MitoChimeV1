@@ -23,12 +23,13 @@
 
 ## Models
 
-- [ ] GB model decision
-- [ ] CNN model decision
-- [ ] BiGRU model decision
+- [x] GB model decision
+- [x] CNN model decision
+- [x] BiGRU model decision
 - [x] model manifest
 - [x] model checksums
-- [ ] model download or release location
+- [x] model download or release location
+- [x] model integrity validation command
 - [x] missing-model errors tested
 
 ## Data

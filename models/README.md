@@ -1,9 +1,10 @@
 # Model Policy
 
-This repository does not treat large trained model binaries as primary source artifacts.
+This repository tracks only the three canonical pretrained release artifacts needed for direct clone-and-run validation.
 
 - canonical model metadata belong in `models/metadata/`
-- fresh Git clones retain model metadata and feature-schema files, but not the trained `.joblib` or `.pt` binaries
-- local checkpoints may still exist on disk for reruns
+- fresh Git clones retain the tuned Gradient Boosting, CNN1D, and BiGRU k-mer checkpoints under their canonical paths
+- comparison-only, debug, cross-validation, and duplicate model trees remain local-only or archived
 - duplicate or non-canonical model trees have been moved under `archive/`
 - canonical availability, checksums, and storage guidance are recorded in `models/MODEL_MANIFEST.tsv`
+- `python3 -m mitochime.cli validate-models` verifies the tracked artifacts against `models/metadata/canonical_model_artifacts.json`

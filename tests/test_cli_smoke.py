@@ -11,6 +11,7 @@ def test_cli_help_smoke():
         text=True,
     )
     assert "train-bigru" in completed.stdout
+    assert "validate-models" in completed.stdout
     assert "report-environment" in completed.stdout
 
 

@@ -12,7 +12,6 @@
   - retained classical and deep metric artifacts are present and traceable to named scripts and datasets
 - Most important blockers:
   - `LICENSE` is still a placeholder, so public release remains blocked
-  - the fresh clone does not contain the canonical trained model binaries under `models/`; only metadata and feature-column JSON are tracked
   - the original reviewed branch state had a broken README quick start and `make validate-pairs` path resolution failure from a non-editable install
   - active documentation and notebooks still contain portability issues such as personal absolute paths, stale pre-cleanup paths, or references to untracked model/output locations
   - full publication reproduction remains blocked by absent external FASTQ assets, absent external bioinformatics tools, and ignored large assembly/model artifacts
@@ -97,7 +96,7 @@ Release-candidate remediation was validated from a new temporary clone of commit
 | Previous blocker | Remediation | Current status | Remaining action |
 | --- | --- | --- | --- |
 | `LICENSE` is still a placeholder | Left licensing unchanged as instructed, but carried the unresolved decision into `RELEASE_CHECKLIST.md` and `results/validation/release_candidate/remaining_blockers.md`. | `OPEN` | Researcher must choose the actual software license before public release messaging can be finalized. |
-| Fresh clone lacked canonical trained model binaries | Added `models/MODEL_MANIFEST.tsv`, clarified `docs/models.md`, tested the local GB artifact, and hardened the CLI/Bash wrappers so missing tracked models fail cleanly with model-family and override guidance. | `PARTIALLY_RESOLVED` | Decide final public storage for GB, CNN, and BiGRU artifacts. |
+| Fresh clone lacked canonical trained model binaries | Added the three canonical tracked model artifacts directly under `models/`, kept the ordinary Git distribution approach, added `mitochime validate-models`, and refreshed the manifests/docs around default paths, checksums, and override behavior. | `RESOLVED` | None for the canonical release artifacts. |
 | README quick start and `make validate-pairs` previously failed from a clean install | Repository-root CLI detection was already fixed in the earlier remediation commit; release-candidate fresh-clone validation now confirms base install, quick-start validation, and `make validate-pairs` all succeed. | `RESOLVED` | None. |
 | Active docs and notebooks still had portability issues | Normalized publication notebook paths, removed saved machine-specific outputs, added intro cells, updated notebook inventory, repaired canonical result-path references, and refreshed public-facing docs. | `RESOLVED` | Keep archived audit/manuscript material clearly separated from the canonical release surface. |
 | Result metadata still pointed to stale `reports/` or duplicate model paths | Added canonical repository metadata to promoted metrics JSON files and refreshed `docs/audit/RESULTS_PROVENANCE.md`. | `RESOLVED` | None for tracked promoted metrics. |
@@ -126,3 +125,12 @@ Release-candidate remediation was validated from a new temporary clone of commit
 - canonical feature-schema comparison: passed (`feature_cols_24.json` matches the 24-feature canonical order; legacy `PAIR_feature_cols.json` remains 23-feature provenance)
 - missing-model behavior in a fresh clone: passed as an expected controlled failure with explicit guidance to `docs/models.md`
 - notebook portability scan over publication notebook source cells: passed
+
+## Model release update
+
+Canonical clone-and-run model distribution was finalized after the original release-candidate audit.
+
+- tracked artifacts now include `models/pair_noq_tuned/gradient_boosting_tuned.joblib`, `models/deep/cnn_final_L150_seed42_fixedep25/cnn_final.pt`, and `models/deep/rnnkmer_bigru_final_L150_seed42/rnn_kmer_gru_best.pt`
+- `mitochime validate-models` now verifies SHA-256 digests against `models/metadata/canonical_model_artifacts.json`, confirms the expected feature schema or tensor shape for each family, loads all three models, and records a small smoke prediction
+- clone-and-run validation evidence for the tracked-model release is stored under `results/validation/model_release/`
+- combined `BOTH` or `ALL` inference validation was not run because no such combined mode is currently implemented in the public CLI or canonical Bash wrappers

@@ -16,6 +16,9 @@ htmlcov/
 *.bbl
 *.bcf
 *.blg
+build/
+dist/
+*.egg-info/
 *.fdb_latexmk
 *.fls
 *.lof

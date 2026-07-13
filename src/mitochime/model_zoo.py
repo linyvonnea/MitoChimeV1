@@ -26,9 +26,26 @@ from sklearn.naive_bayes import GaussianNB
 # from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
 from sklearn.neural_network import MLPClassifier
 
-from xgboost import XGBClassifier
-from lightgbm import LGBMClassifier
-from catboost import CatBoostClassifier
+from .optional_dependencies import import_optional_dependency
+
+
+def _load_optional_classical_estimators():
+    xgboost = import_optional_dependency(
+        "xgboost",
+        extra_name="classical",
+        used_for="the full classical comparison panel",
+    )
+    lightgbm = import_optional_dependency(
+        "lightgbm",
+        extra_name="classical",
+        used_for="the full classical comparison panel",
+    )
+    catboost = import_optional_dependency(
+        "catboost",
+        extra_name="classical",
+        used_for="the full classical comparison panel",
+    )
+    return xgboost.XGBClassifier, lightgbm.LGBMClassifier, catboost.CatBoostClassifier
 
 
 def get_model_zoo(random_state: int = 42) -> Dict[str, object]:
@@ -39,6 +56,7 @@ def get_model_zoo(random_state: int = 42) -> Dict[str, object]:
     """
 
     models: Dict[str, object] = {}
+    XGBClassifier, LGBMClassifier, CatBoostClassifier = _load_optional_classical_estimators()
 
     # -------------------------------------------------------------------------
     # 1) Baseline

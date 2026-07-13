@@ -58,13 +58,29 @@ from sklearn.ensemble import (
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.neural_network import MLPClassifier
 
-from xgboost import XGBClassifier
-from lightgbm import LGBMClassifier
-from catboost import CatBoostClassifier
-
 from .feature_schema import CANONICAL_PAIR_NOQ_FEATURE_COLUMNS, prepare_feature_frame
+from .optional_dependencies import import_optional_dependency
 
 RANDOM_STATE = 42
+
+
+def _load_optional_classical_estimators():
+    xgboost = import_optional_dependency(
+        "xgboost",
+        extra_name="classical",
+        used_for="classical hyperparameter search",
+    )
+    lightgbm = import_optional_dependency(
+        "lightgbm",
+        extra_name="classical",
+        used_for="classical hyperparameter search",
+    )
+    catboost = import_optional_dependency(
+        "catboost",
+        extra_name="classical",
+        used_for="classical hyperparameter search",
+    )
+    return xgboost.XGBClassifier, lightgbm.LGBMClassifier, catboost.CatBoostClassifier
 
 
 # ============================================================
@@ -165,6 +181,7 @@ def main() -> None:
     )
 
     args = parser.parse_args()
+    XGBClassifier, LGBMClassifier, CatBoostClassifier = _load_optional_classical_estimators()
     models_dir = Path(args.models_dir)
     reports_dir = Path(args.reports_dir)
     models_dir.mkdir(parents=True, exist_ok=True)

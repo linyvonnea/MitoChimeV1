@@ -16,6 +16,7 @@ R1="$1"
 R2="$2"
 RUN="$3"
 THRESH="${4:-0.5}"
+MODEL_DOC="docs/models.md"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd "${SCRIPT_DIR}/../.." && pwd)"
@@ -37,7 +38,13 @@ die() {
   exit 1
 }
 
-[[ -f "$MODEL" ]] || die "Missing CNN model: $MODEL"
+command -v seqkit >/dev/null 2>&1 || die "seqkit not in PATH"
+
+if [[ ! -f "$MODEL" ]]; then
+  die "Missing CNN1D model: $MODEL
+Override the model location with CNN_MODEL=/path/to/cnn_final.pt
+See ${MODEL_DOC} for model availability and release policy."
+fi
 [[ -f "$R1" ]] || die "Missing R1: $R1"
 [[ -f "$R2" ]] || die "Missing R2: $R2"
 

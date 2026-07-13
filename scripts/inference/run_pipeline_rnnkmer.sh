@@ -13,6 +13,7 @@ R1="$1"
 R2="$2"
 RUN="$3"
 THRESH="${4:-0.5}"
+MODEL_DOC="docs/models.md"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd "${SCRIPT_DIR}/../.." && pwd)"
@@ -31,7 +32,13 @@ OUT_FILT="data/filtered_reads/${RUN}"
 
 die() { echo "[ERROR] $*" >&2; exit 1; }
 
-[[ -f "$MODEL" ]] || die "Missing BiGRU model: $MODEL"
+command -v seqkit >/dev/null 2>&1 || die "seqkit not in PATH"
+
+if [[ ! -f "$MODEL" ]]; then
+  die "Missing BiGRU k-mer model: $MODEL
+Override the model location with RNN_MODEL=/path/to/rnn_kmer_gru_best.pt
+See ${MODEL_DOC} for model availability and release policy."
+fi
 [[ -f "$R1" ]] || die "Missing R1: $R1"
 [[ -f "$R2" ]] || die "Missing R2: $R2"
 

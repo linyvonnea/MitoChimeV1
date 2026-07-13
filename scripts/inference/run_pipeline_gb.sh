@@ -10,6 +10,7 @@ RUN="$3"
 THRESH="$4"
 THREADS="${5:-8}"
 REF="${6:-data/refs/original.fasta}"
+MODEL_DOC="docs/models.md"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd "${SCRIPT_DIR}/../.." && pwd)"
@@ -33,11 +34,21 @@ if [[ "$R2" =~ \.gz$ ]] && ! gzip -t "$R2" >/dev/null 2>&1; then
   exit 1
 fi
 
-MODEL="models/pair_noq_tuned/gradient_boosting_tuned.joblib"
+MODEL_DEFAULT="models/pair_noq_tuned/gradient_boosting_tuned.joblib"
+MODEL="${GB_MODEL:-$MODEL_DEFAULT}"
 FEATURE_COLS="models/pair_noq_tuned/feature_cols_24.json"
 
-[[ -f "$MODEL" ]] || { echo "[ERROR] Model not found: $MODEL" >&2; exit 1; }
-[[ -f "$FEATURE_COLS" ]] || { echo "[ERROR] Feature cols not found: $FEATURE_COLS" >&2; exit 1; }
+[[ -f "$MODEL" ]] || {
+  echo "[ERROR] tuned Gradient Boosting model not found: $MODEL" >&2
+  echo "[ERROR] Override the model location with GB_MODEL=/path/to/gradient_boosting_tuned.joblib" >&2
+  echo "[ERROR] See ${MODEL_DOC} for model availability and release policy." >&2
+  exit 1
+}
+[[ -f "$FEATURE_COLS" ]] || {
+  echo "[ERROR] Canonical feature schema not found: $FEATURE_COLS" >&2
+  echo "[ERROR] See ${MODEL_DOC} for retained model metadata." >&2
+  exit 1
+}
 
 OUTDIR="data/gb/${RUN}"
 FILTDIR="data/filtered_reads/${RUN}"

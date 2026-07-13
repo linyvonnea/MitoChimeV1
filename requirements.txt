@@ -1,7 +1,7 @@
 # Core runtime
 numpy==1.26.4
 pandas==2.2.2
-scikit-learn==1.5.1
+scikit-learn==1.5.2
 joblib>=1.4
 pysam==0.22.1
 biopython==1.83
@@ -15,4 +15,3 @@ catboost
 
 # Optional deep-learning dependency
 torch
-

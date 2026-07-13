@@ -3,15 +3,36 @@
 from __future__ import annotations
 
 import argparse
+import importlib
 import os
 import shutil
 import subprocess
 import sys
 from pathlib import Path
 
-
 PACKAGE_ROOT = Path(__file__).resolve().parent
 PYTHON = sys.executable
+MODEL_DOC_PATH = "docs/models.md"
+MODEL_DEFAULTS = {
+    "gb": Path("models/pair_noq_tuned/gradient_boosting_tuned.joblib"),
+    "cnn": Path("models/deep/cnn_final_L150_seed42_fixedep25/cnn_final.pt"),
+    "bigru": Path("models/deep/rnnkmer_bigru_final_L150_seed42/rnn_kmer_gru_best.pt"),
+}
+MODEL_OVERRIDE_ARGS = {
+    "gb": "--model-path",
+    "cnn": "--model-path",
+    "bigru": "--model-path",
+}
+MODEL_OVERRIDE_ENV = {
+    "gb": "GB_MODEL",
+    "cnn": "CNN_MODEL",
+    "bigru": "RNN_MODEL",
+}
+MODEL_FAMILIES = {
+    "gb": "tuned Gradient Boosting",
+    "cnn": "CNN1D",
+    "bigru": "BiGRU k-mer",
+}
 
 
 def _looks_like_repo_root(path: Path) -> bool:
@@ -73,11 +94,74 @@ def _existing_dir(path: str, *, label: str) -> Path:
     return candidate
 
 
-def _run(command: list[str]) -> int:
-    completed = subprocess.run(command, cwd=REPO_ROOT or Path.cwd(), env=ENV, check=False)
+def _run(command: list[str], *, env: dict[str, str] | None = None) -> int:
+    completed = subprocess.run(
+        command,
+        cwd=REPO_ROOT or Path.cwd(),
+        env=env or ENV,
+        check=False,
+    )
     if completed.returncode != 0:
         raise SystemExit(completed.returncode)
     return completed.returncode
+
+
+def _require_python_modules(modules: list[tuple[str, str]], *, used_for: str, install_hint: str) -> None:
+    missing = []
+    for import_name, package_name in modules:
+        try:
+            importlib.import_module(import_name)
+        except Exception:
+            missing.append(package_name)
+    if missing:
+        missing_list = ", ".join(missing)
+        raise SystemExit(
+            "[ERROR] "
+            f"{used_for} requires optional Python dependencies that are not installed: {missing_list}. "
+            f"Install them with `{install_hint}`."
+        )
+
+
+def _missing_model_error(mode: str, expected_path: Path) -> str:
+    return (
+        "[ERROR] "
+        f"{MODEL_FAMILIES[mode]} model not found at {expected_path}. "
+        f"Override the default model location with `{MODEL_OVERRIDE_ARGS[mode]}` "
+        f"or the `{MODEL_OVERRIDE_ENV[mode]}` environment variable. "
+        f"See {MODEL_DOC_PATH} for model availability and release policy."
+    )
+
+
+def _tool_version(tool: str, args: list[str]) -> str:
+    tool_path = shutil.which(tool)
+    if tool_path is None:
+        return "not installed"
+    try:
+        completed = subprocess.run(
+            [tool, *args],
+            check=False,
+            capture_output=True,
+            text=True,
+            timeout=5,
+        )
+    except Exception as exc:
+        return f"detected at {tool_path} (version unavailable: {exc.__class__.__name__})"
+
+    output = (completed.stdout or completed.stderr).strip().splitlines()
+    if output:
+        return output[0]
+    return f"detected at {tool_path}"
+
+
+def _module_status(import_name: str) -> str:
+    try:
+        module = importlib.import_module(import_name)
+    except Exception:
+        return "not installed"
+    version = getattr(module, "__version__", None)
+    if version is None and import_name == "Bio":
+        version = getattr(module, "__version__", None)
+    return str(version or "installed")
 
 
 def cmd_build_dataset(args: argparse.Namespace) -> int:
@@ -130,6 +214,15 @@ def cmd_split(args: argparse.Namespace) -> int:
 def cmd_train_classical(args: argparse.Namespace) -> int:
     _existing_file(args.train, label="training TSV")
     _existing_file(args.test, label="test TSV")
+    _require_python_modules(
+        [
+            ("xgboost", "xgboost"),
+            ("lightgbm", "lightgbm"),
+            ("catboost", "catboost"),
+        ],
+        used_for="train-classical",
+        install_hint="pip install .[classical]",
+    )
     return _run(
         [
             PYTHON,
@@ -150,6 +243,11 @@ def cmd_train_classical(args: argparse.Namespace) -> int:
 def _train_deep(mode: str, args: argparse.Namespace) -> int:
     _existing_file(args.train_tsv, label="training sequence TSV")
     _existing_file(args.test_tsv, label="test sequence TSV")
+    _require_python_modules(
+        [("torch", "torch")],
+        used_for=f"train-{mode}",
+        install_hint="pip install .[deep]",
+    )
     return _run(
         [
             PYTHON,
@@ -234,6 +332,11 @@ def cmd_filter(args: argparse.Namespace) -> int:
     _existing_file(args.r1, label="R1 FASTQ")
     _existing_file(args.r2, label="R2 FASTQ")
     repo_root = _require_repo_root("filter")
+    model_path = Path(args.model_path) if args.model_path else MODEL_DEFAULTS[args.mode]
+    if not model_path.is_file():
+        raise SystemExit(_missing_model_error(args.mode, model_path))
+    env = dict(ENV)
+    env[MODEL_OVERRIDE_ENV[args.mode]] = str(model_path)
     script_map = {
         "gb": repo_root / "scripts" / "inference" / "run_pipeline_gb.sh",
         "cnn": repo_root / "scripts" / "inference" / "run_pipeline_cnn.sh",
@@ -241,8 +344,14 @@ def cmd_filter(args: argparse.Namespace) -> int:
     }
     command = ["bash", str(script_map[args.mode]), args.r1, args.r2, args.run_name, str(args.threshold)]
     if args.mode == "gb":
+        feature_cols = repo_root / "models" / "pair_noq_tuned" / "feature_cols_24.json"
+        if not feature_cols.is_file():
+            raise SystemExit(
+                "[ERROR] Canonical feature schema not found at "
+                f"{feature_cols}. See {MODEL_DOC_PATH} for the retained model metadata."
+            )
         command.extend([str(args.threads), args.reference])
-    return _run(command)
+    return _run(command, env=env)
 
 
 def cmd_validate_pairs(args: argparse.Namespace) -> int:
@@ -263,13 +372,38 @@ def cmd_validate_pairs(args: argparse.Namespace) -> int:
 
 
 def cmd_report_environment(_: argparse.Namespace) -> int:
-    external_tools = ["minimap2", "samtools", "seqkit", "spades.py", "get_organelle_from_reads.py", "wgsim"]
+    external_tools = {
+        "minimap2": ["--version"],
+        "samtools": ["--version"],
+        "seqkit": ["version"],
+        "spades.py": ["--version"],
+        "get_organelle_from_reads.py": ["--version"],
+        "wgsim": [],
+    }
+    python_modules = {
+        "numpy": "numpy",
+        "pandas": "pandas",
+        "scikit-learn": "sklearn",
+        "joblib": "joblib",
+        "pysam": "pysam",
+        "biopython": "Bio",
+        "pyyaml": "yaml",
+        "tqdm": "tqdm",
+        "xgboost": "xgboost",
+        "lightgbm": "lightgbm",
+        "catboost": "catboost",
+        "torch": "torch",
+    }
     print(f"Python executable: {PYTHON}")
+    print(f"Python version: {sys.version.split()[0]}")
     print(f"Package root: {PACKAGE_ROOT}")
     print(f"Repository root: {REPO_ROOT or 'NOT DETECTED'}")
+    print("Python dependencies:")
+    for label, import_name in python_modules.items():
+        print(f"  {label}: {_module_status(import_name)}")
     print("External tools:")
-    for tool in external_tools:
-        print(f"  {tool}: {shutil.which(tool) or 'NOT FOUND'}")
+    for tool, args in external_tools.items():
+        print(f"  {tool}: {_tool_version(tool, args)}")
     return 0
 
 
@@ -345,6 +479,13 @@ def build_parser() -> argparse.ArgumentParser:
     filter_parser.add_argument("--run-name", required=True)
     filter_parser.add_argument("--threshold", type=float, default=0.5)
     filter_parser.add_argument("--threads", type=int, default=8, help="Used by the GB pipeline.")
+    filter_parser.add_argument(
+        "--model-path",
+        help=(
+            "Override the default retained model artifact path. "
+            "See docs/models.md for availability and storage policy."
+        ),
+    )
     filter_parser.add_argument(
         "--reference",
         default="data/refs/original.fasta",

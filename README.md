@@ -47,21 +47,24 @@ Large run outputs, manuscript drafts, defense material, duplicate bundles, and u
 ## Installation
 
 ```bash
-python3 -m pip install -r requirements.txt
-python3 -m pip install -e .
+python3 -m pip install --upgrade pip
+python3 -m pip install .
 ```
 
-Optional extras:
+Optional dependency groups:
 
-- classical comparison models: `xgboost`, `lightgbm`, `catboost`
-- deep models: `torch`
-- development and tests: `pip install -r requirements-dev.txt`
+- classical comparison panel: `python3 -m pip install ".[classical]"`
+- deep-learning commands and inference: `python3 -m pip install ".[deep]"`
+- development and tests: `python3 -m pip install -e ".[dev]"`
+- full local researcher setup: `python3 -m pip install -e ".[classical,deep,dev]"`
 
 Conda environment manifests remain available in [environment.yml](environment.yml) and [environment.arm.yml](environment.arm.yml).
 
 ## External Tools
 
-The canonical workflow may require:
+The base Python installation does not install external bioinformatics tools.
+
+Workflow stages may additionally require:
 
 - `minimap2`
 - `samtools`
@@ -70,12 +73,11 @@ The canonical workflow may require:
 - `spades.py`
 - `GetOrganelle`
 
-See [docs/reproducibility.md](docs/reproducibility.md) for tool notes and current reproduction limits.
+Run `python3 -m mitochime.cli report-environment` after installation to see which Python packages and external tools are currently available. See [docs/reproducibility.md](docs/reproducibility.md) for tool-by-tool notes and current reproduction limits.
 
 ## Quick Start
 
-The example data are synthetic smoke-test inputs, not publication data.
-Run the quick-start commands from the repository root so the CLI can find the retained operational scripts.
+The example data are synthetic smoke-test inputs, not publication data. These commands work from a tracked clone without trained model binaries or external FASTQs:
 
 ```bash
 python3 -m mitochime.cli report-environment
@@ -85,6 +87,13 @@ python3 -m mitochime.cli validate-pairs \
   --split-dataset data/example/example_pair_split.tsv \
   --report-json results/validation/example_pair_integrity.json
 ```
+
+## Practical Use After Cloning
+
+1. Clone the repository and install the base package with `python3 -m pip install .`.
+2. Run `python3 -m mitochime.cli report-environment` and decide whether you also need `.[classical]`, `.[deep]`, or both.
+3. Supply trained model artifacts if you want GB, CNN, or BiGRU inference. See [docs/models.md](docs/models.md) and [models/MODEL_MANIFEST.tsv](models/MODEL_MANIFEST.tsv).
+4. Install external tools and supply external FASTQs only for the workflow stages that need them.
 
 ## Canonical Workflow
 
@@ -104,6 +113,14 @@ python3 -m mitochime.cli validate-pairs \
     - BiGRU: `bash scripts/inference/run_pipeline_rnnkmer.sh ...`
 12. Assembly validation: `bash scripts/assembly/run_spades.sh ...`
 
+Immediate clone behavior:
+
+- runnable after base install: CLI help, `report-environment`, pair-integrity validation, schema-aware utilities, smoke-test example data
+- requires `.[classical]`: baseline/tuned classical comparison workflows
+- requires `.[deep]`: CNN and BiGRU training or inference workflows
+- requires trained model artifacts: `mitochime filter --mode {gb,cnn,bigru}` and the corresponding Bash wrappers
+- requires external FASTQs plus bioinformatics tools: end-to-end filtering and assembly comparison workflows
+
 ## Decision Thresholds
 
 - canonical filtering threshold in the final assembly comparison: `0.5`
@@ -121,17 +138,18 @@ The publication tabular feature datasets and deep sequence datasets share pair-l
 ## Reproducibility Status
 
 - Classical pair-noq training is structurally reproducible from retained code and processed datasets.
-- Deep training now exposes only verified modes, but reruns still depend on local `torch` and retained sequence datasets.
-- Tracked clones include model metadata and retained metrics, but not the large trained model binaries under `models/`.
+- Deep training exposes only verified modes, but reruns still depend on local `torch` and retained sequence datasets.
+- Tracked clones retain model metadata, feature schemas, and published metrics, but not the trained `.joblib` or `.pt` binaries.
 - External assembly reproduction still depends on non-repo data access and external bioinformatics tools.
-- This cleanup pass does not declare the repository public-release ready yet.
+- Saved publication tables, metrics, and figures are retained release artifacts; this repository does not claim they were regenerated during this remediation pass.
+- The repository is technically smoke-testable, but it does not claim full NiDS publication reproduction.
 
 ## Known Limitations
 
 - External FASTQ licensing and hosting decisions remain unresolved.
 - The transformer branch is preserved only as review-needed material.
-- Large publication artifacts are archived locally rather than fully curated for release.
-- A final independent validation pass is still required.
+- Several large archived PDFs and legacy datasets are still tracked and should be reviewed before a public GitHub push.
+- Licensing, archive DOI, and final release locations for trained models remain researcher decisions.
 
 ## Citation
 

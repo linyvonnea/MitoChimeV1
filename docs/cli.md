@@ -14,3 +14,8 @@ Available commands:
 
 The CLI is intentionally thin. It only exposes commands backed by verified code paths from this cleanup pass.
 
+Notes:
+
+- `mitochime filter --mode {gb,cnn,bigru}` now accepts `--model-path` to override the default canonical artifact location.
+- `mitochime report-environment` reports both Python dependency availability and external bioinformatics tool availability without crashing when tools are absent.
+- Base installation is sufficient for CLI help, pair-integrity validation, and lightweight example checks.

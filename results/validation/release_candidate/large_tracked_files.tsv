@@ -1,0 +1,31 @@
+Path	Size	Classification	Keep in Git	Recommended storage	Notes
+archive/manuscript_materials/drafts/thesis_drafts/MitoChime_Final.pdf	50851848	manuscript artifact	No	External archive or release attachment	Large retained thesis draft PDF; not required for repository execution.
+archive/manuscript_materials/thesis/current_thesis/main.pdf	28446768	manuscript artifact	No	External archive or release attachment	Current thesis PDF retained for provenance; large for a code-first Git repo.
+archive/manuscript_materials/drafts/thesis_drafts/MitoChime2.pdf	28443235	manuscript artifact	No	External archive or release attachment	Large draft PDF; not required for code execution.
+archive/manuscript_materials/drafts/thesis_drafts/MitoChime_finalDraft.pdf	28443227	manuscript artifact	No	External archive or release attachment	Large draft PDF; not required for code execution.
+archive/manuscript_materials/drafts/thesis_drafts/MitoChime1.pdf	28359536	manuscript artifact	No	External archive or release attachment	Large draft PDF; not required for code execution.
+archive/legacy/data/processed/train_pair_seq_L300.tsv	12632766	archive	No	External archive	Retained tracked file; review public-hosting necessity before GitHub push.
+archive/legacy/data/processed/PAIR_train_seq_L300.tsv	11496548	archive	No	External archive	Retained tracked file; review public-hosting necessity before GitHub push.
+archive/review_needed/unsupervised/data/features_merged.unique.tsv	10720716	archive	No	External archive	Retained tracked file; review public-hosting necessity before GitHub push.
+archive/review_needed/unsupervised/scripts/unsupervised/reports/pca/B_drop_constants_plus_breakpoint/pca_points.tsv	10320461	archive	No	External archive	Retained tracked file; review public-hosting necessity before GitHub push.
+archive/review_needed/unsupervised/scripts/unsupervised/reports/pca/A_drop_constants_only/pca_points.tsv	10266832	archive	No	External archive	Retained tracked file; review public-hosting necessity before GitHub push.
+archive/review_needed/unsupervised/reports/pca/pca_points.tsv	10266832	archive	No	External archive	Retained tracked file; review public-hosting necessity before GitHub push.
+archive/review_needed/unsupervised/data/features_merged.tsv	6890898	archive	No	External archive	Retained tracked file; review public-hosting necessity before GitHub push.
+archive/review_needed/data/features/all_features_merged.tsv	6890898	archive	No	External archive	Retained tracked file; review public-hosting necessity before GitHub push.
+archive/legacy/data/processed/train_seq_L300.tsv	6856269	archive	No	External archive	Retained tracked file; review public-hosting necessity before GitHub push.
+archive/legacy/data/processed/initial_all_features_merged.tsv	6847141	archive	No	External archive	Retained tracked file; review public-hosting necessity before GitHub push.
+data/processed/PAIR_train_seq_L150.tsv	6696848	dataset	Yes	Git repository	Canonical retained deep-learning training dataset.
+data/processed/all_reads.tsv	6331370	dataset	Yes	Git repository	Canonical merged feature dataset retained for publication analyses.
+archive/review_needed/data/features/ext5/ext5.features.tsv	6298033	archive	No	External archive	Retained tracked file; review public-hosting necessity before GitHub push.
+archive/review_needed/unsupervised/scripts/unsupervised/reports/pca/B_drop_constants_plus_breakpoint/X_ready.tsv	6073172	archive	No	External archive	Retained tracked file; review public-hosting necessity before GitHub push.
+archive/review_needed/unsupervised/data/processed/X_ready.tsv	6073172	archive	No	External archive	Retained tracked file; review public-hosting necessity before GitHub push.
+data/processed/cv_seq_L150_seed42/fold4_train_seq.tsv	5357778	dataset	Yes	Git repository	Tracked cross-validation training split retained for deep-learning review.
+data/processed/cv_seq_L150_seed42/fold2_train_seq.tsv	5357540	dataset	Yes	Git repository	Tracked cross-validation training split retained for deep-learning review.
+data/processed/cv_seq_L150_seed42/fold0_train_seq.tsv	5357530	dataset	Yes	Git repository	Tracked cross-validation training split retained for deep-learning review.
+data/processed/cv_seq_L150_seed42/fold1_train_seq.tsv	5357396	dataset	Yes	Git repository	Tracked cross-validation training split retained for deep-learning review.
+data/processed/cv_seq_L150_seed42/fold3_train_seq.tsv	5357166	dataset	Yes	Git repository	Tracked cross-validation training split retained for deep-learning review.
+archive/legacy/data/processed/train.tsv	5065363	archive	No	External archive	Retained tracked file; review public-hosting necessity before GitHub push.
+data/processed/PAIR_train.tsv	5064725	dataset	Yes	Git repository	Canonical pair-aware feature training dataset.
+archive/legacy/data/processed/train_noq.tsv	4734592	archive	No	External archive	Retained tracked file; review public-hosting necessity before GitHub push.
+data/processed/PAIR_train_noq.tsv	4733994	dataset	Yes	Git repository	Canonical pair-safe no-quality training dataset used by classical models.
+archive/legacy/data/processed/test_pair_seq_L300.tsv	4733943	archive	No	External archive	Retained tracked file; review public-hosting necessity before GitHub push.

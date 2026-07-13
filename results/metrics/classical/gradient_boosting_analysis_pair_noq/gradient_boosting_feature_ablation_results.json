@@ -2,7 +2,11 @@
   "paths": {
     "train_tsv": "../data/processed/PAIR_train_noq.tsv",
     "test_tsv": "../data/processed/PAIR_test_noq.tsv",
-    "model_path": "../models_pair_noq_tuned/gradient_boosting_tuned.joblib"
+    "model_path": "../models/pair_noq_tuned/gradient_boosting_tuned.joblib",
+    "original_model_path": "../models_pair_noq_tuned/gradient_boosting_tuned.joblib",
+    "canonical_model_artifact_id": "gradient_boosting_tuned_pair_noq",
+    "canonical_repository_path": "../models/pair_noq_tuned/gradient_boosting_tuned.joblib",
+    "current_availability": "LOCAL_ONLY"
   },
   "full": {
     "n_features": 24,
@@ -78,5 +82,11 @@
       "kmer_cosine_diff",
       "kmer_js_divergence"
     ]
+  },
+  "artifact_provenance": {
+    "canonical_artifact_id": "gradient_boosting_feature_ablation_pair_noq",
+    "original_artifact_path": "reports/gradient_boosting_analysis_pair_noq/gradient_boosting_feature_ablation_results.json",
+    "canonical_repository_path": "results/metrics/classical/gradient_boosting_analysis_pair_noq/gradient_boosting_feature_ablation_results.json",
+    "current_availability": "TRACKED"
   }
 }

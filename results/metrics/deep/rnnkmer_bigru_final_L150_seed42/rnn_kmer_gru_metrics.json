@@ -25,7 +25,7 @@
     "train_tsv": "data/processed/PAIR_train_seq_L150.tsv",
     "test_tsv": "data/processed/PAIR_test_seq_L150.tsv",
     "out_dir": "models/deep/rnnkmer_bigru_final_L150_seed42",
-    "reports_dir": "reports/deep/rnnkmer_bigru_final_L150_seed42",
+    "reports_dir": "results/metrics/deep/rnnkmer_bigru_final_L150_seed42",
     "L": 150,
     "use_qual": false,
     "k": 4,
@@ -45,6 +45,18 @@
     "bidirectional": true,
     "pool": "last",
     "embed_dim": 64,
-    "save_predictions": true
+    "save_predictions": true,
+    "original_reports_dir": "reports/deep/rnnkmer_bigru_final_L150_seed42"
+  },
+  "artifact_provenance": {
+    "canonical_artifact_id": "rnnkmer_bigru_final_L150_seed42_metrics",
+    "original_artifact_path": "reports/deep/rnnkmer_bigru_final_L150_seed42/rnn_kmer_gru_metrics.json",
+    "canonical_repository_path": "results/metrics/deep/rnnkmer_bigru_final_L150_seed42/rnn_kmer_gru_metrics.json",
+    "current_availability": "TRACKED",
+    "model_artifact": {
+      "canonical_artifact_id": "bigru_kmer_final_L150_seed42",
+      "canonical_repository_path": "models/deep/rnnkmer_bigru_final_L150_seed42/rnn_kmer_gru_best.pt",
+      "current_availability": "LOCAL_ONLY"
+    }
   }
 }

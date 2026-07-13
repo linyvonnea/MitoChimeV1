@@ -15,6 +15,10 @@ This pass converted the disposable duplicate repository into a publication-orien
 - Promoted publication-facing outputs into `results/`.
 - Moved thesis, defense, draft, duplicate, and review-needed material into `archive/`.
 - Added integrity validation, example data, and focused tests.
+- Added release-candidate manifests covering tracked large files, model artifacts, and data artifacts.
+- Normalized publication notebooks to canonical repository paths and removed saved machine-specific outputs.
+- Converted `data/refs/mt_ref.fasta` from a symlink into a regular tracked FASTA copy for clone portability.
+- Confirmed that no tracked cache/build artifacts remained at the start of the release-candidate remediation pass.
 
 ## Canonical Workflow After Cleanup
 
@@ -56,7 +60,6 @@ This pass converted the disposable duplicate repository into a publication-orien
 ## Remaining Limits
 
 - External FASTQ release policy remains unresolved.
-- Notebook intro-cell normalization was not completed in this pass.
 - Large model binaries and assembly outputs remain local assets, not curated release artifacts.
-- A separate independent validation pass is still required.
-
+- Public hosting decisions for large archived PDFs and legacy datasets still require researcher review.
+- A final fresh-clone release-candidate validation pass is still required.

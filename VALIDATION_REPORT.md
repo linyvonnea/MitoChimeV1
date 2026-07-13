@@ -89,3 +89,40 @@ Supporting evidence files are stored under:
 - `results/validation/independent/postfix-validate-pairs.txt`
 - `results/validation/independent/postfix-make-validate-pairs.txt`
 - `results/validation/independent/postfix-pytest.txt`
+
+## Release-candidate remediation
+
+Release-candidate remediation was validated from a new temporary clone of commit `e27857f4a9ccd7f06f0aa28c13c5fe13e078f339` on `publication/nids-cleanup`. Evidence is stored under `results/validation/release_candidate/`.
+
+| Previous blocker | Remediation | Current status | Remaining action |
+| --- | --- | --- | --- |
+| `LICENSE` is still a placeholder | Left licensing unchanged as instructed, but carried the unresolved decision into `RELEASE_CHECKLIST.md` and `results/validation/release_candidate/remaining_blockers.md`. | `OPEN` | Researcher must choose the actual software license before public release messaging can be finalized. |
+| Fresh clone lacked canonical trained model binaries | Added `models/MODEL_MANIFEST.tsv`, clarified `docs/models.md`, tested the local GB artifact, and hardened the CLI/Bash wrappers so missing tracked models fail cleanly with model-family and override guidance. | `PARTIALLY_RESOLVED` | Decide final public storage for GB, CNN, and BiGRU artifacts. |
+| README quick start and `make validate-pairs` previously failed from a clean install | Repository-root CLI detection was already fixed in the earlier remediation commit; release-candidate fresh-clone validation now confirms base install, quick-start validation, and `make validate-pairs` all succeed. | `RESOLVED` | None. |
+| Active docs and notebooks still had portability issues | Normalized publication notebook paths, removed saved machine-specific outputs, added intro cells, updated notebook inventory, repaired canonical result-path references, and refreshed public-facing docs. | `RESOLVED` | Keep archived audit/manuscript material clearly separated from the canonical release surface. |
+| Result metadata still pointed to stale `reports/` or duplicate model paths | Added canonical repository metadata to promoted metrics JSON files and refreshed `docs/audit/RESULTS_PROVENANCE.md`. | `RESOLVED` | None for tracked promoted metrics. |
+| Reference FASTA portability was ambiguous because `mt_ref.fasta` was a symlink | Replaced the symlink with a regular tracked FASTA copy, added checksum/accession details, and documented it in `data/manifests/DATA_ARTIFACT_MANIFEST.tsv`. | `RESOLVED` | Researcher should still confirm redistribution rights for accession `NC_039553.1`. |
+| Optional dependency boundaries were under-documented | Added optional-dependency guidance to the CLI and docs, pinned release-compatible base dependencies in `pyproject.toml`, and verified that base install works without `xgboost`, `catboost`, `lightgbm`, or `torch`. | `RESOLVED` | None for the base package path. |
+| Full publication reproduction was overstated or underspecified | Updated README, reproducibility docs, manifests, and validation evidence to distinguish smoke-tested clone behavior from model-dependent and external-data-dependent reproduction. | `RESOLVED` | External FASTQ policy, assembly-output policy, and final archive locations remain researcher decisions. |
+| Large tracked archival files had not been reviewed for GitHub release suitability | Added `results/validation/release_candidate/large_tracked_files.tsv` classifying the 30 largest tracked files. | `PARTIALLY_RESOLVED` | Researcher should review whether large archived PDFs and legacy datasets stay in Git, move to a release asset, or move to an external archive. |
+
+### Release-candidate validation results
+
+- Validation level: `Level 3 — Partially reproducible`
+- Release decision: `READY_AFTER_MINOR_FIXES`
+
+### Release-candidate evidence summary
+
+- `python -m pip install .`: passed
+- `python -m pip install -e ".[dev]"`: passed
+- `python -m compileall src scripts tests`: passed
+- `python -m mitochime.cli --help`: passed
+- `python -m mitochime.cli report-environment`: passed
+- `pytest -q`: passed (`12 passed`)
+- `python -m build`: passed
+- wheel installation plus CLI help: passed
+- README quick start (`validate-pairs` on example data): passed
+- `make validate-pairs`: passed
+- canonical feature-schema comparison: passed (`feature_cols_24.json` matches the 24-feature canonical order; legacy `PAIR_feature_cols.json` remains 23-feature provenance)
+- missing-model behavior in a fresh clone: passed as an expected controlled failure with explicit guidance to `docs/models.md`
+- notebook portability scan over publication notebook source cells: passed

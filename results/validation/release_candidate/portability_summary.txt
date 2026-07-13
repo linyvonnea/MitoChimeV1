@@ -1,0 +1,5 @@
+Publication notebook source scan:
+No active personal paths, Windows absolute paths, old model directories, or old script paths were found in publication notebook source cells.
+
+Canonical release-surface text scan:
+No active personal paths, old model directories, or old script paths were found in the scanned canonical release surface.

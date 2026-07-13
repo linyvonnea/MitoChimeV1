@@ -1,0 +1,61 @@
+
+$ git clone --branch publication/nids-cleanup --single-branch /Users/yvonnelin/Desktop/MitoChimeV1 /tmp/mitochime-release-clone
+Cloning into '/tmp/mitochime-release-clone'...
+done.
+Updating files:  27% (308/1117)Updating files:  28% (313/1117)Updating files:  29% (324/1117)Updating files:  30% (336/1117)Updating files:  31% (347/1117)Updating files:  32% (358/1117)Updating files:  33% (369/1117)Updating files:  34% (380/1117)Updating files:  35% (391/1117)Updating files:  36% (403/1117)Updating files:  37% (414/1117)Updating files:  38% (425/1117)Updating files:  39% (436/1117)Updating files:  40% (447/1117)Updating files:  41% (458/1117)Updating files:  42% (470/1117)Updating files:  43% (481/1117)Updating files:  44% (492/1117)Updating files:  45% (503/1117)Updating files:  46% (514/1117)Updating files:  47% (525/1117)Updating files:  48% (537/1117)Updating files:  49% (548/1117)Updating files:  50% (559/1117)Updating files:  51% (570/1117)Updating files:  52% (581/1117)Updating files:  53% (593/1117)Updating files:  54% (604/1117)Updating files:  55% (615/1117)Updating files:  56% (626/1117)Updating files:  57% (637/1117)Updating files:  58% (648/1117)Updating files:  59% (660/1117)Updating files:  60% (671/1117)Updating files:  61% (682/1117)Updating files:  62% (693/1117)Updating files:  63% (704/1117)Updating files:  64% (715/1117)Updating files:  65% (727/1117)Updating files:  66% (738/1117)Updating files:  66% (740/1117)Updating files:  67% (749/1117)Updating files:  68% (760/1117)Updating files:  69% (771/1117)Updating files:  70% (782/1117)Updating files:  71% (794/1117)Updating files:  72% (805/1117)Updating files:  73% (816/1117)Updating files:  74% (827/1117)Updating files:  75% (838/1117)Updating files:  76% (849/1117)Updating files:  77% (861/1117)Updating files:  78% (872/1117)Updating files:  79% (883/1117)Updating files:  80% (894/1117)Updating files:  81% (905/1117)Updating files:  82% (916/1117)Updating files:  83% (928/1117)Updating files:  84% (939/1117)Updating files:  85% (950/1117)Updating files:  86% (961/1117)Updating files:  87% (972/1117)Updating files:  88% (983/1117)Updating files:  89% (995/1117)Updating files:  90% (1006/1117)Updating files:  91% (1017/1117)Updating files:  92% (1028/1117)Updating files:  93% (1039/1117)Updating files:  94% (1050/1117)Updating files:  95% (1062/1117)Updating files:  96% (1073/1117)Updating files:  97% (1084/1117)Updating files:  98% (1095/1117)Updating files:  99% (1106/1117)Updating files: 100% (1117/1117)Updating files: 100% (1117/1117), done.
+
+$ python3 -m venv /tmp/mitochime-release-venv
+
+$ python -m pip install --upgrade pip
+
+$ python -m pip install .
+
+$ python -m mitochime.cli --help
+
+$ python -m mitochime.cli report-environment
+
+$ python -m compileall src scripts tests
+
+$ python -m mitochime.cli validate-pairs --feature-dataset data/example/example_pair_features.tsv --sequence-dataset data/example/example_pair_seq.tsv --split-dataset data/example/example_pair_split.tsv --report-json /tmp/mitochime-release-clone/results/validation/example_pair_integrity_rc.json
+
+$ sed -n 1,200p /tmp/mitochime-release-clone/results/validation/example_pair_integrity_rc.json
+
+$ make PYTHON=python validate-pairs
+
+$ sed -n 1,200p /tmp/mitochime-release-clone/results/validation/pair_integrity_train.json
+
+$ python -
+
+$ bash -lc find models -maxdepth 4 -type f | sort && echo && python -m mitochime.cli filter --mode gb --r1 data/example/example_pairs_R1.fastq --r2 data/example/example_pairs_R2.fastq --run-name smoke
+
+$ python -m mitochime.cli filter --mode gb --r1 data/example/example_pairs_R1.fastq --r2 data/example/example_pairs_R2.fastq --run-name smoke
+
+$ python -m pip install -e .[dev]
+
+$ pytest -q
+
+$ python -m pip install build
+
+$ python -m build
+
+$ python -
+
+$ python -
+
+$ python structured portability scan
+
+$ make help
+
+$ make PYTHON=python report-environment
+
+$ python3 -m venv /tmp/mitochime-release-wheel-venv
+
+$ python -m pip install --upgrade pip
+
+$ bash -lc python -m pip install "$CLONE"/dist/mitochime-0.1.0-py3-none-any.whl
+
+$ python structured portability scan v2
+
+$ python -m pip install /tmp/mitochime-release-clone/dist/mitochime-0.1.0-py3-none-any.whl
+
+$ python -m mitochime.cli --help

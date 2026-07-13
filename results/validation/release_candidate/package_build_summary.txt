@@ -1,0 +1,361 @@
+Listing 'src'...
+Listing 'src/mitochime'...
+Compiling 'src/mitochime/__init__.py'...
+Compiling 'src/mitochime/build_datasets.py'...
+Compiling 'src/mitochime/build_pair_splits.py'...
+Compiling 'src/mitochime/cli.py'...
+Compiling 'src/mitochime/data_utils.py'...
+Listing 'src/mitochime/deep_learning'...
+Compiling 'src/mitochime/deep_learning/dl_cnn.py'...
+Compiling 'src/mitochime/deep_learning/dl_data.py'...
+Compiling 'src/mitochime/deep_learning/dl_rnn_kmer.py'...
+Compiling 'src/mitochime/deep_learning/dl_transformer.py'...
+Compiling 'src/mitochime/deep_learning/make_folds.py'...
+Compiling 'src/mitochime/deep_learning/make_seq_tsv.py'...
+Compiling 'src/mitochime/deep_learning/make_seq_tsv_infer.py'...
+Compiling 'src/mitochime/deep_learning/predict_deep.py'...
+Compiling 'src/mitochime/deep_learning/train_deep.py'...
+Compiling 'src/mitochime/feature_schema.py'...
+Compiling 'src/mitochime/filtering.py'...
+Compiling 'src/mitochime/hyperparam_search_top.py'...
+Compiling 'src/mitochime/make_noq_datasets.py'...
+Compiling 'src/mitochime/make_noq_datasets_pair.py'...
+Compiling 'src/mitochime/model_zoo.py'...
+Compiling 'src/mitochime/optional_dependencies.py'...
+Compiling 'src/mitochime/train_all_models.py'...
+Listing 'src/mitochime/utils'...
+Compiling 'src/mitochime/utils/__init__.py'...
+Compiling 'src/mitochime/utils/fastq.py'...
+Compiling 'src/mitochime/utils/read_ids.py'...
+Listing 'src/mitochime.egg-info'...
+Listing 'scripts'...
+Listing 'scripts/analysis'...
+Compiling 'scripts/analysis/train_selected4.py'...
+Listing 'scripts/assembly'...
+Listing 'scripts/data_prep'...
+Compiling 'scripts/data_prep/extract_features.py'...
+Compiling 'scripts/data_prep/make_chimeric_templates.py'...
+Compiling 'scripts/data_prep/simulation.py'...
+Listing 'scripts/evaluation'...
+Listing 'scripts/inference'...
+Compiling 'scripts/inference/dl_encode_fastq_R1_L150_4ch.py'...
+Compiling 'scripts/inference/dl_predict_cnn.py'...
+Compiling 'scripts/inference/filter_pairs_by_ids.py'...
+Compiling 'scripts/inference/gb_predict_filter_pairs.py'...
+Listing 'scripts/validation'...
+Compiling 'scripts/validation/validate_pair_integrity.py'...
+Listing 'tests'...
+Compiling 'tests/test_build_pair_splits.py'...
+Compiling 'tests/test_cli_smoke.py'...
+Compiling 'tests/test_feature_schema.py'...
+Compiling 'tests/test_filtering.py'...
+Compiling 'tests/test_read_ids.py'...
+Compiling 'tests/test_validate_pair_integrity.py'...
+Collecting build
+  Using cached build-1.5.1-py3-none-any.whl.metadata (5.6 kB)
+Requirement already satisfied: packaging>=24.0 in /private/tmp/mitochime-release-venv/lib/python3.12/site-packages (from build) (26.2)
+Collecting pyproject_hooks (from build)
+  Using cached pyproject_hooks-1.2.0-py3-none-any.whl.metadata (1.3 kB)
+Using cached build-1.5.1-py3-none-any.whl (31 kB)
+Using cached pyproject_hooks-1.2.0-py3-none-any.whl (10 kB)
+Installing collected packages: pyproject_hooks, build
+
+Successfully installed build-1.5.1 pyproject_hooks-1.2.0
+* Creating isolated environment: venv+pip...
+* Installing packages in isolated environment:
+  - setuptools>=65
+* Getting build dependencies for sdist...
+running egg_info
+writing src/mitochime.egg-info/PKG-INFO
+writing dependency_links to src/mitochime.egg-info/dependency_links.txt
+writing entry points to src/mitochime.egg-info/entry_points.txt
+writing requirements to src/mitochime.egg-info/requires.txt
+writing top-level names to src/mitochime.egg-info/top_level.txt
+reading manifest file 'src/mitochime.egg-info/SOURCES.txt'
+adding license file 'LICENSE'
+adding license file 'AUTHORS.md'
+writing manifest file 'src/mitochime.egg-info/SOURCES.txt'
+* Installed build dependency versions:
+  - setuptools==83.0.0
+* Building sdist...
+running sdist
+running egg_info
+writing src/mitochime.egg-info/PKG-INFO
+writing dependency_links to src/mitochime.egg-info/dependency_links.txt
+writing entry points to src/mitochime.egg-info/entry_points.txt
+writing requirements to src/mitochime.egg-info/requires.txt
+writing top-level names to src/mitochime.egg-info/top_level.txt
+reading manifest file 'src/mitochime.egg-info/SOURCES.txt'
+adding license file 'LICENSE'
+adding license file 'AUTHORS.md'
+writing manifest file 'src/mitochime.egg-info/SOURCES.txt'
+running check
+creating mitochime-0.1.0
+creating mitochime-0.1.0/src/mitochime
+creating mitochime-0.1.0/src/mitochime.egg-info
+creating mitochime-0.1.0/src/mitochime/deep_learning
+creating mitochime-0.1.0/src/mitochime/utils
+creating mitochime-0.1.0/tests
+copying files to mitochime-0.1.0...
+copying AUTHORS.md -> mitochime-0.1.0
+copying LICENSE -> mitochime-0.1.0
+copying README.md -> mitochime-0.1.0
+copying pyproject.toml -> mitochime-0.1.0
+copying src/mitochime/__init__.py -> mitochime-0.1.0/src/mitochime
+copying src/mitochime/build_datasets.py -> mitochime-0.1.0/src/mitochime
+copying src/mitochime/build_pair_splits.py -> mitochime-0.1.0/src/mitochime
+copying src/mitochime/cli.py -> mitochime-0.1.0/src/mitochime
+copying src/mitochime/data_utils.py -> mitochime-0.1.0/src/mitochime
+copying src/mitochime/feature_schema.py -> mitochime-0.1.0/src/mitochime
+copying src/mitochime/filtering.py -> mitochime-0.1.0/src/mitochime
+copying src/mitochime/hyperparam_search_top.py -> mitochime-0.1.0/src/mitochime
+copying src/mitochime/make_noq_datasets.py -> mitochime-0.1.0/src/mitochime
+copying src/mitochime/make_noq_datasets_pair.py -> mitochime-0.1.0/src/mitochime
+copying src/mitochime/model_zoo.py -> mitochime-0.1.0/src/mitochime
+copying src/mitochime/optional_dependencies.py -> mitochime-0.1.0/src/mitochime
+copying src/mitochime/train_all_models.py -> mitochime-0.1.0/src/mitochime
+copying src/mitochime.egg-info/PKG-INFO -> mitochime-0.1.0/src/mitochime.egg-info
+copying src/mitochime.egg-info/SOURCES.txt -> mitochime-0.1.0/src/mitochime.egg-info
+copying src/mitochime.egg-info/dependency_links.txt -> mitochime-0.1.0/src/mitochime.egg-info
+copying src/mitochime.egg-info/entry_points.txt -> mitochime-0.1.0/src/mitochime.egg-info
+copying src/mitochime.egg-info/requires.txt -> mitochime-0.1.0/src/mitochime.egg-info
+copying src/mitochime.egg-info/top_level.txt -> mitochime-0.1.0/src/mitochime.egg-info
+copying src/mitochime/deep_learning/dl_cnn.py -> mitochime-0.1.0/src/mitochime/deep_learning
+copying src/mitochime/deep_learning/dl_data.py -> mitochime-0.1.0/src/mitochime/deep_learning
+copying src/mitochime/deep_learning/dl_rnn_kmer.py -> mitochime-0.1.0/src/mitochime/deep_learning
+copying src/mitochime/deep_learning/dl_transformer.py -> mitochime-0.1.0/src/mitochime/deep_learning
+copying src/mitochime/deep_learning/make_folds.py -> mitochime-0.1.0/src/mitochime/deep_learning
+copying src/mitochime/deep_learning/make_seq_tsv.py -> mitochime-0.1.0/src/mitochime/deep_learning
+copying src/mitochime/deep_learning/make_seq_tsv_infer.py -> mitochime-0.1.0/src/mitochime/deep_learning
+copying src/mitochime/deep_learning/predict_deep.py -> mitochime-0.1.0/src/mitochime/deep_learning
+copying src/mitochime/deep_learning/train_deep.py -> mitochime-0.1.0/src/mitochime/deep_learning
+copying src/mitochime/utils/__init__.py -> mitochime-0.1.0/src/mitochime/utils
+copying src/mitochime/utils/fastq.py -> mitochime-0.1.0/src/mitochime/utils
+copying src/mitochime/utils/read_ids.py -> mitochime-0.1.0/src/mitochime/utils
+copying tests/test_build_pair_splits.py -> mitochime-0.1.0/tests
+copying tests/test_cli_smoke.py -> mitochime-0.1.0/tests
+copying tests/test_feature_schema.py -> mitochime-0.1.0/tests
+copying tests/test_filtering.py -> mitochime-0.1.0/tests
+copying tests/test_read_ids.py -> mitochime-0.1.0/tests
+copying tests/test_validate_pair_integrity.py -> mitochime-0.1.0/tests
+copying src/mitochime.egg-info/SOURCES.txt -> mitochime-0.1.0/src/mitochime.egg-info
+Writing mitochime-0.1.0/setup.cfg
+Creating tar archive
+removing 'mitochime-0.1.0' (and everything under it)
+* Building wheel from sdist
+* Creating isolated environment: venv+pip...
+* Installing packages in isolated environment:
+  - setuptools>=65
+* Getting build dependencies for wheel...
+running egg_info
+writing src/mitochime.egg-info/PKG-INFO
+writing dependency_links to src/mitochime.egg-info/dependency_links.txt
+writing entry points to src/mitochime.egg-info/entry_points.txt
+writing requirements to src/mitochime.egg-info/requires.txt
+writing top-level names to src/mitochime.egg-info/top_level.txt
+reading manifest file 'src/mitochime.egg-info/SOURCES.txt'
+adding license file 'LICENSE'
+adding license file 'AUTHORS.md'
+writing manifest file 'src/mitochime.egg-info/SOURCES.txt'
+* Installed build dependency versions:
+  - setuptools==83.0.0
+* Building wheel...
+running bdist_wheel
+running build
+running build_py
+creating build/lib/mitochime
+copying src/mitochime/make_noq_datasets_pair.py -> build/lib/mitochime
+copying src/mitochime/model_zoo.py -> build/lib/mitochime
+copying src/mitochime/feature_schema.py -> build/lib/mitochime
+copying src/mitochime/make_noq_datasets.py -> build/lib/mitochime
+copying src/mitochime/filtering.py -> build/lib/mitochime
+copying src/mitochime/build_pair_splits.py -> build/lib/mitochime
+copying src/mitochime/build_datasets.py -> build/lib/mitochime
+copying src/mitochime/__init__.py -> build/lib/mitochime
+copying src/mitochime/data_utils.py -> build/lib/mitochime
+copying src/mitochime/cli.py -> build/lib/mitochime
+copying src/mitochime/hyperparam_search_top.py -> build/lib/mitochime
+copying src/mitochime/optional_dependencies.py -> build/lib/mitochime
+copying src/mitochime/train_all_models.py -> build/lib/mitochime
+creating build/lib/mitochime/utils
+copying src/mitochime/utils/read_ids.py -> build/lib/mitochime/utils
+copying src/mitochime/utils/__init__.py -> build/lib/mitochime/utils
+copying src/mitochime/utils/fastq.py -> build/lib/mitochime/utils
+creating build/lib/mitochime/deep_learning
+copying src/mitochime/deep_learning/make_seq_tsv.py -> build/lib/mitochime/deep_learning
+copying src/mitochime/deep_learning/dl_transformer.py -> build/lib/mitochime/deep_learning
+copying src/mitochime/deep_learning/dl_data.py -> build/lib/mitochime/deep_learning
+copying src/mitochime/deep_learning/make_folds.py -> build/lib/mitochime/deep_learning
+copying src/mitochime/deep_learning/predict_deep.py -> build/lib/mitochime/deep_learning
+copying src/mitochime/deep_learning/make_seq_tsv_infer.py -> build/lib/mitochime/deep_learning
+copying src/mitochime/deep_learning/train_deep.py -> build/lib/mitochime/deep_learning
+copying src/mitochime/deep_learning/dl_rnn_kmer.py -> build/lib/mitochime/deep_learning
+copying src/mitochime/deep_learning/dl_cnn.py -> build/lib/mitochime/deep_learning
+running egg_info
+writing src/mitochime.egg-info/PKG-INFO
+writing dependency_links to src/mitochime.egg-info/dependency_links.txt
+writing entry points to src/mitochime.egg-info/entry_points.txt
+writing requirements to src/mitochime.egg-info/requires.txt
+writing top-level names to src/mitochime.egg-info/top_level.txt
+reading manifest file 'src/mitochime.egg-info/SOURCES.txt'
+adding license file 'LICENSE'
+adding license file 'AUTHORS.md'
+writing manifest file 'src/mitochime.egg-info/SOURCES.txt'
+installing to build/bdist.macosx-10.9-universal2/wheel
+running install
+running install_lib
+creating build/bdist.macosx-10.9-universal2/wheel
+creating build/bdist.macosx-10.9-universal2/wheel/mitochime
+copying build/lib/mitochime/make_noq_datasets_pair.py -> build/bdist.macosx-10.9-universal2/wheel/./mitochime
+copying build/lib/mitochime/model_zoo.py -> build/bdist.macosx-10.9-universal2/wheel/./mitochime
+copying build/lib/mitochime/feature_schema.py -> build/bdist.macosx-10.9-universal2/wheel/./mitochime
+copying build/lib/mitochime/make_noq_datasets.py -> build/bdist.macosx-10.9-universal2/wheel/./mitochime
+copying build/lib/mitochime/filtering.py -> build/bdist.macosx-10.9-universal2/wheel/./mitochime
+copying build/lib/mitochime/build_pair_splits.py -> build/bdist.macosx-10.9-universal2/wheel/./mitochime
+copying build/lib/mitochime/build_datasets.py -> build/bdist.macosx-10.9-universal2/wheel/./mitochime
+copying build/lib/mitochime/__init__.py -> build/bdist.macosx-10.9-universal2/wheel/./mitochime
+creating build/bdist.macosx-10.9-universal2/wheel/mitochime/utils
+copying build/lib/mitochime/utils/read_ids.py -> build/bdist.macosx-10.9-universal2/wheel/./mitochime/utils
+copying build/lib/mitochime/utils/__init__.py -> build/bdist.macosx-10.9-universal2/wheel/./mitochime/utils
+copying build/lib/mitochime/utils/fastq.py -> build/bdist.macosx-10.9-universal2/wheel/./mitochime/utils
+creating build/bdist.macosx-10.9-universal2/wheel/mitochime/deep_learning
+copying build/lib/mitochime/deep_learning/make_seq_tsv.py -> build/bdist.macosx-10.9-universal2/wheel/./mitochime/deep_learning
+copying build/lib/mitochime/deep_learning/dl_transformer.py -> build/bdist.macosx-10.9-universal2/wheel/./mitochime/deep_learning
+copying build/lib/mitochime/deep_learning/dl_data.py -> build/bdist.macosx-10.9-universal2/wheel/./mitochime/deep_learning
+copying build/lib/mitochime/deep_learning/make_folds.py -> build/bdist.macosx-10.9-universal2/wheel/./mitochime/deep_learning
+copying build/lib/mitochime/deep_learning/predict_deep.py -> build/bdist.macosx-10.9-universal2/wheel/./mitochime/deep_learning
+copying build/lib/mitochime/deep_learning/make_seq_tsv_infer.py -> build/bdist.macosx-10.9-universal2/wheel/./mitochime/deep_learning
+copying build/lib/mitochime/deep_learning/train_deep.py -> build/bdist.macosx-10.9-universal2/wheel/./mitochime/deep_learning
+copying build/lib/mitochime/deep_learning/dl_rnn_kmer.py -> build/bdist.macosx-10.9-universal2/wheel/./mitochime/deep_learning
+copying build/lib/mitochime/deep_learning/dl_cnn.py -> build/bdist.macosx-10.9-universal2/wheel/./mitochime/deep_learning
+copying build/lib/mitochime/data_utils.py -> build/bdist.macosx-10.9-universal2/wheel/./mitochime
+copying build/lib/mitochime/cli.py -> build/bdist.macosx-10.9-universal2/wheel/./mitochime
+copying build/lib/mitochime/hyperparam_search_top.py -> build/bdist.macosx-10.9-universal2/wheel/./mitochime
+copying build/lib/mitochime/optional_dependencies.py -> build/bdist.macosx-10.9-universal2/wheel/./mitochime
+copying build/lib/mitochime/train_all_models.py -> build/bdist.macosx-10.9-universal2/wheel/./mitochime
+running install_egg_info
+Copying src/mitochime.egg-info to build/bdist.macosx-10.9-universal2/wheel/./mitochime-0.1.0-py3.12.egg-info
+running install_scripts
+creating build/bdist.macosx-10.9-universal2/wheel/mitochime-0.1.0.dist-info/WHEEL
+creating '/private/tmp/mitochime-release-clone/dist/.tmp-desh7zdi/mitochime-0.1.0-py3-none-any.whl' and adding 'build/bdist.macosx-10.9-universal2/wheel' to it
+adding 'mitochime/__init__.py'
+adding 'mitochime/build_datasets.py'
+adding 'mitochime/build_pair_splits.py'
+adding 'mitochime/cli.py'
+adding 'mitochime/data_utils.py'
+adding 'mitochime/feature_schema.py'
+adding 'mitochime/filtering.py'
+adding 'mitochime/hyperparam_search_top.py'
+adding 'mitochime/make_noq_datasets.py'
+adding 'mitochime/make_noq_datasets_pair.py'
+adding 'mitochime/model_zoo.py'
+adding 'mitochime/optional_dependencies.py'
+adding 'mitochime/train_all_models.py'
+adding 'mitochime/deep_learning/dl_cnn.py'
+adding 'mitochime/deep_learning/dl_data.py'
+adding 'mitochime/deep_learning/dl_rnn_kmer.py'
+adding 'mitochime/deep_learning/dl_transformer.py'
+adding 'mitochime/deep_learning/make_folds.py'
+adding 'mitochime/deep_learning/make_seq_tsv.py'
+adding 'mitochime/deep_learning/make_seq_tsv_infer.py'
+adding 'mitochime/deep_learning/predict_deep.py'
+adding 'mitochime/deep_learning/train_deep.py'
+adding 'mitochime/utils/__init__.py'
+adding 'mitochime/utils/fastq.py'
+adding 'mitochime/utils/read_ids.py'
+adding 'mitochime-0.1.0.dist-info/licenses/AUTHORS.md'
+adding 'mitochime-0.1.0.dist-info/licenses/LICENSE'
+adding 'mitochime-0.1.0.dist-info/METADATA'
+adding 'mitochime-0.1.0.dist-info/WHEEL'
+adding 'mitochime-0.1.0.dist-info/entry_points.txt'
+adding 'mitochime-0.1.0.dist-info/top_level.txt'
+adding 'mitochime-0.1.0.dist-info/RECORD'
+removing build/bdist.macosx-10.9-universal2/wheel
+Successfully built mitochime-0.1.0.tar.gz and mitochime-0.1.0-py3-none-any.whl
+Requirement already satisfied: pip in /private/tmp/mitochime-release-wheel-venv/lib/python3.12/site-packages (24.2)
+Collecting pip
+  Using cached pip-26.1.2-py3-none-any.whl.metadata (4.6 kB)
+Using cached pip-26.1.2-py3-none-any.whl (1.8 MB)
+Installing collected packages: pip
+  Attempting uninstall: pip
+    Found existing installation: pip 24.2
+    Uninstalling pip-24.2:
+      Successfully uninstalled pip-24.2
+Successfully installed pip-26.1.2
+WARNING: Requirement '/dist/mitochime-0.1.0-py3-none-any.whl' looks like a filename, but the file does not exist
+Processing /dist/mitochime-0.1.0-py3-none-any.whl
+ERROR: Could not install packages due to an OSError: [Errno 2] No such file or directory: '/dist/mitochime-0.1.0-py3-none-any.whl'
+
+Processing /tmp/mitochime-release-clone/dist/mitochime-0.1.0-py3-none-any.whl
+Collecting numpy==1.26.4 (from mitochime==0.1.0)
+  Using cached numpy-1.26.4-cp312-cp312-macosx_11_0_arm64.whl.metadata (61 kB)
+Collecting pandas==2.2.2 (from mitochime==0.1.0)
+  Using cached pandas-2.2.2-cp312-cp312-macosx_11_0_arm64.whl.metadata (19 kB)
+Collecting scikit-learn==1.5.2 (from mitochime==0.1.0)
+  Using cached scikit_learn-1.5.2-cp312-cp312-macosx_12_0_arm64.whl.metadata (13 kB)
+Collecting joblib (from mitochime==0.1.0)
+  Using cached joblib-1.5.3-py3-none-any.whl.metadata (5.5 kB)
+Collecting pysam==0.22.1 (from mitochime==0.1.0)
+  Using cached pysam-0.22.1-cp312-cp312-macosx_11_0_arm64.whl.metadata (1.5 kB)
+Collecting biopython==1.83 (from mitochime==0.1.0)
+  Using cached biopython-1.83-cp312-cp312-macosx_11_0_arm64.whl.metadata (13 kB)
+Collecting pyyaml==6.0.1 (from mitochime==0.1.0)
+  Using cached PyYAML-6.0.1-cp312-cp312-macosx_11_0_arm64.whl.metadata (2.1 kB)
+Collecting tqdm==4.66.4 (from mitochime==0.1.0)
+  Using cached tqdm-4.66.4-py3-none-any.whl.metadata (57 kB)
+Collecting python-dateutil>=2.8.2 (from pandas==2.2.2->mitochime==0.1.0)
+  Using cached python_dateutil-2.9.0.post0-py2.py3-none-any.whl.metadata (8.4 kB)
+Collecting pytz>=2020.1 (from pandas==2.2.2->mitochime==0.1.0)
+  Using cached pytz-2026.2-py2.py3-none-any.whl.metadata (22 kB)
+Collecting tzdata>=2022.7 (from pandas==2.2.2->mitochime==0.1.0)
+  Using cached tzdata-2026.3-py2.py3-none-any.whl.metadata (1.4 kB)
+Collecting scipy>=1.6.0 (from scikit-learn==1.5.2->mitochime==0.1.0)
+  Using cached scipy-1.18.0-cp312-cp312-macosx_14_0_arm64.whl.metadata (62 kB)
+Collecting threadpoolctl>=3.1.0 (from scikit-learn==1.5.2->mitochime==0.1.0)
+  Using cached threadpoolctl-3.6.0-py3-none-any.whl.metadata (13 kB)
+Collecting six>=1.5 (from python-dateutil>=2.8.2->pandas==2.2.2->mitochime==0.1.0)
+  Using cached six-1.17.0-py2.py3-none-any.whl.metadata (1.7 kB)
+INFO: pip is looking at multiple versions of scipy to determine which version is compatible with other requirements. This could take a while.
+Collecting scipy>=1.6.0 (from scikit-learn==1.5.2->mitochime==0.1.0)
+  Using cached scipy-1.17.1-cp312-cp312-macosx_14_0_arm64.whl.metadata (62 kB)
+Using cached biopython-1.83-cp312-cp312-macosx_11_0_arm64.whl (2.7 MB)
+Using cached numpy-1.26.4-cp312-cp312-macosx_11_0_arm64.whl (13.7 MB)
+Using cached pandas-2.2.2-cp312-cp312-macosx_11_0_arm64.whl (11.3 MB)
+Using cached pysam-0.22.1-cp312-cp312-macosx_11_0_arm64.whl (8.0 MB)
+Using cached PyYAML-6.0.1-cp312-cp312-macosx_11_0_arm64.whl (165 kB)
+Using cached scikit_learn-1.5.2-cp312-cp312-macosx_12_0_arm64.whl (11.0 MB)
+Using cached tqdm-4.66.4-py3-none-any.whl (78 kB)
+Using cached joblib-1.5.3-py3-none-any.whl (309 kB)
+Using cached python_dateutil-2.9.0.post0-py2.py3-none-any.whl (229 kB)
+Using cached pytz-2026.2-py2.py3-none-any.whl (510 kB)
+Using cached scipy-1.17.1-cp312-cp312-macosx_14_0_arm64.whl (20.3 MB)
+Using cached six-1.17.0-py2.py3-none-any.whl (11 kB)
+Using cached threadpoolctl-3.6.0-py3-none-any.whl (18 kB)
+Using cached tzdata-2026.3-py2.py3-none-any.whl (348 kB)
+Installing collected packages: pytz, tzdata, tqdm, threadpoolctl, six, pyyaml, pysam, numpy, joblib, scipy, python-dateutil, biopython, scikit-learn, pandas, mitochime
+
+Successfully installed biopython-1.83 joblib-1.5.3 mitochime-0.1.0 numpy-1.26.4 pandas-2.2.2 pysam-0.22.1 python-dateutil-2.9.0.post0 pytz-2026.2 pyyaml-6.0.1 scikit-learn-1.5.2 scipy-1.17.1 six-1.17.0 threadpoolctl-3.6.0 tqdm-4.66.4 tzdata-2026.3
+usage: mitochime [-h]
+                 {extract-features,build-dataset,split,train-classical,train-cnn,train-bigru,filter,validate-pairs,report-environment}
+                 ...
+
+Thin command-line interface for the verified MitoChime workflow.
+
+positional arguments:
+  {extract-features,build-dataset,split,train-classical,train-cnn,train-bigru,filter,validate-pairs,report-environment}
+    extract-features    Extract the canonical 30-column feature table.
+    build-dataset       Build all_reads/train/test from clean and chimeric
+                        features.
+    split               Create the pair-aware train/test split.
+    train-classical     Train the baseline classical-model comparison panel.
+    train-cnn           Train the canonical CNN1D model.
+    train-bigru         Train the canonical BiGRU k-mer model.
+    filter              Run one of the verified pair-safe inference/filtering
+                        pipelines.
+    validate-pairs      Audit pair-level integrity across publication
+                        datasets.
+    report-environment  Report Python and external bioinformatics tool
+                        availability.
+
+options:
+  -h, --help            show this help message and exit

@@ -1,0 +1,49 @@
+Python executable: /private/tmp/mitochime-release-venv/bin/python
+Python version: 3.12.5
+Package root: /private/tmp/mitochime-release-venv/lib/python3.12/site-packages/mitochime
+Repository root: /private/tmp/mitochime-release-clone
+Python dependencies:
+  numpy: 1.26.4
+  pandas: 2.2.2
+  scikit-learn: 1.5.2
+  joblib: 1.5.3
+  pysam: 0.22.1
+  biopython: 1.83
+  pyyaml: 6.0.1
+  tqdm: 4.66.4
+  xgboost: not installed
+  lightgbm: not installed
+  catboost: not installed
+  torch: not installed
+External tools:
+  minimap2: not installed
+  samtools: not installed
+  seqkit: not installed
+  spades.py: not installed
+  get_organelle_from_reads.py: not installed
+  wgsim: not installed
+python -m mitochime.cli report-environment
+Python executable: /private/tmp/mitochime-release-venv/bin/python
+Python version: 3.12.5
+Package root: /private/tmp/mitochime-release-clone/src/mitochime
+Repository root: /private/tmp/mitochime-release-clone
+Python dependencies:
+  numpy: 1.26.4
+  pandas: 2.2.2
+  scikit-learn: 1.5.2
+  joblib: 1.5.3
+  pysam: 0.22.1
+  biopython: 1.83
+  pyyaml: 6.0.1
+  tqdm: 4.66.4
+  xgboost: not installed
+  lightgbm: not installed
+  catboost: not installed
+  torch: not installed
+External tools:
+  minimap2: not installed
+  samtools: not installed
+  seqkit: not installed
+  spades.py: not installed
+  get_organelle_from_reads.py: not installed
+  wgsim: not installed

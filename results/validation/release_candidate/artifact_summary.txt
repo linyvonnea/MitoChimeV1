@@ -1,0 +1,10 @@
+models/MODEL_MANIFEST.tsv
+models/README.md
+models/metadata/canonical_model_artifacts.json
+models/pair_noq_tuned/PAIR_feature_cols.json
+models/pair_noq_tuned/feature_cols_24.json
+
+[ERROR] tuned Gradient Boosting model not found at models/pair_noq_tuned/gradient_boosting_tuned.joblib. Override the default model location with `--model-path` or the `GB_MODEL` environment variable. See docs/models.md for model availability and release policy.
+[ERROR] tuned Gradient Boosting model not found at models/pair_noq_tuned/gradient_boosting_tuned.joblib. Override the default model location with `--model-path` or the `GB_MODEL` environment variable. See docs/models.md for model availability and release policy.
+
+missing_model_exit_code=1

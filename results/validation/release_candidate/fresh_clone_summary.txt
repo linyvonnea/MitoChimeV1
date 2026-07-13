@@ -1,0 +1,11 @@
+clone_path=/tmp/mitochime-release-clone
+validation_date=2026-07-13T19:04:02Z
+branch=publication/nids-cleanup
+head=e27857f4a9ccd7f06f0aa28c13c5fe13e078f339
+status=0 unstaged entries
+tracked_model_files:
+models/MODEL_MANIFEST.tsv
+models/README.md
+models/metadata/canonical_model_artifacts.json
+models/pair_noq_tuned/PAIR_feature_cols.json
+models/pair_noq_tuned/feature_cols_24.json

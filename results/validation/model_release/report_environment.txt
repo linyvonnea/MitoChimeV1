@@ -1,0 +1,24 @@
+Python executable: /private/tmp/mitochime-model-release.ZeHUCT/MitoChimeV1-fresh/.venv/bin/python
+Python version: 3.12.5
+Package root: /private/tmp/mitochime-model-release.ZeHUCT/MitoChimeV1-fresh/src/mitochime
+Repository root: /private/tmp/mitochime-model-release.ZeHUCT/MitoChimeV1-fresh
+Python dependencies:
+  numpy: 1.26.4
+  pandas: 2.2.2
+  scikit-learn: 1.5.2
+  joblib: 1.5.3
+  pysam: 0.22.1
+  biopython: 1.83
+  pyyaml: 6.0.1
+  tqdm: 4.66.4
+  xgboost: 2.0.3
+  lightgbm: 4.6.0
+  catboost: 1.2.10
+  torch: 2.13.0
+External tools:
+  minimap2: not installed
+  samtools: not installed
+  seqkit: not installed
+  spades.py: not installed
+  get_organelle_from_reads.py: not installed
+  wgsim: not installed

@@ -1,0 +1,5 @@
+canonical_count 24
+tracked_count 24
+tracked_matches True
+legacy_count 23
+legacy_missing ['strand']

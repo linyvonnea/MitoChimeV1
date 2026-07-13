@@ -1,0 +1,10 @@
+Name: mitochime
+Version: 0.1.0
+Summary: Pair-safe mitochondrial chimera detection workflow for Illumina reads.
+Home-page: 
+Author: 
+Author-email: 
+License: 
+Location: /private/tmp/mitochime-postfix-EuvnVh/venv/lib/python3.12/site-packages
+Requires: biopython, joblib, numpy, pandas, pysam, pyyaml, scikit-learn, tqdm
+Required-by: 

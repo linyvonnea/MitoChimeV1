@@ -16,6 +16,9 @@ htmlcov/
 *.bbl
 *.bcf
 *.blg
+build/
+dist/
+*.egg-info/
 *.fdb_latexmk
 *.fls
 *.lof
@@ -59,6 +62,16 @@ data/predictions/
 documentation/draft/
 documentation/defense/
 documentation/slides/
+docs/manuscript/**/build/
+docs/manuscript/**/*.aux
+docs/manuscript/**/*.bbl
+docs/manuscript/**/*.blg
+docs/manuscript/**/*.fdb_latexmk
+docs/manuscript/**/*.fls
+docs/manuscript/**/*.log
+docs/manuscript/**/*.out
+docs/manuscript/**/*.pdf
+docs/manuscript/**/texput.log
 
 kaggle_bundle_mitochime.zip
 kaggle_bundle_mitochime/
@@ -66,9 +79,17 @@ kaggle_bundle_mitochime/
 models/*.joblib
 models/*.pkl
 models/deep/
+models/pair_noq_tuned/*.joblib
 models_PAIR_noq_tuned/
 models_noq_tuned/
 models_pair_noq/
+!models/deep/
+!models/deep/cnn_final_L150_seed42_fixedep25/
+!models/deep/cnn_final_L150_seed42_fixedep25/cnn_final.pt
+!models/deep/rnnkmer_bigru_final_L150_seed42/
+!models/deep/rnnkmer_bigru_final_L150_seed42/rnn_kmer_gru_best.pt
+!models/pair_noq_tuned/gradient_boosting_tuned.joblib
 
+archive/duplicate_bundles/
 archive/generated/
 archive/legacy/generated_large/

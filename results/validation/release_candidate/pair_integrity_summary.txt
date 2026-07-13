@@ -1,0 +1,44 @@
+[OK] wrote integrity report to /tmp/mitochime-release-clone/results/validation/example_pair_integrity_rc.json
+{
+  "feature_dataset": "data/example/example_pair_features.tsv",
+  "sequence_dataset": "data/example/example_pair_seq.tsv",
+  "split_dataset": "data/example/example_pair_split.tsv",
+  "feature_rows": 4,
+  "sequence_rows": 4,
+  "feature_unique_pair_ids": 2,
+  "sequence_unique_pair_ids": 2,
+  "feature_pair_multiplicities": {
+    "2": 2
+  },
+  "sequence_pair_multiplicities": {
+    "2": 2
+  },
+  "pair_ids_only_in_feature_dataset": [],
+  "pair_ids_only_in_sequence_dataset": [],
+  "split_unique_pair_ids": 2,
+  "feature_vs_split_missing_pair_ids": [],
+  "sequence_vs_split_missing_pair_ids": []
+}
+python -m mitochime.cli validate-pairs --feature-dataset data/processed/PAIR_train.tsv --sequence-dataset data/processed/PAIR_train_seq_L150.tsv --split-dataset data/processed/PAIR_train.tsv --report-json results/validation/pair_integrity_train.json
+[OK] wrote integrity report to results/validation/pair_integrity_train.json
+{
+  "feature_dataset": "data/processed/PAIR_train.tsv",
+  "sequence_dataset": "data/processed/PAIR_train_seq_L150.tsv",
+  "split_dataset": "data/processed/PAIR_train.tsv",
+  "feature_rows": 31986,
+  "sequence_rows": 31998,
+  "feature_unique_pair_ids": 15999,
+  "sequence_unique_pair_ids": 15999,
+  "feature_pair_multiplicities": {
+    "1": 12,
+    "2": 15987
+  },
+  "sequence_pair_multiplicities": {
+    "2": 15999
+  },
+  "pair_ids_only_in_feature_dataset": [],
+  "pair_ids_only_in_sequence_dataset": [],
+  "split_unique_pair_ids": 15999,
+  "feature_vs_split_missing_pair_ids": [],
+  "sequence_vs_split_missing_pair_ids": []
+}

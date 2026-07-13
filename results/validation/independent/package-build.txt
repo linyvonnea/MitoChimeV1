@@ -1,0 +1,192 @@
+running egg_info
+writing src/mitochime.egg-info/PKG-INFO
+writing dependency_links to src/mitochime.egg-info/dependency_links.txt
+writing entry points to src/mitochime.egg-info/entry_points.txt
+writing requirements to src/mitochime.egg-info/requires.txt
+writing top-level names to src/mitochime.egg-info/top_level.txt
+reading manifest file 'src/mitochime.egg-info/SOURCES.txt'
+adding license file 'LICENSE'
+adding license file 'AUTHORS.md'
+writing manifest file 'src/mitochime.egg-info/SOURCES.txt'
+running sdist
+running egg_info
+writing src/mitochime.egg-info/PKG-INFO
+writing dependency_links to src/mitochime.egg-info/dependency_links.txt
+writing entry points to src/mitochime.egg-info/entry_points.txt
+writing requirements to src/mitochime.egg-info/requires.txt
+writing top-level names to src/mitochime.egg-info/top_level.txt
+reading manifest file 'src/mitochime.egg-info/SOURCES.txt'
+adding license file 'LICENSE'
+adding license file 'AUTHORS.md'
+writing manifest file 'src/mitochime.egg-info/SOURCES.txt'
+running check
+creating mitochime-0.1.0
+creating mitochime-0.1.0/src/mitochime
+creating mitochime-0.1.0/src/mitochime.egg-info
+creating mitochime-0.1.0/src/mitochime/deep_learning
+creating mitochime-0.1.0/src/mitochime/utils
+creating mitochime-0.1.0/tests
+copying files to mitochime-0.1.0...
+copying AUTHORS.md -> mitochime-0.1.0
+copying LICENSE -> mitochime-0.1.0
+copying README.md -> mitochime-0.1.0
+copying pyproject.toml -> mitochime-0.1.0
+copying src/mitochime/__init__.py -> mitochime-0.1.0/src/mitochime
+copying src/mitochime/build_datasets.py -> mitochime-0.1.0/src/mitochime
+copying src/mitochime/build_pair_splits.py -> mitochime-0.1.0/src/mitochime
+copying src/mitochime/cli.py -> mitochime-0.1.0/src/mitochime
+copying src/mitochime/data_utils.py -> mitochime-0.1.0/src/mitochime
+copying src/mitochime/feature_schema.py -> mitochime-0.1.0/src/mitochime
+copying src/mitochime/filtering.py -> mitochime-0.1.0/src/mitochime
+copying src/mitochime/hyperparam_search_top.py -> mitochime-0.1.0/src/mitochime
+copying src/mitochime/make_noq_datasets.py -> mitochime-0.1.0/src/mitochime
+copying src/mitochime/make_noq_datasets_pair.py -> mitochime-0.1.0/src/mitochime
+copying src/mitochime/model_zoo.py -> mitochime-0.1.0/src/mitochime
+copying src/mitochime/train_all_models.py -> mitochime-0.1.0/src/mitochime
+copying src/mitochime.egg-info/PKG-INFO -> mitochime-0.1.0/src/mitochime.egg-info
+copying src/mitochime.egg-info/SOURCES.txt -> mitochime-0.1.0/src/mitochime.egg-info
+copying src/mitochime.egg-info/dependency_links.txt -> mitochime-0.1.0/src/mitochime.egg-info
+copying src/mitochime.egg-info/entry_points.txt -> mitochime-0.1.0/src/mitochime.egg-info
+copying src/mitochime.egg-info/requires.txt -> mitochime-0.1.0/src/mitochime.egg-info
+copying src/mitochime.egg-info/top_level.txt -> mitochime-0.1.0/src/mitochime.egg-info
+copying src/mitochime/deep_learning/dl_cnn.py -> mitochime-0.1.0/src/mitochime/deep_learning
+copying src/mitochime/deep_learning/dl_data.py -> mitochime-0.1.0/src/mitochime/deep_learning
+copying src/mitochime/deep_learning/dl_rnn_kmer.py -> mitochime-0.1.0/src/mitochime/deep_learning
+copying src/mitochime/deep_learning/dl_transformer.py -> mitochime-0.1.0/src/mitochime/deep_learning
+copying src/mitochime/deep_learning/make_folds.py -> mitochime-0.1.0/src/mitochime/deep_learning
+copying src/mitochime/deep_learning/make_seq_tsv.py -> mitochime-0.1.0/src/mitochime/deep_learning
+copying src/mitochime/deep_learning/make_seq_tsv_infer.py -> mitochime-0.1.0/src/mitochime/deep_learning
+copying src/mitochime/deep_learning/predict_deep.py -> mitochime-0.1.0/src/mitochime/deep_learning
+copying src/mitochime/deep_learning/train_deep.py -> mitochime-0.1.0/src/mitochime/deep_learning
+copying src/mitochime/utils/__init__.py -> mitochime-0.1.0/src/mitochime/utils
+copying src/mitochime/utils/fastq.py -> mitochime-0.1.0/src/mitochime/utils
+copying src/mitochime/utils/read_ids.py -> mitochime-0.1.0/src/mitochime/utils
+copying tests/test_build_pair_splits.py -> mitochime-0.1.0/tests
+copying tests/test_cli_smoke.py -> mitochime-0.1.0/tests
+copying tests/test_feature_schema.py -> mitochime-0.1.0/tests
+copying tests/test_filtering.py -> mitochime-0.1.0/tests
+copying tests/test_read_ids.py -> mitochime-0.1.0/tests
+copying tests/test_validate_pair_integrity.py -> mitochime-0.1.0/tests
+copying src/mitochime.egg-info/SOURCES.txt -> mitochime-0.1.0/src/mitochime.egg-info
+Writing mitochime-0.1.0/setup.cfg
+Creating tar archive
+removing 'mitochime-0.1.0' (and everything under it)
+running egg_info
+writing src/mitochime.egg-info/PKG-INFO
+writing dependency_links to src/mitochime.egg-info/dependency_links.txt
+writing entry points to src/mitochime.egg-info/entry_points.txt
+writing requirements to src/mitochime.egg-info/requires.txt
+writing top-level names to src/mitochime.egg-info/top_level.txt
+reading manifest file 'src/mitochime.egg-info/SOURCES.txt'
+adding license file 'LICENSE'
+adding license file 'AUTHORS.md'
+writing manifest file 'src/mitochime.egg-info/SOURCES.txt'
+running bdist_wheel
+running build
+running build_py
+creating build/lib/mitochime
+copying src/mitochime/make_noq_datasets_pair.py -> build/lib/mitochime
+copying src/mitochime/model_zoo.py -> build/lib/mitochime
+copying src/mitochime/feature_schema.py -> build/lib/mitochime
+copying src/mitochime/make_noq_datasets.py -> build/lib/mitochime
+copying src/mitochime/filtering.py -> build/lib/mitochime
+copying src/mitochime/build_pair_splits.py -> build/lib/mitochime
+copying src/mitochime/build_datasets.py -> build/lib/mitochime
+copying src/mitochime/__init__.py -> build/lib/mitochime
+copying src/mitochime/data_utils.py -> build/lib/mitochime
+copying src/mitochime/cli.py -> build/lib/mitochime
+copying src/mitochime/hyperparam_search_top.py -> build/lib/mitochime
+copying src/mitochime/train_all_models.py -> build/lib/mitochime
+creating build/lib/mitochime/utils
+copying src/mitochime/utils/read_ids.py -> build/lib/mitochime/utils
+copying src/mitochime/utils/__init__.py -> build/lib/mitochime/utils
+copying src/mitochime/utils/fastq.py -> build/lib/mitochime/utils
+creating build/lib/mitochime/deep_learning
+copying src/mitochime/deep_learning/make_seq_tsv.py -> build/lib/mitochime/deep_learning
+copying src/mitochime/deep_learning/dl_transformer.py -> build/lib/mitochime/deep_learning
+copying src/mitochime/deep_learning/dl_data.py -> build/lib/mitochime/deep_learning
+copying src/mitochime/deep_learning/make_folds.py -> build/lib/mitochime/deep_learning
+copying src/mitochime/deep_learning/predict_deep.py -> build/lib/mitochime/deep_learning
+copying src/mitochime/deep_learning/make_seq_tsv_infer.py -> build/lib/mitochime/deep_learning
+copying src/mitochime/deep_learning/train_deep.py -> build/lib/mitochime/deep_learning
+copying src/mitochime/deep_learning/dl_rnn_kmer.py -> build/lib/mitochime/deep_learning
+copying src/mitochime/deep_learning/dl_cnn.py -> build/lib/mitochime/deep_learning
+running egg_info
+writing src/mitochime.egg-info/PKG-INFO
+writing dependency_links to src/mitochime.egg-info/dependency_links.txt
+writing entry points to src/mitochime.egg-info/entry_points.txt
+writing requirements to src/mitochime.egg-info/requires.txt
+writing top-level names to src/mitochime.egg-info/top_level.txt
+reading manifest file 'src/mitochime.egg-info/SOURCES.txt'
+adding license file 'LICENSE'
+adding license file 'AUTHORS.md'
+writing manifest file 'src/mitochime.egg-info/SOURCES.txt'
+installing to build/bdist.macosx-10.9-universal2/wheel
+running install
+running install_lib
+creating build/bdist.macosx-10.9-universal2/wheel
+creating build/bdist.macosx-10.9-universal2/wheel/mitochime
+copying build/lib/mitochime/make_noq_datasets_pair.py -> build/bdist.macosx-10.9-universal2/wheel/./mitochime
+copying build/lib/mitochime/model_zoo.py -> build/bdist.macosx-10.9-universal2/wheel/./mitochime
+copying build/lib/mitochime/feature_schema.py -> build/bdist.macosx-10.9-universal2/wheel/./mitochime
+copying build/lib/mitochime/make_noq_datasets.py -> build/bdist.macosx-10.9-universal2/wheel/./mitochime
+copying build/lib/mitochime/filtering.py -> build/bdist.macosx-10.9-universal2/wheel/./mitochime
+copying build/lib/mitochime/build_pair_splits.py -> build/bdist.macosx-10.9-universal2/wheel/./mitochime
+copying build/lib/mitochime/build_datasets.py -> build/bdist.macosx-10.9-universal2/wheel/./mitochime
+copying build/lib/mitochime/__init__.py -> build/bdist.macosx-10.9-universal2/wheel/./mitochime
+creating build/bdist.macosx-10.9-universal2/wheel/mitochime/utils
+copying build/lib/mitochime/utils/read_ids.py -> build/bdist.macosx-10.9-universal2/wheel/./mitochime/utils
+copying build/lib/mitochime/utils/__init__.py -> build/bdist.macosx-10.9-universal2/wheel/./mitochime/utils
+copying build/lib/mitochime/utils/fastq.py -> build/bdist.macosx-10.9-universal2/wheel/./mitochime/utils
+creating build/bdist.macosx-10.9-universal2/wheel/mitochime/deep_learning
+copying build/lib/mitochime/deep_learning/make_seq_tsv.py -> build/bdist.macosx-10.9-universal2/wheel/./mitochime/deep_learning
+copying build/lib/mitochime/deep_learning/dl_transformer.py -> build/bdist.macosx-10.9-universal2/wheel/./mitochime/deep_learning
+copying build/lib/mitochime/deep_learning/dl_data.py -> build/bdist.macosx-10.9-universal2/wheel/./mitochime/deep_learning
+copying build/lib/mitochime/deep_learning/make_folds.py -> build/bdist.macosx-10.9-universal2/wheel/./mitochime/deep_learning
+copying build/lib/mitochime/deep_learning/predict_deep.py -> build/bdist.macosx-10.9-universal2/wheel/./mitochime/deep_learning
+copying build/lib/mitochime/deep_learning/make_seq_tsv_infer.py -> build/bdist.macosx-10.9-universal2/wheel/./mitochime/deep_learning
+copying build/lib/mitochime/deep_learning/train_deep.py -> build/bdist.macosx-10.9-universal2/wheel/./mitochime/deep_learning
+copying build/lib/mitochime/deep_learning/dl_rnn_kmer.py -> build/bdist.macosx-10.9-universal2/wheel/./mitochime/deep_learning
+copying build/lib/mitochime/deep_learning/dl_cnn.py -> build/bdist.macosx-10.9-universal2/wheel/./mitochime/deep_learning
+copying build/lib/mitochime/data_utils.py -> build/bdist.macosx-10.9-universal2/wheel/./mitochime
+copying build/lib/mitochime/cli.py -> build/bdist.macosx-10.9-universal2/wheel/./mitochime
+copying build/lib/mitochime/hyperparam_search_top.py -> build/bdist.macosx-10.9-universal2/wheel/./mitochime
+copying build/lib/mitochime/train_all_models.py -> build/bdist.macosx-10.9-universal2/wheel/./mitochime
+running install_egg_info
+Copying src/mitochime.egg-info to build/bdist.macosx-10.9-universal2/wheel/./mitochime-0.1.0-py3.12.egg-info
+running install_scripts
+creating build/bdist.macosx-10.9-universal2/wheel/mitochime-0.1.0.dist-info/WHEEL
+creating '/private/tmp/mitochime-independent-ePUoTh/MitoChime-release-check/dist/.tmp-jkz6p8si/mitochime-0.1.0-py3-none-any.whl' and adding 'build/bdist.macosx-10.9-universal2/wheel' to it
+adding 'mitochime/__init__.py'
+adding 'mitochime/build_datasets.py'
+adding 'mitochime/build_pair_splits.py'
+adding 'mitochime/cli.py'
+adding 'mitochime/data_utils.py'
+adding 'mitochime/feature_schema.py'
+adding 'mitochime/filtering.py'
+adding 'mitochime/hyperparam_search_top.py'
+adding 'mitochime/make_noq_datasets.py'
+adding 'mitochime/make_noq_datasets_pair.py'
+adding 'mitochime/model_zoo.py'
+adding 'mitochime/train_all_models.py'
+adding 'mitochime/deep_learning/dl_cnn.py'
+adding 'mitochime/deep_learning/dl_data.py'
+adding 'mitochime/deep_learning/dl_rnn_kmer.py'
+adding 'mitochime/deep_learning/dl_transformer.py'
+adding 'mitochime/deep_learning/make_folds.py'
+adding 'mitochime/deep_learning/make_seq_tsv.py'
+adding 'mitochime/deep_learning/make_seq_tsv_infer.py'
+adding 'mitochime/deep_learning/predict_deep.py'
+adding 'mitochime/deep_learning/train_deep.py'
+adding 'mitochime/utils/__init__.py'
+adding 'mitochime/utils/fastq.py'
+adding 'mitochime/utils/read_ids.py'
+adding 'mitochime-0.1.0.dist-info/licenses/AUTHORS.md'
+adding 'mitochime-0.1.0.dist-info/licenses/LICENSE'
+adding 'mitochime-0.1.0.dist-info/METADATA'
+adding 'mitochime-0.1.0.dist-info/WHEEL'
+adding 'mitochime-0.1.0.dist-info/entry_points.txt'
+adding 'mitochime-0.1.0.dist-info/top_level.txt'
+adding 'mitochime-0.1.0.dist-info/RECORD'
+removing build/bdist.macosx-10.9-universal2/wheel
+Successfully built mitochime-0.1.0.tar.gz and mitochime-0.1.0-py3-none-any.whl

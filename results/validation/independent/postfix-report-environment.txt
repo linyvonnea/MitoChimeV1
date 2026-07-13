@@ -1,0 +1,10 @@
+Python executable: /private/tmp/mitochime-postfix-EuvnVh/venv/bin/python
+Package root: /private/tmp/mitochime-postfix-EuvnVh/venv/lib/python3.12/site-packages/mitochime
+Repository root: /Users/yvonnelin/Desktop/MitoChimeV1
+External tools:
+  minimap2: NOT FOUND
+  samtools: NOT FOUND
+  seqkit: NOT FOUND
+  spades.py: NOT FOUND
+  get_organelle_from_reads.py: NOT FOUND
+  wgsim: NOT FOUND

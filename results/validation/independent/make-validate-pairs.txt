@@ -1,0 +1,1 @@
+python3 -m mitochime.cli validate-pairs --feature-dataset data/processed/PAIR_train.tsv --sequence-dataset data/processed/PAIR_train_seq_L150.tsv --report-json results/validation/pair_integrity_train.json

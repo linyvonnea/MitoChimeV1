@@ -1,0 +1,8 @@
+original_path,final_path_or_replacement,classification,reason,evidence,scientific_behavior_changed,references_updated
+output.png,,REMOVED,Temporary debug output removed during cleanup,Repository audit,no,no
+tmp_q.fa,,REMOVED,Temporary debug output removed during cleanup,Repository audit,no,no
+tmp_q_vs_ref.paf,,REMOVED,Temporary debug output removed during cleanup,Repository audit,no,no
+texput.log,,REMOVED,Temporary LaTeX output removed from repository surface,Repository audit,no,no
+train_deep_top.txt,,REMOVED,Temporary working note removed during cleanup,Repository audit,no,no
+data/test_run/,,REMOVED,Unused placeholder directory removed after example data were added,Cleanup pass,no,no
+documentation/,,REMOVED,Residual aux-only directory surface removed after archival moves,Cleanup pass,no,no

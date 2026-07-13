@@ -1,0 +1,57 @@
+Processing ./.
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'done'
+  Getting requirements to build wheel: started
+  Getting requirements to build wheel: finished with status 'done'
+  Preparing metadata (pyproject.toml): started
+  Preparing metadata (pyproject.toml): finished with status 'done'
+Collecting numpy (from mitochime==0.1.0)
+  Downloading numpy-2.5.1-cp312-cp312-macosx_14_0_arm64.whl.metadata (6.6 kB)
+Collecting pandas (from mitochime==0.1.0)
+  Using cached pandas-3.0.3-cp312-cp312-macosx_11_0_arm64.whl.metadata (79 kB)
+Collecting scikit-learn (from mitochime==0.1.0)
+  Using cached scikit_learn-1.9.0-cp312-cp312-macosx_12_0_arm64.whl.metadata (11 kB)
+Collecting joblib (from mitochime==0.1.0)
+  Using cached joblib-1.5.3-py3-none-any.whl.metadata (5.5 kB)
+Collecting pysam (from mitochime==0.1.0)
+  Using cached pysam-0.24.0-cp312-cp312-macosx_11_0_arm64.whl.metadata (1.6 kB)
+Collecting biopython (from mitochime==0.1.0)
+  Using cached biopython-1.87-cp312-cp312-macosx_11_0_arm64.whl.metadata (13 kB)
+Collecting pyyaml (from mitochime==0.1.0)
+  Using cached pyyaml-6.0.3-cp312-cp312-macosx_11_0_arm64.whl.metadata (2.4 kB)
+Collecting tqdm (from mitochime==0.1.0)
+  Using cached tqdm-4.68.4-py3-none-any.whl.metadata (57 kB)
+Collecting python-dateutil>=2.8.2 (from pandas->mitochime==0.1.0)
+  Using cached python_dateutil-2.9.0.post0-py2.py3-none-any.whl.metadata (8.4 kB)
+Collecting six>=1.5 (from python-dateutil>=2.8.2->pandas->mitochime==0.1.0)
+  Using cached six-1.17.0-py2.py3-none-any.whl.metadata (1.7 kB)
+Collecting scipy>=1.10.0 (from scikit-learn->mitochime==0.1.0)
+  Using cached scipy-1.18.0-cp312-cp312-macosx_14_0_arm64.whl.metadata (62 kB)
+Collecting narwhals>=2.0.1 (from scikit-learn->mitochime==0.1.0)
+  Using cached narwhals-2.24.0-py3-none-any.whl.metadata (15 kB)
+Collecting threadpoolctl>=3.5.0 (from scikit-learn->mitochime==0.1.0)
+  Using cached threadpoolctl-3.6.0-py3-none-any.whl.metadata (13 kB)
+Using cached biopython-1.87-cp312-cp312-macosx_11_0_arm64.whl (2.7 MB)
+Using cached joblib-1.5.3-py3-none-any.whl (309 kB)
+Downloading numpy-2.5.1-cp312-cp312-macosx_14_0_arm64.whl (5.3 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 5.3/5.3 MB 2.9 MB/s  0:00:01
+Using cached pandas-3.0.3-cp312-cp312-macosx_11_0_arm64.whl (9.9 MB)
+Using cached python_dateutil-2.9.0.post0-py2.py3-none-any.whl (229 kB)
+Using cached six-1.17.0-py2.py3-none-any.whl (11 kB)
+Using cached pysam-0.24.0-cp312-cp312-macosx_11_0_arm64.whl (5.9 MB)
+Using cached pyyaml-6.0.3-cp312-cp312-macosx_11_0_arm64.whl (173 kB)
+Using cached scikit_learn-1.9.0-cp312-cp312-macosx_12_0_arm64.whl (8.3 MB)
+Using cached narwhals-2.24.0-py3-none-any.whl (461 kB)
+Using cached scipy-1.18.0-cp312-cp312-macosx_14_0_arm64.whl (20.4 MB)
+Using cached threadpoolctl-3.6.0-py3-none-any.whl (18 kB)
+Using cached tqdm-4.68.4-py3-none-any.whl (676 kB)
+Building wheels for collected packages: mitochime
+  Building wheel for mitochime (pyproject.toml): started
+  Building wheel for mitochime (pyproject.toml): finished with status 'done'
+  Created wheel for mitochime: filename=mitochime-0.1.0-py3-none-any.whl size=41923 sha256=0d543f45abc5a30946b993beb3763ac2fa695b7f3e7930d93f0f062e6583a683
+  Stored in directory: /Users/yvonnelin/Library/Caches/pip/wheels/ce/32/f0/48bc0b020bbe4374029bc387a6653e3b8e3124504555a3a009
+Successfully built mitochime
+Installing collected packages: tqdm, threadpoolctl, six, pyyaml, pysam, numpy, narwhals, joblib, scipy, python-dateutil, biopython, scikit-learn, pandas, mitochime
+
+Successfully installed biopython-1.87 joblib-1.5.3 mitochime-0.1.0 narwhals-2.24.0 numpy-2.5.1 pandas-3.0.3 pysam-0.24.0 python-dateutil-2.9.0.post0 pyyaml-6.0.3 scikit-learn-1.9.0 scipy-1.18.0 six-1.17.0 threadpoolctl-3.6.0 tqdm-4.68.4
+/private/tmp/mitochime-independent-ePUoTh/venv/lib/python3.12/site-packages/mitochime/__init__.py

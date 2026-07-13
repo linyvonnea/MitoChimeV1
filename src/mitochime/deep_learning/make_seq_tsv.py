@@ -36,47 +36,18 @@ from __future__ import annotations
 
 import argparse
 from pathlib import Path
-from typing import Dict, Iterable, Optional, Tuple, Set
+from typing import Dict, Iterable, Optional, Set, Tuple
 
 import pandas as pd
-
-
-def _strip_at(h: str) -> str:
-    return h[1:] if h.startswith("@") else h
-
-
-def _strip_mate_suffix(rid: str) -> Tuple[str, Optional[str]]:
-    """
-    Returns (base_id, mate) where mate is "1" or "2" if present, else None.
-    """
-    if rid.endswith("/1"):
-        return rid[:-2], "1"
-    if rid.endswith("/2"):
-        return rid[:-2], "2"
-    return rid, None
-
-
-def normalize_fastq_header(header: str) -> Tuple[str, str]:
-    """
-    FASTQ header -> (base_id, mate)
-    Handles:
-      "@foo/1" -> ("foo","1")
-      "@foo 1:N:0:1" -> ("foo","?")  (if no /1, we treat mate unknown)
-    In your case, headers have /1 or /2, so mate will be "1" or "2".
-    """
-    h = header.strip()
-    h = _strip_at(h)
-    h = h.split()[0]  # keep first token before spaces
-    base, mate = _strip_mate_suffix(h)
-    # If mate missing, mark as "0" so it is still unique
-    return base, mate or "0"
+from ..utils.fastq import open_text
+from ..utils.read_ids import infer_mate_from_header, mate_specific_read_id, normalize_base_read_id, normalize_read_token, split_read_id
 
 
 def iter_fastq_records(path: Path) -> Iterable[Tuple[str, str, str]]:
     """
     Yields (base_id, mate, seq, qual) per FASTQ record.
     """
-    with path.open("r") as f:
+    with open_text(path, "rt") as f:
         while True:
             h = f.readline()
             if not h:
@@ -86,7 +57,8 @@ def iter_fastq_records(path: Path) -> Iterable[Tuple[str, str, str]]:
             qual = f.readline()
             if not qual:
                 break
-            base, mate = normalize_fastq_header(h)
+            base = normalize_base_read_id(h)
+            mate = infer_mate_from_header(h) or "0"
             yield base, mate, seq.strip(), qual.strip()
 
 
@@ -123,7 +95,8 @@ def load_split_labels(tsv_path: Path) -> Tuple[Dict[str, int], Dict[str, int]]:
     read_labels: Dict[str, int] = {}
 
     for rid, lab in zip(df["read_id"], df["label"]):
-        base, mate = _strip_mate_suffix(rid)
+        parts = split_read_id(rid)
+        base, mate = parts.base_id, parts.mate
         if mate is None:
             # pair-level row
             if base not in pair_labels:
@@ -168,7 +141,7 @@ def main() -> None:
             scanned += 1
 
             # Build FASTQ-style read id
-            rid = f"{base}/{mate}"
+            rid = mate_specific_read_id(base, mate)
 
             # Determine if this FASTQ read is wanted
             label: Optional[int] = None
@@ -204,7 +177,7 @@ def main() -> None:
     df_out.to_csv(out_path, sep="\t", index=False)
 
     # Reporting: how many pairs were satisfied?
-    matched_bases = {r.split("/")[0] for r in df_out["read_id"].tolist()}
+    matched_bases = {normalize_base_read_id(rid) for rid in df_out["read_id"].tolist()}
     missing_pairs = len(wanted_pair - matched_bases)
 
     print(f"[make_seq_tsv] scanned={scanned:,} FASTQ records")

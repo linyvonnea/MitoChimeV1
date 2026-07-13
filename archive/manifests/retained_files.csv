@@ -1,0 +1,12 @@
+original_path,final_path_or_replacement,classification,reason,evidence,scientific_behavior_changed,references_updated
+src/mitochime/,src/mitochime/,RETAINED,Canonical source package retained and extended,Repository audit and cleanup brief,no,yes
+scripts/data_prep/,scripts/data_prep/,RETAINED,Canonical data-prep scripts promoted to stable top-level location,Repository audit,no,yes
+scripts/inference/,scripts/inference/,RETAINED,Operational pair-safe filtering pipelines retained,Repository audit,no,yes
+scripts/assembly/run_spades.sh,scripts/assembly/run_spades.sh,RETAINED,Canonical assembly wrapper retained,Repository audit,no,yes
+data/processed/PAIR_*.tsv,data/processed/PAIR_*.tsv,RETAINED,Canonical pair-aware publication datasets retained,Researcher decision 1,no,yes
+data/processed/PAIR_*_noq.tsv,data/processed/PAIR_*_noq.tsv,RETAINED,Canonical no-quality classical-model datasets retained,Researcher decision 1,no,yes
+data/processed/PAIR_*_seq_L150.tsv,data/processed/PAIR_*_seq_L150.tsv,RETAINED,Canonical deep-learning sequence datasets retained,Researcher decision 1,no,yes
+results/metrics/classical/,results/metrics/classical/,RETAINED,Publication-relevant classical metrics retained,Results provenance,no,yes
+results/metrics/deep/,results/metrics/deep/,RETAINED,Publication-relevant CNN and BiGRU metrics retained,Results provenance,no,yes
+notebooks/publication/,notebooks/publication/,RETAINED,Publication-facing notebooks retained and separated from legacy notebooks,Repository audit,no,yes
+

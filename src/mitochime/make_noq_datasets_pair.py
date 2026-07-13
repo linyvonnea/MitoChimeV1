@@ -26,22 +26,17 @@ from pathlib import Path
 
 import pandas as pd
 
-
-# Columns we do NOT want the model to see
-DROP_COLS = [
-    "mean_base_quality",
-    "ref_start_1based",
-    # optional future drops:
-    # "read_length",
-    # "mapq",
-]
+from .feature_schema import NOQ_DROP_COLUMNS, validate_required_columns
 
 
 def make_noq_file(in_path: Path, out_path: Path) -> None:
+    """Drop quality-inclusive columns while preserving publication data rows."""
+
     print(f"Loading {in_path} ...")
     df = pd.read_csv(in_path, sep="\t")
+    validate_required_columns(df, ["read_id", "label"], label=str(in_path))
 
-    cols_to_drop = [c for c in DROP_COLS if c in df.columns]
+    cols_to_drop = [c for c in NOQ_DROP_COLUMNS if c in df.columns]
     print(f"  Dropping columns: {cols_to_drop}")
 
     df = df.drop(columns=cols_to_drop)

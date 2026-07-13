@@ -1,8 +1,5 @@
 #!/usr/bin/env python3
-"""
-Utility functions for loading the per-read feature table
-and preparing X (features) and y (labels) for ML.
-"""
+"""Utilities for loading and validating canonical feature tables."""
 
 from __future__ import annotations
 
@@ -10,43 +7,36 @@ from typing import Tuple
 
 import pandas as pd
 
-
-NON_FEATURE_COLS = [
-    "read_id",
-    "label",
-    "ref_name",   # drop textual contig name for now
-    "cigar",      # CIGAR string is textual; we keep numeric alignment stats instead
-]
+from .feature_schema import CANONICAL_PAIR_NOQ_FEATURE_COLUMNS, prepare_feature_frame
 
 
 def load_feature_table(path: str) -> pd.DataFrame:
-    """
-    Load the merged TSV created by extract_features.py.
-    """
-    df = pd.read_csv(path, sep="\t")
-    return df
+    """Load a tabular feature dataset."""
+
+    return pd.read_csv(path, sep="\t")
 
 
-def prepare_X_y(df: pd.DataFrame) -> Tuple[pd.DataFrame, pd.Series]:
-    """
-    Turn the raw feature DataFrame into (X, y).
+def prepare_X_y(
+    df: pd.DataFrame,
+    *,
+    expected_features: list[str] | None = None,
+    allow_extra: bool = True,
+) -> Tuple[pd.DataFrame, pd.Series]:
+    """Turn a raw feature table into `(X, y)` with fixed feature ordering.
 
-    - Maps strand '+'/'-' to 1/0.
-    - Drops non-numeric / non-feature columns.
+    The canonical publication workflow expects the pair-safe no-quality feature
+    order recovered from `feature_cols_24.json`, including `strand`.
     """
-    df = df.copy()
 
-    # Ensure label is int (0 = clean, 1 = chimeric)
-    if "label" not in df.columns:
+    expected = expected_features or CANONICAL_PAIR_NOQ_FEATURE_COLUMNS
+    working = df.copy()
+    if "label" not in working.columns:
         raise ValueError("Expected a 'label' column in the feature table.")
-    df["label"] = df["label"].astype(int)
-
-    # Encode strand as numeric
-    if "strand" in df.columns:
-        df["strand"] = df["strand"].map({"+": 1, "-": 0}).astype("float32")
-
-    # Drop clearly non-feature columns
-    X = df.drop(columns=NON_FEATURE_COLS, errors="ignore")
-    y = df["label"]
-
+    working["label"] = pd.to_numeric(working["label"], errors="raise").astype(int)
+    X = prepare_feature_frame(
+        working,
+        expected_features=expected,
+        allow_extra=allow_extra,
+    )
+    y = working["label"]
     return X, y

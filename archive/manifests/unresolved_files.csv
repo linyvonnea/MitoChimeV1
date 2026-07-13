@@ -1,0 +1,6 @@
+original_path,final_path_or_replacement,classification,reason,evidence,scientific_behavior_changed,references_updated
+archive/review_needed/data/external_test/,archive/review_needed/data/external_test/,UNRESOLVED,External FASTQ licensing and release policy remain unresolved,Researcher decision 10,no,no
+archive/review_needed/results/metrics_dl_PAIR_L150_transformer/,archive/review_needed/results/metrics_dl_PAIR_L150_transformer/,UNRESOLVED,Transformer branch kept only for review and not part of the canonical workflow,Researcher decision 2,no,no
+archive/review_needed/scripts/run_pipeline_transformer.sh,archive/review_needed/scripts/run_pipeline_transformer.sh,UNRESOLVED,Transformer inference retained only as review-needed material,Repository audit,no,no
+archive/review_needed/notebook_reports/PAIR_feature_cols.json,archive/review_needed/notebook_reports/PAIR_feature_cols.json,UNRESOLVED,Older 23-feature ordering conflicts with canonical 24-feature schema,Audit unresolved questions,no,no
+archive/review_needed/data/features/all_features_merged.tsv,archive/review_needed/data/features/all_features_merged.tsv,UNRESOLVED,Merged feature-table duplicate retained for comparison pending researcher confirmation,Dataset inventory,no,no

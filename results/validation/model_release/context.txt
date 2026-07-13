@@ -1,0 +1,3 @@
+tmpdir=/tmp/mitochime-model-release.ZeHUCT
+clone=/tmp/mitochime-model-release.ZeHUCT/MitoChimeV1-fresh
+source_repo=/Users/yvonnelin/Desktop/MitoChimeV1

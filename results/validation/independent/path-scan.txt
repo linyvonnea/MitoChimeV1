@@ -1,0 +1,302 @@
+===== src/scripts =====
+./scripts/evaluation/run_final_all_t0p5.sh:57:  bash src/scripts/run_spades.sh "$R1" "$R2" "$UNF_ASM" "$THREADS" ""
+./scripts/evaluation/run_final_all_t0p5.sh:63:  bash src/scripts/run_pipeline_gb.sh "$R1" "$R2" "$GB_RUN" "$T" "$THREADS" "$REF"
+./scripts/evaluation/run_final_all_t0p5.sh:74:  bash src/scripts/run_spades.sh "$GB_R1" "$GB_R2" "$GB_ASM" "$THREADS" ""
+./scripts/evaluation/run_final_all_t0p5.sh:80:  CHECK_SAMPLE=0 bash src/scripts/run_pipeline_cnn.sh "$R1" "$R2" "$CNN_RUN" "$T"
+./scripts/evaluation/run_final_all_t0p5.sh:91:  bash src/scripts/run_spades.sh "$CNN_R1" "$CNN_R2" "$CNN_ASM" "$THREADS" ""
+./MIGRATION_REPORT.md:12:- Moved operational scripts out of `src/scripts/` into `scripts/`.
+./scripts/inference/dl_predict_cnn.py:1:# src/scripts/dl_predict_cnn.py
+./archive/review_needed/scripts/run_batch_lemuru_all.sh:41:GB_SCRIPT="src/scripts/run_pipeline_gb.sh"
+./archive/review_needed/scripts/run_batch_lemuru_all.sh:42:CNN_SCRIPT="src/scripts/run_pipeline_cnn.sh"
+./archive/review_needed/scripts/run_batch_lemuru_all.sh:183:echo "Tip: OVERWRITE=1 THREADS=8 bash src/scripts/run_batch_lemuru_all.sh"
+./archive/review_needed/scripts/run_pipeline_transformer.sh:5:#   bash src/scripts/run_pipeline_transformer.sh <R1.fastq(.gz)> <R2.fastq(.gz)> <RUN_NAME> [THRESH=0.5]
+./archive/review_needed/scripts/run_pipeline_transformer.sh:8:#   bash src/scripts/run_pipeline_transformer.sh \
+./docs/audit/PROPOSED_REPOSITORY_STRUCTURE.md:57:| `src/scripts/make_chimeric_templates.py`, `simulation.py`, `extract_features.py` | `scripts/data_prep/` | Separate simulation and feature-generation steps from model training. |
+./docs/audit/PROPOSED_REPOSITORY_STRUCTURE.md:58:| `src/scripts/run_pipeline_gb.sh`, `run_pipeline_cnn.sh`, `run_pipeline_rnnkmer.sh`, helpers | `scripts/inference/` | These are the actual operational filtering pipelines. |
+./docs/audit/PROPOSED_REPOSITORY_STRUCTURE.md:59:| `src/scripts/run_spades.sh` | `scripts/assembly/` | Single-purpose assembly wrapper. |
+./docs/audit/PROPOSED_REPOSITORY_STRUCTURE.md:60:| `src/scripts/run_final_all_t0p5.sh`, threshold batch scripts | `scripts/evaluation/` | Keeps evaluation orchestration distinct from model inference. |
+./docs/audit/CANONICAL_WORKFLOW_PROPOSAL.md:7:| 1. Reference preparation | `data/refs/original.fasta` plus `src/scripts/make_chimeric_templates.py` | Original mitochondrial FASTA | `chimera.fasta` | `--num-templates 1000`, `--template-len 300`, distance and microhomology bounds | None beyond Python stdlib | Yes for full simulation rerun | Yes | None obvious |
+./docs/audit/CANONICAL_WORKFLOW_PROPOSAL.md:8:| 2. Read simulation and initial alignment | `src/scripts/simulation.py` | reference directory with original/chimera FASTA | `ref1.fastq`, `ref2.fastq`, `chime1.fastq`, `chime2.fastq`, `clean.sorted.bam`, `chimeric.sorted.bam` | read length 150, `NUM_READS=10000` in script, minimap2 short-read mapping | `wgsim`, `minimap2`, `samtools`, `awk`, `conda run` assumptions | Yes for raw-data regeneration | Partially | Script is interactive and monolithic; no cleaner batch equivalent exists yet |
+./docs/audit/CANONICAL_WORKFLOW_PROPOSAL.md:9:| 3. Feature extraction | `src/scripts/extract_features.py` | sorted BAM | feature TSV | `--k 6`, `--micro-window 40` for main branch | `pysam`, `numpy` | Yes | Yes | None |
+./docs/audit/CANONICAL_WORKFLOW_PROPOSAL.md:20:| 14. GB inference and pair-safe FASTQ filtering | `src/scripts/run_pipeline_gb.sh` | paired FASTQ, reference FASTA, tuned GB model | feature TSV + filtered FASTQ | threshold usually `0.3`, `0.5`, or `0.7`; model path `models_pair_noq_tuned/gradient_boosting_tuned.joblib` | `minimap2`, `samtools`, Python libs | Yes | Likely yes if tools exist | older `gb_predict_filter.py` / `06_predict_ml.py` are superseded |
+./docs/audit/CANONICAL_WORKFLOW_PROPOSAL.md:21:| 15. CNN inference and pair-safe FASTQ filtering | `src/scripts/run_pipeline_cnn.sh` | paired FASTQ, final CNN checkpoint | `.npz`, prediction TSV, filtered FASTQ | default threshold `0.5`; final model `cnn_final_L150_seed42_fixedep25/cnn_final.pt` | `torch`, `seqkit`, gzip tools | Yes | Likely yes if tools exist | older encoder variant `dl_encode_fastq_pairs.py` |
+./docs/audit/CANONICAL_WORKFLOW_PROPOSAL.md:22:| 16. BiGRU inference and pair-safe FASTQ filtering | `src/scripts/run_pipeline_rnnkmer.sh` | paired FASTQ, final BiGRU checkpoint | seq TSV, prediction TSV, filtered FASTQ | threshold `0.5`; `k=4`, `L_kmers=147`, `embed_dim=64`, `hidden=256` | `torch`, `seqkit` | Yes | Likely yes if tools exist | transformer inference is separate optional branch |
+./docs/audit/CANONICAL_WORKFLOW_PROPOSAL.md:23:| 17. Assembly validation | `src/scripts/run_spades.sh` and `src/scripts/run_final_all_t0p5.sh` | unfiltered and filtered FASTQ pairs | SPAdes outputs, `reports/final_run/eval_final_all_t0p5.tsv` | threshold `0.5`; SPAdes k list fixed in wrapper | `spades.py`, `seqkit` | Yes | Partially | older evaluation batches and `data/assemblies/*` legacy runs |
+./docs/audit/CANONICAL_WORKFLOW_PROPOSAL.md:49:1. `src/scripts/run_pipeline_gb.sh`
+./docs/audit/CANONICAL_WORKFLOW_PROPOSAL.md:50:2. `src/scripts/run_pipeline_cnn.sh`
+./docs/audit/CANONICAL_WORKFLOW_PROPOSAL.md:51:3. `src/scripts/run_pipeline_rnnkmer.sh`
+./docs/audit/CANONICAL_WORKFLOW_PROPOSAL.md:52:4. `src/scripts/run_spades.sh`
+./docs/audit/CANONICAL_WORKFLOW_PROPOSAL.md:53:5. `src/scripts/run_final_all_t0p5.sh`
+./docs/audit/SCRIPT_DEPENDENCY_MAP.md:7:    A["`data/refs/original.fasta`"] --> B["`src/scripts/make_chimeric_templates.py`"]
+./docs/audit/SCRIPT_DEPENDENCY_MAP.md:8:    A --> C["`src/scripts/simulation.py`"]
+./docs/audit/SCRIPT_DEPENDENCY_MAP.md:11:    D --> E["`src/scripts/extract_features.py`"]
+./docs/audit/SCRIPT_DEPENDENCY_MAP.md:69:| `src/scripts/make_chimeric_templates.py` | original FASTA | chimera FASTA | Called manually or from `simulation.py`. |
+./docs/audit/SCRIPT_DEPENDENCY_MAP.md:70:| `src/scripts/simulation.py` | `make_chimeric_templates.py`, `wgsim`, `minimap2`, `samtools`, `awk` | raw FASTQ plus alignment intermediates | Interactive and monolithic; likely earliest simulation implementation. |
+./docs/audit/SCRIPT_DEPENDENCY_MAP.md:71:| `src/scripts/extract_features.py` | sorted BAM | 30-column feature TSV | Canonical feature extraction step. |
+./docs/audit/SCRIPT_DEPENDENCY_MAP.md:80:| `src/scripts/run_pipeline_gb.sh` | reference FASTA, tuned GB model, `extract_features.py`, `gb_predict_filter_pairs.py` | feature TSV + filtered FASTQ | Canonical reference-guided inference path. |
+./docs/audit/SCRIPT_DEPENDENCY_MAP.md:81:| `src/scripts/run_pipeline_cnn.sh` | CNN checkpoint, `dl_encode_fastq_R1_L150_4ch.py`, `dl_predict_cnn.py`, `filter_pairs_by_ids.py` | encoded arrays, prediction TSV, filtered FASTQ | Canonical reference-free CNN inference path. |
+./docs/audit/SCRIPT_DEPENDENCY_MAP.md:82:| `src/scripts/run_pipeline_rnnkmer.sh` | BiGRU checkpoint, `make_seq_tsv_infer`, `predict_deep`, `filter_pairs_by_ids.py` | seq TSV, prediction TSV, filtered FASTQ | Canonical reference-free BiGRU inference path. |
+./docs/audit/SCRIPT_DEPENDENCY_MAP.md:83:| `src/scripts/run_spades.sh` | paired FASTQ, `spades.py` | SPAdes outputs | Canonical assembly wrapper for evaluation. |
+./docs/audit/SCRIPT_DEPENDENCY_MAP.md:84:| `src/scripts/run_final_all_t0p5.sh` | all three inference branches + SPAdes | final evaluation TSV and `final_run` assemblies | Best publication-facing batch evaluation script. |
+./docs/audit/SCRIPT_DEPENDENCY_MAP.md:120:| `src/scripts/run_batch_lemuru_spades.sh` | Assumes old GB output naming with `_gb` suffix | Legacy batch path is inconsistent with current `run_pipeline_gb.sh`. |
+./docs/audit/RESULTS_PROVENANCE.md:24:| Final assembly evaluation grid | per-dataset/model read retention and SPAdes metrics for `10K`, `20K`, `3200` at 5/10/15/50% chimera | `src/scripts/run_final_all_t0p5.sh` | `data/external_test/*`, GB/CNN/BiGRU pipelines, SPAdes | threshold `0.5`; CNN fixed-epoch 25 model | `reports/final_run/eval_final_all_t0p5.tsv` and duplicate `reports/eval_final_all_t0p5.tsv` | PARTIALLY_REPRODUCIBLE | Requires external tools plus batch rerun; provenance artifacts already exist. |
+./docs/audit/DATASET_INVENTORY.md:12:| `data/refs/chimera.fasta` | FASTA | Synthetic chimeric reference templates | Generated | `src/scripts/make_chimeric_templates.py` | simulation | included in `data/refs` | YES | Small generated input; useful for reproducibility. |
+./docs/audit/DATASET_INVENTORY.md:13:| `data/refs/chimera_clean.fasta` | FASTA | Chimera FASTA cleaned for simulation | Generated | `src/scripts/simulation.py` | simulation | included in `data/refs` | YES | Rebuildable but small. |
+./docs/audit/DATASET_INVENTORY.md:15:| `data/interim/alignments/*` | BAM/SAM | Simulated alignment intermediates | Generated | `src/scripts/simulation.py` | `extract_features.py`, provenance review | 61 MB | NO | Keep via archive or manifest, not default Git tree. |
+./docs/audit/UNRESOLVED_QUESTIONS.md:12:- Which Lemuru batch driver is authoritative: `src/scripts/run_batch_lemuru_all.sh` or `src/scripts/run_batch_lemuru_spades.sh`?
+./docs/audit/UNRESOLVED_QUESTIONS.md:13:- Are `src/scripts/run_final_all_t0p5.sh` and `reports/final_run/*` the definitive assembly-evaluation path, or do any results in the manuscript depend on older `data/assemblies/*` runs?
+./docs/audit/REPOSITORY_AUDIT.md:20:1. feature extraction and classical ML from `src/mitochime` plus `src/scripts/extract_features.py`;
+./docs/audit/REPOSITORY_AUDIT.md:22:3. inference/filtering from `src/scripts/run_pipeline_gb.sh`, `run_pipeline_cnn.sh`, and `run_pipeline_rnnkmer.sh`;
+./docs/audit/REPOSITORY_AUDIT.md:23:4. assembly evaluation from `src/scripts/run_spades.sh` and `reports/final_*` / `data/assemblies_spades/final_run`.
+./docs/audit/REPOSITORY_AUDIT.md:70:| `src/scripts/make_chimeric_templates.py` | Python | Generate synthetic chimeric reference templates | `simulation.py` | `data/refs/original.fasta` | `chimera.fasta` | REQUIRED | High | KEEP | `scripts/data_prep/make_chimeric_templates.py` | Core simulation step for chimeric template generation. |
+./docs/audit/REPOSITORY_AUDIT.md:71:| `src/scripts/simulation.py` | Python | Simulate reads, align with minimap2, create BAM/SAM | Manual workflow only | reference directory, `make_chimeric_templates.py`, wgsim, minimap2, samtools | raw FASTQ, SAM, BAM | REQUIRED_WITH_CLEANUP | Medium | MOVE | `scripts/data_prep/simulation.py` | Interactive and monolithic, but clearly central to simulation workflow. |
+./docs/audit/REPOSITORY_AUDIT.md:72:| `src/scripts/extract_features.py` | Python | Extract 30 per-read features from BAM | `run_pipeline_gb.sh`, dataset build | sorted BAM | feature TSV | REQUIRED | High | KEEP | `scripts/data_prep/extract_features.py` | Canonical feature extractor. |
+./docs/audit/REPOSITORY_AUDIT.md:73:| `src/scripts/gb_predict_filter_pairs.py` | Python | Pair-safe GB inference and FASTQ filtering | `run_pipeline_gb.sh` | FASTQ, features TSV, tuned model, feature JSON | filtered FASTQ | REQUIRED | High | KEEP | `scripts/inference/gb_predict_filter_pairs.py` | Canonical GB filtering path. |
+./docs/audit/REPOSITORY_AUDIT.md:74:| `src/scripts/filter_pairs_by_ids.py` | Python | Pair-safe FASTQ filtering by base IDs | `run_pipeline_cnn.sh`, `run_pipeline_rnnkmer.sh` | FASTQ, remove IDs | filtered FASTQ | REQUIRED | High | KEEP | `scripts/inference/filter_pairs_by_ids.py` | Shared pair-safe filtering helper. |
+./docs/audit/REPOSITORY_AUDIT.md:75:| `src/scripts/dl_encode_fastq_R1_L150_4ch.py` | Python | Encode R1 FASTQ for CNN inference | `run_pipeline_cnn.sh` | R1 FASTQ | `.npz`, IDs text | REQUIRED | High | KEEP | `scripts/inference/dl_encode_fastq_R1_L150_4ch.py` | Operational CNN inference preprocessor. |
+./docs/audit/REPOSITORY_AUDIT.md:76:| `src/scripts/dl_predict_cnn.py` | Python | CNN inference from one-hot encoded `.npz` | `run_pipeline_cnn.sh` | `.npz`, IDs text, CNN checkpoint | predictions TSV, remove IDs | REQUIRED | High | KEEP | `scripts/inferen===== models_pair_noq_tuned =====
+./results/validation/independent/path-scan.txt:21:./docs/audit/CANONICAL_WORKFLOW_PROPOSAL.md:20:| 14. GB inference and pair-safe FASTQ filtering | `src/scripts/run_pipeline_gb.sh` | paired FASTQ, reference FASTA, tuned GB model | feature TSV + filtered FASTQ | threshold usually `0.3`, `0.5`, or `0.7`; model path `models_pair_noq_tuned/gradient_boosting_tuned.joblib` | `minimap2`, `samtools`, Python libs | Yes | Likely yes if tools exist | older `gb_predict_filter.py` / `06_predict_ml.py` are superseded |
+./archive/manifests/consolidated_files.csv:2:models_pair_noq_tuned/,models/pair_noq_tuned/,CONSOLIDATED,Lowercase canonical model path required for case-sensitive filesystems,Researcher decision 5,no,yes
+./results/validation/independent/ignored-untracked-files.txt:18399:archive/review_needed/notebook_reports/models_pair_noq_tuned/feature_cols_24.json
+./notebooks/publication/03_compare_tuned_vs_baseline_pair.ipynb:384:    "    \"gradient_boosting\": joblib.load(\"../models_pair_noq_tuned/gradient_boosting_tuned.joblib\"),\n",
+./notebooks/publication/03_compare_tuned_vs_baseline_pair.ipynb:385:    "    \"catboost\": joblib.load(\"../models_pair_noq_tuned/catboost_tuned.joblib\"),\n",
+./notebooks/publication/03_compare_tuned_vs_baseline_pair.ipynb:386:    "    \"lightgbm\": joblib.load(\"../models_pair_noq_tuned/lightgbm_tuned.joblib\"),\n",
+./notebooks/publication/03_compare_tuned_vs_baseline_pair.ipynb:387:    "    \"bagging_trees\": joblib.load(\"../models_pair_noq_tuned/bagging_trees_tuned.joblib\"),\n",
+./notebooks/publication/03_compare_tuned_vs_baseline_pair.ipynb:388:    "    \"mlp\": joblib.load(\"../models_pair_noq_tuned/mlp_tuned.joblib\"),\n",
+./notebooks/publication/03_compare_tuned_vs_baseline_pair.ipynb:606:      "Saved: /Users/yvonnelin/Desktop/mitochime/models_pair_noq_tuned/feature_cols_24.json\n",
+./notebooks/publication/03_compare_tuned_vs_baseline_pair.ipynb:612:    "out_path = Path(\"../models_pair_noq_tuned/feature_cols_24.json\")\n",
+./notebooks/publication/03_compare_tuned_vs_baseline_pair.ipynb:1967:    "model_path = \"../models_pair_noq_tuned/gradient_boosting_tuned.joblib\"\n",
+./notebooks/publication/03_compare_tuned_vs_baseline_pair.ipynb:2039:    "gb_model = joblib.load(\"../models_pair_noq_tuned/gradient_boosting_tuned.joblib\")\n",
+./notebooks/publication/04_C4_pair.ipynb:1044:      "Saved: models_pair_noq_tuned\\feature_cols_24.json\n",
+./notebooks/publication/04_C4_pair.ipynb:1069:    "out = Path(\"models_pair_noq_tuned/feature_cols_24.json\")\n",
+./MIGRATION_REPORT.md:40:- `models_pair_noq_tuned/` was treated as the canonical tuned Gradient Boosting artifact directory and moved to `models/pair_noq_tuned/`.
+./results/metrics/classical/gradient_boosting_analysis_pair_noq/gradient_boosting_feature_ablation_results.json:5:    "model_path": "../models_pair_noq_tuned/gradient_boosting_tuned.joblib"
+./docs/audit/PROPOSED_REPOSITORY_STRUCTURE.md:67:| `models_pair_noq_tuned/*`, final deep checkpoints | `models/released/` | Keep only the canonical released models. |
+./docs/audit/CANONICAL_WORKFLOW_PROPOSAL.md:20:| 14. GB inference and pair-safe FASTQ filtering | `src/scripts/run_pipeline_gb.sh` | paired FASTQ, reference FASTA, tuned GB model | feature TSV + filtered FASTQ | threshold usually `0.3`, `0.5`, or `0.7`; model path `models_pair_noq_tuned/gradient_boosting_tuned.joblib` | `minimap2`, `samtools`, Python libs | Yes | Likely yes if tools exist | older `gb_predict_filter.py` / `06_predict_ml.py` are superseded |
+./docs/audit/SCRIPT_DEPENDENCY_MAP.md:130:- `models_PAIR_noq_tuned/` duplicates `models_pair_noq_tuned/`.
+./docs/audit/DATASET_INVENTORY.md:40:| `models_pair_noq_tuned/*` | tuned pair-noq models | Final tuned classical models | Generated | `hyperparam_search_top.py` | GB inference, pair-noq notebooks | 120 MB | YES or release asset | Canonical tuned classical model directory. |
+./docs/audit/UNRESOLVED_QUESTIONS.md:25:- Which of the duplicate tuned-model directories should survive: `models_pair_noq_tuned/` or `models_PAIR_noq_tuned/`?
+./docs/audit/REPOSITORY_AUDIT.md:31:- `models_pair_noq_tuned/` and `models_PAIR_noq_tuned/` are duplicate directories with identical contents.
+./docs/audit/REPOSITORY_AUDIT.md:112:| `models_pair_noq_tuned/` and `models_PAIR_noq_tuned/` | Duplicate model directories | Final tuned pair-noq classical models | notebooks, `run_pipeline_gb.sh` | training outputs | duplicate joblib/JSON files | DUPLICATE | High | CONSOLIDATE | `models/released/pair_noq_tuned/` | Direct byte-for-byte duplicate directory pair. |
+===== models_PAIR_noq_tuned =====
+./src/mitochime/hyperparam_search_top.py:24:  --models-dir models_PAIR_noq_tuned \
+./MIGRATION_REPORT.md:41:- `models_PAIR_noq_tuned/` remained a duplicate and was moved into `archive/duplicate_bundles/`.
+./notebooks/publication/04_C4_pair.ipynb:900:    "    \"catboost\": load(\"../models_PAIR_noq_tuned/catboost_tuned.joblib\"),\n",
+./notebooks/publication/04_C4_pair.ipynb:901:    "    \"gradient_boosting\": load(\"../models_PAIR_noq_tuned/gradient_boosting_tuned.joblib\"),\n",
+./notebooks/publication/04_C4_pair.ipynb:902:    "    \"bagging_trees\": load(\"../models_PAIR_noq_tuned/bagging_trees_tuned.joblib\"),\n",
+./notebooks/publication/04_C4_pair.ipynb:903:    "    \"mlp\": load(\"../models_PAIR_noq_tuned/mlp_tuned.joblib\"),\n",
+./results/metrics/classical/catboost_analysis_pair_noq/catboost_feature_ablation_results.json:5:    "model_path": "../models_PAIR_noq_tuned/catboost_tuned.joblib"
+./archive/manifests/consolidated_files.csv:3:models_PAIR_noq_tuned/,archive/duplicate_bundles/models_PAIR_noq_tuned/,CONSOLIDATED,Duplicate uppercase model directory archived after comparison,Audit duplicate comparison,no,yes
+./docs/audit/SCRIPT_DEPENDENCY_MAP.md:130:- `models_PAIR_noq_tuned/` duplicates `models_pair_noq_tuned/`.
+./docs/audit/DATASET_INVENTORY.md:41:| `models_PAIR_noq_tuned/*` | duplicate tuned pair-noq models | Duplicate of above | Generated | duplicate copy | same as above | 120 MB | NO | Consolidate with lowercase directory. |
+./docs/audit/UNRESOLVED_QUESTIONS.md:25:- Which of the duplicate tuned-model directories should survive: `models_pair_noq_tuned/` or `models_PAIR_noq_tuned/`?
+./docs/audit/REPOSITORY_AUDIT.md:31:- `models_pair_noq_tuned/` and `models_PAIR_noq_tuned/` are duplicate directories with identical contents.
+./docs/audit/REPOSITORY_AUDIT.md:112:| `models_pair_noq_tuned/` and `models_PAIR_noq_tuned/` | Duplicate model directories | Final tuned pair-noq classical models | notebooks, `run_pipeline_gb.sh` | training outputs | duplicate joblib/JSON files | DUPLICATE | High | CONSOLIDATE | `models/released/pair_noq_tuned/` | Direct byte-for-byte duplicate directory pair. |
+===== kaggle_bundle_mitochime =====
+./docs/audit/PROPOSED_REPOSITORY_STRUCTURE.md:75:| `kaggle_bundle_mitochime/` and `.zip` | `archive/duplicate_bundles/kaggle_bundle/` | Companion release only; avoid duplicate source tree in main repo. |
+./docs/audit/SCRIPT_DEPENDENCY_MAP.md:129:- `kaggle_bundle_mitochime/src/mitochime` duplicates `src/mitochime`.
+./docs/audit/DATASET_INVENTORY.md:49:| `kaggle_bundle_mitochime/data/processed/*` | TSV family | Subset of deep-learning release data for Kaggle | Duplicate generated subset | bundle packaging | Kaggle retraining | included in 46 MB bundle | NO in main repo | Companion bundle is fine; avoid parallel duplication in main tree. |
+./docs/audit/REPOSITORY_AUDIT.md:113:| `kaggle_bundle_mitochime/` | Duplicate release bundle | Source + processed sequence datasets for Kaggle DL reruns | README_kaggle | subset of repo | self-contained bundle | DUPLICATE | High | ARCHIVE | `archive/kaggle_bundle/` | Keep as companion release bundle, not parallel source tree. |
+./docs/audit/REPOSITORY_AUDIT.md:114:| `kaggle_bundle_mitochime.zip` | ZIP archive | Compressed copy of Kaggle bundle | none | bundle dir | zip archive | DUPLICATE | High | ARCHIVE | `archive/kaggle_bundle/kaggle_bundle_mitochime.zip` | Redundant with unpacked bundle. |
+./results/validation/independent/ignored-untracked-files.txt:5:archive/duplicate_bundles/kaggle_bundle_mitochime.zip
+./results/validation/independent/ignored-untracked-files.txt:6:archive/duplicate_bundles/kaggle_bundle_mitochime/README_kaggle.txt
+./results/validation/independent/ignored-untracked-files.txt:7:archive/duplicate_bundles/kaggle_bundle_mitochime/data/processed/PAIR_test_noq.tsv
+./results/validation/independent/ignored-untracked-files.txt:8:archive/duplicate_bundles/kaggle_bundle_mitochime/data/processed/PAIR_test_seq_L150.tsv
+./results/validation/independent/ignored-untracked-files.txt:9:archive/duplicate_bundles/kaggle_bundle_mitochime/data/processed/PAIR_train_noq.tsv
+./results/validation/independent/ignored-untracked-files.txt:10:archive/duplicate_bundles/kaggle_bundle_mitochime/data/processed/PAIR_train_seq_L150.tsv
+./results/validation/independent/ignored-untracked-files.txt:11:archive/duplicate_bundles/kaggle_bundle_mitochime/data/processed/cv_seq_L150_seed42/fold0_train_seq.tsv
+./results/validation/independent/ignored-untracked-files.txt:12:archive/duplicate_bundles/kaggle_bundle_mitochime/data/processed/cv_seq_L150_seed42/fold0_val_seq.tsv
+./results/validation/independent/ignored-untracked-files.txt:13:archive/duplicate_bundles/kaggle_bundle_mitochime/data/processed/cv_seq_L150_seed42/fold1_train_seq.tsv
+./results/validation/independent/ignored-untracked-files.txt:14:archive/duplicate_bundles/kaggle_bundle_mitochime/data/processed/cv_seq_L150_seed42/fold1_val_seq.tsv
+./results/validation/independent/ignored-untracked-files.txt:15:archive/duplicate_bundles/kaggle_bundle_mitochime/data/processed/cv_seq_L150_seed42/fold2_train_seq.tsv
+./results/validation/independent/ignored-untracked-files.txt:16:archive/duplicate_bundles/kaggle_bundle_mitochime/data/processed/cv_seq_L150_seed42/fold2_val_seq.tsv
+./results/validation/independent/ignored-untracked-files.txt:17:archive/duplicate_bundles/kaggle_bundle_mitochime/data/processed/cv_seq_L150_seed42/fold3_train_seq.tsv
+./results/validation/independent/ignored-untracked-files.txt:18:archive/duplicate_bundles/kaggle_bundle_mitochime/data/processed/cv_seq_L150_seed42/fold3_val_seq.tsv
+./results/validation/independent/ignored-untracked-files.txt:19:archive/duplicate_bundles/kaggle_bundle_mitochime/data/processed/cv_seq_L150_seed42/fold4_train_seq.tsv
+./results/validation/independent/ignored-untracked-files.txt:20:archive/duplicate_bundles/kaggle_bundle_mitochime/data/processed/cv_seq_L150_seed42/fold4_val_seq.tsv
+./results/validation/independent/ignored-untracked-files.txt:21:archive/duplicate_bundles/kaggle_bundle_mitochime/requirements_kaggle.txt
+./results/validation/independent/ignored-untracked-files.txt:22:archive/duplicate_bundles/kaggle_bundle_mitochime/src/mitochime/__init__.py
+./results/validation/independent/ignored-untracked-files.txt:23:archive/duplicate_bundles/kaggle_bundle_mitochime/src/mitochime/__pycache__/__init__.cpython-311.pyc
+./results/validation/independent/ignored-untracked-files.txt:24:archive/duplicate_bundles/kaggle_bundle_mitochime/src/mitochime/__pycache__/data_utils.cpython-311.pyc
+./results/validation/independent/ignored-untracked-files.txt:25:archive/duplicate_bundles/kaggle_bundle_mitochime/src/mitochime/__pycache__/hyperparam_search_top.cpython-311.pyc
+./results/validation/independent/ignored-untracked-files.txt:26:archive/duplicate_bundles/kaggle_bundle_mitochime/src/mitochime/__pycache__/model_zoo.cpython-311.pyc
+./results/validation/independent/ignored-untracked-files.txt:27:archive/duplicate_bundles/kaggle_bundle_mitochime/src/mitochime/__pycache__/train_all_models.cpython-311.pyc
+./results/validation/independent/ignored-untracked-files.txt:28:archive/duplicate_bundles/kaggle_bundle_mitochime/src/mitochime/build_datasets.py
+./results/validation/independent/ignored-untracked-files.txt:29:archive/duplicate_bundles/kaggle_bundle_mitochime/src/mitochime/build_pair_splits.py
+./results/validation/independent/ignored-untracked-files.txt:30:archive/duplicate_bundles/kaggle_bundle_mitochime/src/mitochime/cli.py
+./results/validation/independent/ignored-untracked-files.txt:31:archive/duplicate_bundles/kaggle_bundle_mitochime/src/mitochime/data_utils.py
+./results/validation/independent/ignored-untracked-files.txt:32:archive/duplicate_bundles/kaggle_bundle_mitochime/src/mitochime/deep_learning/__pycache__/dl_cnn.cpython-311.pyc
+./results/validation/independent/ignored-untracked-files.txt:33:archive/duplicate_bundles/kaggle_bundle_mitochime/src/mitochime/deep_learning/__pycache__/dl_data.cpython-311.pyc
+./results/validation/independent/ignored-untracked-files.txt:34:archive/duplicate_bundles/kaggle_bundle_mitochime/src/mitochime/deep_learning/__pycache__/dl_rnn.cpython-311.pyc
+./results/validation/independent/ignored-untracked-files.txt:35:archive/duplicate_bundles/kaggle_bundle_mitochime/src/mitochime/deep_learning/__pycache__/dl_rnn_kmer.cpython-311.pyc
+./results/validation/independent/ignored-untracked-files.txt:36:archive/duplicate_bundles/kaggle_bundle_mitochime/src/mitochime/deep_learning/__pycache__/dl_transformer.cpython-311.pyc
+./results/validation/independent/ignored-untracked-files.txt:37:archive/duplicate_bundles/kaggle_bundle_mitochime/src/mitochime/deep_learning/__pycache__/make_seq_tsv_infer.cpython-311.pyc
+./results/validation/independent/ignored-untracked-files.txt:38:archive/duplicate_bundles/kaggle_bundle_mitochime/src/mitochime/deep_learning/__pycache__/predict_deep.cpython-311.pyc
+./results/validation/independent/ignored-untracked-files.txt:39:archive/duplicate_bundles/kaggle_bundle_mitochime/src/mitochime/deep_learning/__pycache__/train_deep.cpython-311.pyc
+./results/validation/independent/ignored-untracked-files.txt:40:archive/duplicate_bundles/kaggle_bundle_mitochime/src/mitochime/deep_learning/dl_cnn.py
+./results/validation/independent/ignored-untracked-files.txt:41:archive/duplicate_bundles/kaggle_bundle_mitochime/src/mitochime/deep_learning/dl_data.py
+./results/validation/independent/ignored-untracked-files.txt:42:archive/duplicate_bundles/kaggle_bundle_mitochime/src/mitochime/deep_learning/dl_rnn_kmer.py
+./results/validation/independent/ignored-untracked-files.txt:43:archive/duplicate_bundles/kaggle_bundle_mitochime/src/mitochime/deep_learning/dl_transformer.py
+./results/validation/independent/ignored-untracked-files.txt:44:archive/duplicate_bundles/kaggle_bundle_mitochime/src/mitochime/deep_learning/make_folds.py
+./results/validation/independent/ignored-untracked-files.txt:45:archive/duplicate_bundles/kaggle_bundle_mitochime/src/mitochime/deep_learning/make_seq_tsv.py
+./results/validation/independent/ignored-untracked-files.txt:46:archive/duplicate_bundles/kaggle_bundle_mitochime/src/mitochime/deep_learning/make_seq_tsv_infer.py
+./results/validation/independent/ignored-untracked-files.txt:47:archive/duplicate_bundles/kaggle_bundle_mitochime/src/mitochime/deep_learning/predict_deep.py
+./results/validation/independent/ignored-untracked-files.txt:48:archive/duplicate_bundles/kaggle_bundle_mitochime/src/mitochime/deep_learning/train_deep.py
+./results/validation/independent/ignored-untracked-files.txt:49:archive/duplicate_bundles/kaggle_bundle_mitochime/src/mitochime/hyperparam_search_top.py
+./results/validation/independent/ignored-untracked-files.txt:50:archive/duplicate_bundles/kaggle_bundle_mitochime/src/mitochime/make_noq_datasets.py
+./results/validation/independent/ignored-untracked-files.txt:51:archive/duplicate_bundles/kaggle_bundle_mitochime/src/mitochime/make_noq_datasets_pair.py
+./results/validation/independent/ignored-untracked-files.txt:52:archive/duplicate_bundles/kaggle_bundle_mitochime/src/mitochime/model_zoo.py
+./results/validation/independent/ignored-untracked-files.txt:53:archive/duplicate_bundles/kaggle_bundle_mitochime/src/mitochime/train_all_models.py
+===== dl_rnn =====
+./src/mitochime/deep_learning/dl_rnn_kmer.py:1:# src/mitochime/deep_learning/dl_rnn_kmer.py
+./src/mitochime/deep_learning/train_deep.py:27:from .dl_rnn_kmer import RNNKmerClassifier
+./src/mitochime/deep_learning/predict_deep.py:18:from .dl_rnn_kmer import RNNKmerClassifier  # <-- must exist in your repo
+./archive/manifests/original_source_files.txt:13:src/mitochime/deep_learning/__pycache__/dl_rnn_kmer.cpython-311.pyc
+./archive/manifests/original_source_files.txt:14:src/mitochime/deep_learning/__pycache__/dl_rnn.cpython-311.pyc
+./archive/manifests/original_source_files.txt:21:src/mitochime/deep_learning/dl_rnn_kmer.py
+./MIGRATION_REPORT.md:14:- Repaired deep training by removing references to the missing `dl_rnn.py` implementation.
+./MIGRATION_REPORT.md:46:- `train_deep.py` no longer imports the missing `dl_rnn.py`.
+./results/validation/independent/tracked-files.txt:1039:src/mitochime/deep_learning/dl_rnn_kmer.py
+./docs/audit/CANONICAL_WORKFLOW_PROPOSAL.md:17:| 11. Deep model training: CNN | `src/mitochime/deep_learning/train_deep.py --mode cnn` | `PAIR_train_seq_L150.tsv`, `PAIR_test_seq_L150.tsv` | CNN checkpoint and reports | `epochs=25` for fixed final artifact; `batch=128`, `lr=0.001`, `weight_decay=1e-4`, `seed=42` | `torch` | Yes | No, blocked by missing `dl_rnn.py` import | Older `cnn_final_L150_seed42` and CV folds exist |
+./docs/audit/CANONICAL_WORKFLOW_PROPOSAL.md:18:| 12. Deep model training: BiGRU | `src/mitochime/deep_learning/train_deep.py --mode rnn_kmer_gru` | same sequence TSVs | BiGRU checkpoint and reports | `k=4`, `L_kmers=147`, `hidden=256`, `embed_dim=64`, `epochs=30`, `bidirectional`, `pool=last`, `seed=42` | `torch` | Yes | No, blocked by missing `dl_rnn.py` import | Older BiLSTM checkpoints exist but look non-canonical |
+./docs/audit/CANONICAL_WORKFLOW_PROPOSAL.md:57:1. Remove or guard the missing `dl_rnn.py` import in `train_deep.py`.
+./docs/audit/SCRIPT_DEPENDENCY_MAP.md:79:| `src/mitochime/deep_learning/train_deep.py` | sequence TSVs, model classes | deep checkpoints and reports | Currently blocked by missing `dl_rnn.py` import. |
+./docs/audit/SCRIPT_DEPENDENCY_MAP.md:118:| `src/mitochime/deep_learning/train_deep.py` | Imports missing `src/mitochime/deep_learning/dl_rnn.py` | Blocks rerunning deep training unless code is patched. |
+./docs/audit/RESULTS_PROVENANCE.md:34:2. The deep-learning rerun path is currently blocked by a missing `dl_rnn.py` import dependency.
+./results/validation/independent/path-scan.txt:130:./results/validation/independent/ignored-untracked-files.txt:34:archive/duplicate_bundles/kaggle_bundle_mitochime/src/mitochime/deep_learning/__pycache__/dl_rnn.cpython-311.pyc
+./results/validation/independent/path-scan.txt:131:./results/validation/independent/ignored-untracked-files.txt:35:archive/duplicate_bundles/kaggle_bundle_mitochime/src/mitochime/deep_learning/__pycache__/dl_rnn_kmer.cpython-311.pyc
+./results/validation/independent/path-scan.txt:138:./results/validation/independent/ignored-untracked-files.txt:42:archive/duplicate_bundles/kaggle_bundle_mitochime/src/mitochime/deep_learning/dl_rnn_kmer.py
+./docs/audit/REPOSITORY_AUDIT.md:28:- `src/mitochime/deep_learning/train_deep.py` imports `from .dl_rnn import RNNClassifier`, but `dl_rnn.py` is missing; this blocks rerunning deep-training modes without cleanup.
+./docs/audit/REPOSITORY_AUDIT.md:46:| `mitochime_local_lab_setup_and_runs.md` | Markdown | Local rerun guide for lab machines | Human use | Repo | Manual rerun instructions | OPTIONAL_ANALYSIS | High | MOVE | `docs/reproducibility/mitochime_local_lab_setup_and_runs.md` | Valuable operational note; explicitly documents broken `dl_rnn` import. |
+./docs/audit/REPOSITORY_AUDIT.md:63:| `src/mitochime/deep_learning/dl_rnn_kmer.py` | Python | BiGRU/BiLSTM k-mer RNN architecture | `train_deep.py`, `predict_deep.py` | Tokenized sequence tensors | Logits | REQUIRED | High | KEEP | `src/mitochime/deep_learning/dl_rnn_kmer.py` | Matches final BiGRU reports and checkpoints. |
+./docs/audit/REPOSITORY_AUDIT.md:69:| `src/mitochime/deep_learning/train_deep.py` | Python | CNN/Transformer/BiGRU training entry point | notebooks, comments, lab guide | sequence TSVs | deep checkpoints and reports | REQUIRED_WITH_CLEANUP | High | REFACTOR | `src/mitochime/deep_learning/train_deep.py` | Broken by missing `dl_rnn.py` import even when using working modes. |
+./docs/repository_migration.md:9:- repaired the broken deep-training wrapper by removing references to the missing `dl_rnn.py`
+./docs/reproducibility/mitochime_local_lab_setup_and_runs.md:66:- `src/mitochime/deep_learning/dl_rnn_kmer.py`
+./docs/reproducibility/mitochime_local_lab_setup_and_runs.md:78:from .dl_rnn import RNNClassifier
+./docs/reproducibility/mitochime_local_lab_setup_and_runs.md:81:but `dl_rnn.py` no longer exists in the project.  
+./docs/reproducibility/mitochime_local_lab_setup_and_runs.md:87:from .dl_rnn import RNNClassifier
+./docs/reproducibility/mitochime_local_lab_setup_and_runs.md:178:### `No module named dl_rnn`
+./results/validation/independent/ignored-untracked-files.txt:34:archive/duplicate_bundles/kaggle_bundle_mitochime/src/mitochime/deep_learning/__pycache__/dl_rnn.cpython-311.pyc
+./results/validation/independent/ignored-untracked-files.txt:35:archive/duplicate_bundles/kaggle_bundle_mitochime/src/mitochime/deep_learning/__pycache__/dl_rnn_kmer.cpython-311.pyc
+./results/validation/independent/ignored-untracked-files.txt:42:archive/duplicate_bundles/kaggle_bundle_mitochime/src/mitochime/deep_learning/dl_rnn_kmer.py
+./results/validation/independent/ignored-untracked-files.txt:18472:src/mitochime/deep_learning/__pycache__/dl_rnn.cpython-311.pyc
+./results/validation/independent/ignored-untracked-files.txt:18473:src/mitochime/deep_learning/__pycache__/dl_rnn_kmer.cpython-311.pyc
+./results/validation/independent/ignored-untracked-files.txt:18474:src/mitochime/deep_learning/__pycache__/dl_rnn_kmer.cpython-312.pyc
+===== /Users/ =====
+./README.md:60:Conda environment manifests remain available in [environment.yml](/Users/yvonnelin/Desktop/MitoChimeV1/environment.yml) and [environment.arm.yml](/Users/yvonnelin/Desktop/MitoChimeV1/environment.arm.yml).
+./README.md:73:See [docs/reproducibility.md](/Users/yvonnelin/Desktop/MitoChimeV1/docs/reproducibility.md) for tool notes and current reproduction limits.
+./README.md:116:- [docs/data_integrity.md](/Users/yvonnelin/Desktop/MitoChimeV1/docs/data_integrity.md)
+./README.md:117:- [docs/reproducibility.md](/Users/yvonnelin/Desktop/MitoChimeV1/docs/reproducibility.md)
+./README.md:118:- [results/validation](/Users/yvonnelin/Desktop/MitoChimeV1/results/validation)
+./README.md:147:See [AUTHORS.md](/Users/yvonnelin/Desktop/MitoChimeV1/AUTHORS.md).
+./README.md:151:See [LICENSE](/Users/yvonnelin/Desktop/MitoChimeV1/LICENSE). A final open-source license selection is still pending.
+./docs/audit/pre_cleanup_inventory.md:5:- Repository root: `/Users/yvonnelin/Desktop/MitoChimeV1`
+./docs/repository_migration.md:13:See [MIGRATION_REPORT.md](/Users/yvonnelin/Desktop/MitoChimeV1/MIGRATION_REPORT.md) for the detailed record.
+./notebooks/publication/external_test.ipynb:228:      "PROJECT_ROOT     = /Users/yvonnelin/Desktop/mitochime\n",
+./notebooks/publication/external_test.ipynb:229:      "ASSEMBLIES_ROOT  = /Users/yvonnelin/Desktop/mitochime/data/assemblies_spades/final_run\n"
+./notebooks/publication/external_test.ipynb:280:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:282:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:288:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:293:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:302:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:304:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:310:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:315:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:324:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:326:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:332:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:337:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:346:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:348:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:354:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:359:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:368:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:370:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:376:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:381:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:390:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:392:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:398:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:403:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:412:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:414:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:420:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:425:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:434:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:436:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:442:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:447:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:456:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:458:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:464:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:469:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:478:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:480:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:486:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:491:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:500:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:502:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:508:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:513:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:522:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:524:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:530:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:535:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:544:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:546:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:552:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:557:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:566:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:568:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:574:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:579:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:588:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:590:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:596:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:601:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:610:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:612:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:618:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:623:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:632:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:634:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:640:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:645:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:654:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:656:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:662:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:667:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:676:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:678:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:684:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:689:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:698:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:700:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:706:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:711:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:720:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:722:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:728:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:733:       "      <td>/Users/yvonnelin/Desktop/mitochime/data/assemb...</td>\n",
+./notebooks/publication/external_test.ipynb:742:       "      <td>/Users/yvonnelin/Desktop/mitochime/dat===== C:\\ =====
+===== \\Users\\ =====
+===== /home/ =====
+===== Desktop/MitoChime =====
+./README.md:60:Conda environment manifests remain available in [environment.yml](/Users/yvonnelin/Desktop/MitoChimeV1/environment.yml) and [environment.arm.yml](/Users/yvonnelin/Desktop/MitoChimeV1/environment.arm.yml).
+./README.md:73:See [docs/reproducibility.md](/Users/yvonnelin/Desktop/MitoChimeV1/docs/reproducibility.md) for tool notes and current reproduction limits.
+./README.md:116:- [docs/data_integrity.md](/Users/yvonnelin/Desktop/MitoChimeV1/docs/data_integrity.md)
+./README.md:117:- [docs/reproducibility.md](/Users/yvonnelin/Desktop/MitoChimeV1/docs/reproducibility.md)
+./README.md:118:- [results/validation](/Users/yvonnelin/Desktop/MitoChimeV1/results/validation)
+./README.md:147:See [AUTHORS.md](/Users/yvonnelin/Desktop/MitoChimeV1/AUTHORS.md).
+./README.md:151:See [LICENSE](/Users/yvonnelin/Desktop/MitoChimeV1/LICENSE). A final open-source license selection is still pending.
+./docs/audit/pre_cleanup_inventory.md:5:- Repository root: `/Users/yvonnelin/Desktop/MitoChimeV1`
+./docs/repository_migration.md:13:See [MIGRATION_REPORT.md](/Users/yvonnelin/Desktop/MitoChimeV1/MIGRATION_REPORT.md) for the detailed record.
+./results/validation/independent/path-scan.txt:186:./README.md:60:Conda environment manifests remain available in [environment.yml](/Users/yvonnelin/Desktop/MitoChimeV1/environment.yml) and [environment.arm.yml](/Users/yvonnelin/Desktop/MitoChimeV1/environment.arm.yml).
+./results/validation/independent/path-scan.txt:187:./README.md:73:See [docs/reproducibility.md](/Users/yvonnelin/Desktop/MitoChimeV1/docs/reproducibility.md) for tool notes and current reproduction limits.
+./results/validation/independent/path-scan.txt:188:./README.md:116:- [docs/data_integrity.md](/Users/yvonnelin/Desktop/MitoChimeV1/docs/data_integrity.md)
+./results/validation/independent/path-scan.txt:189:./README.md:117:- [docs/reproducibility.md](/Users/yvonnelin/Desktop/MitoChimeV1/docs/reproducibility.md)
+./results/validation/independent/path-scan.txt:190:./README.md:118:- [results/validation](/Users/yvonnelin/Desktop/MitoChimeV1/results/validation)
+./results/validation/independent/path-scan.txt:191:./README.md:147:See [AUTHORS.md](/Users/yvonnelin/Desktop/MitoChimeV1/AUTHORS.md).
+./results/validation/independent/path-scan.txt:192:./README.md:151:See [LICENSE](/Users/yvonnelin/Desktop/MitoChimeV1/LICENSE). A final open-source license selection is still pending.
+./results/validation/independent/path-scan.txt:193:./docs/audit/pre_cleanup_inventory.md:5:- Repository root: `/Users/yvonnelin/Desktop/MitoChimeV1`
+./results/validation/independent/path-scan.txt:194:./docs/repository_migration.md:13:See [MIGRATION_REPORT.md](/Users/yvonnelin/Desktop/MitoChimeV1/MIGRATION_REPORT.md) for the detailed record.

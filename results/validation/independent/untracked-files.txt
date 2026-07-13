@@ -1,0 +1,4 @@
+results/validation/independent/git-state.txt
+results/validation/independent/path-scan.txt
+results/validation/independent/tracked-files.txt
+results/validation/independent/untracked-files.txt

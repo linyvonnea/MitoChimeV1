@@ -1,0 +1,8 @@
+?? results/validation/independent/
+publication/nids-cleanup
+3b7685a9c82f3be3eb89b0a01dffdd52ac88cb19
+3b7685a (HEAD -> publication/nids-cleanup) test: add pair-safe and schema validation
+a136e06 docs: add MitoChime reproducibility documentation
+cf2517a refactor: consolidate canonical pair-safe workflow
+3bd6152 refactor: establish NiDS publication structure
+28e397c (main) chore: capture pre-cleanup source snapshot

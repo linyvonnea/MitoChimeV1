@@ -21,8 +21,8 @@ Usage
 # PYTHONPATH=src python3 -m mitochime.hyperparam_search_top \
   --train data/processed/PAIR_train_noq.tsv \
   --test  data/processed/PAIR_test_noq.tsv \
-  --models-dir models_PAIR_noq_tuned \
-  --reports-dir reports/hparam_tuning_PAIR_noq
+  --models-dir models/pair_noq_tuned \
+  --reports-dir results/metrics/classical/tuned_pair_noq
 """
 
 from __future__ import annotations
@@ -58,11 +58,29 @@ from sklearn.ensemble import (
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.neural_network import MLPClassifier
 
-from xgboost import XGBClassifier
-from lightgbm import LGBMClassifier
-from catboost import CatBoostClassifier
+from .feature_schema import CANONICAL_PAIR_NOQ_FEATURE_COLUMNS, prepare_feature_frame
+from .optional_dependencies import import_optional_dependency
 
 RANDOM_STATE = 42
+
+
+def _load_optional_classical_estimators():
+    xgboost = import_optional_dependency(
+        "xgboost",
+        extra_name="classical",
+        used_for="classical hyperparameter search",
+    )
+    lightgbm = import_optional_dependency(
+        "lightgbm",
+        extra_name="classical",
+        used_for="classical hyperparameter search",
+    )
+    catboost = import_optional_dependency(
+        "catboost",
+        extra_name="classical",
+        used_for="classical hyperparameter search",
+    )
+    return xgboost.XGBClassifier, lightgbm.LGBMClassifier, catboost.CatBoostClassifier
 
 
 # ============================================================
@@ -77,39 +95,17 @@ def load_dataset(path: str):
     - Forces numeric conversion
     - Median-imputes remaining NaNs
     """
-    import pandas as pd
-    import numpy as np
-    from sklearn.impute import SimpleImputer
-
     df = pd.read_csv(path, sep="\t")
     if "label" not in df.columns:
         raise ValueError("Expected a 'label' column in the dataset.")
-
-    # Encode strand if present
-    if "strand" in df.columns:
-        # your file uses '+' and '-'
-        df["strand"] = df["strand"].map({"+": 1, "-": 0})
-
-    # Drop known non-numeric/non-feature columns
-    drop_cols = ["read_id", "ref_name", "cigar"]
-    df = df.drop(columns=[c for c in drop_cols if c in df.columns], errors="ignore")
-
-    # Force numeric for all features (anything weird -> NaN)
-    for c in df.columns:
-        if c != "label":
-            df[c] = pd.to_numeric(df[c], errors="coerce")
-
     df["label"] = df["label"].astype(int)
-
-    feature_cols = [c for c in df.columns if c != "label"]
-    X = df[feature_cols].to_numpy(dtype=float)
+    feature_frame = prepare_feature_frame(
+        df,
+        expected_features=CANONICAL_PAIR_NOQ_FEATURE_COLUMNS,
+    )
+    X = feature_frame.to_numpy(dtype=float)
     y = df["label"].to_numpy(dtype=int)
-
-    # Impute NaNs safely
-    imp = SimpleImputer(strategy="median")
-    X = imp.fit_transform(X)
-
-    return X, y, feature_cols
+    return X, y, list(feature_frame.columns)
 
 
 # ============================================================
@@ -185,6 +181,7 @@ def main() -> None:
     )
 
     args = parser.parse_args()
+    XGBClassifier, LGBMClassifier, CatBoostClassifier = _load_optional_classical_estimators()
     models_dir = Path(args.models_dir)
     reports_dir = Path(args.reports_dir)
     models_dir.mkdir(parents=True, exist_ok=True)
@@ -192,6 +189,7 @@ def main() -> None:
 
     X_train, y_train, feature_names = load_dataset(args.train)
     X_test, y_test, _ = load_dataset(args.test)
+    (models_dir / "feature_cols_24.json").write_text(json.dumps(feature_names, indent=2))
 
     cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=RANDOM_STATE)
 

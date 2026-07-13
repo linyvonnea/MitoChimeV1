@@ -1,4 +1,5 @@
-# src/mitochime/deep_learning/train_deep.py
+"""Train the verified deep-learning models used in the publication workflow."""
+
 from __future__ import annotations
 
 import argparse
@@ -23,9 +24,8 @@ from sklearn.metrics import (
 
 from .dl_data import ReadSeqDataset, SeqConfig
 from .dl_cnn import CNN1D
-from .dl_transformer import KmerTransformer
-from .dl_rnn import RNNClassifier
 from .dl_rnn_kmer import RNNKmerClassifier
+from .dl_transformer import KmerTransformer
 
 
 def set_seed(seed: int) -> None:
@@ -144,14 +144,17 @@ def save_reports(
 
 
 def train_main() -> None:
-    ap = argparse.ArgumentParser()
+    ap = argparse.ArgumentParser(
+        description=(
+            "Train one of the verified deep-learning models. "
+            "The canonical publication modes are 'cnn' and 'rnn_kmer_gru'."
+        )
+    )
     ap.add_argument(
         "--mode",
         choices=[
             "cnn",
             "transformer",
-            "rnn_lstm",
-            "rnn_gru",
             "rnn_kmer_lstm",
             "rnn_kmer_gru",
         ],
@@ -206,10 +209,7 @@ def train_main() -> None:
 
     cfg = SeqConfig(L=args.L, use_qual=args.use_qual, k=args.k, L_kmers=args.L_kmers)
 
-    # dataset mode selection
-    if args.mode in {"rnn_lstm", "rnn_gru"}:
-        ds_mode = "cnn"           # base-level RNN uses one-hot
-    elif args.mode in {"rnn_kmer_lstm", "rnn_kmer_gru"}:
+    if args.mode in {"rnn_kmer_lstm", "rnn_kmer_gru"}:
         ds_mode = "rnn_kmer"      # kmer tokens for RNN+Embedding
     else:
         ds_mode = args.mode       # cnn or transformer
@@ -220,18 +220,6 @@ def train_main() -> None:
     # build model
     if args.mode == "cnn":
         model: nn.Module = CNN1D(in_ch=4).to(device)
-
-    elif args.mode in {"rnn_lstm", "rnn_gru"}:
-        rnn_type = "lstm" if args.mode == "rnn_lstm" else "gru"
-        model = RNNClassifier(
-            rnn_type=rnn_type,
-            input_size=4,
-            hidden_size=args.hidden,
-            num_layers=args.rnn_layers,
-            bidirectional=args.bidirectional,
-            dropout=0.2,
-            pool=args.pool,
-        ).to(device)
 
     elif args.mode in {"rnn_kmer_lstm", "rnn_kmer_gru"}:
         rnn_type = "lstm" if args.mode == "rnn_kmer_lstm" else "gru"

@@ -1,0 +1,10 @@
+canonical_count 24
+feature_cols_24_count 24
+PAIR_feature_cols_count 23
+canonical_equals_feature_cols_24 True
+canonical_only_vs_PAIR_feature_cols ['strand']
+PAIR_feature_cols_only []
+feature_cols_24_order
+['read_length', 'strand', 'mapq', 'has_sa', 'sa_count', 'num_segments', 'sa_diff_contig', 'sa_min_delta_pos', 'sa_max_delta_pos', 'sa_mean_delta_pos', 'sa_same_strand_count', 'sa_opp_strand_count', 'sa_max_mapq', 'sa_mean_mapq', 'sa_min_nm', 'sa_mean_nm', 'softclip_left', 'softclip_right', 'total_clipped_bases', 'breakpoint_read_pos', 'kmer_cosine_diff', 'kmer_js_divergence', 'microhomology_length', 'microhomology_gc']
+PAIR_feature_cols_order
+['read_length', 'mapq', 'has_sa', 'sa_count', 'num_segments', 'sa_diff_contig', 'sa_min_delta_pos', 'sa_max_delta_pos', 'sa_mean_delta_pos', 'sa_same_strand_count', 'sa_opp_strand_count', 'sa_max_mapq', 'sa_mean_mapq', 'sa_min_nm', 'sa_mean_nm', 'softclip_left', 'softclip_right', 'total_clipped_bases', 'breakpoint_read_pos', 'kmer_cosine_diff', 'kmer_js_divergence', 'microhomology_length', 'microhomology_gc']

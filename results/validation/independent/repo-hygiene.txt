@@ -1,0 +1,7 @@
+tracked_count 1061
+untracked_count 7
+ignored_untracked_count 18499
+symlinks
+data/refs/mt_ref.fasta -> refs/original.fasta
+nested_git_dirs
+case_collisions

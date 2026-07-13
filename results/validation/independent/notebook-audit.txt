@@ -1,0 +1,63 @@
+NOTEBOOK notebooks/publication/01_eda_pair.ipynb
+first_meaningful ('markdown', 'BASIC EDA')
+has_users_path True
+has_src_scripts_ref False
+has_models_pair_noq_tuned False
+has_models_PAIR_noq_tuned False
+has_seed_42 True
+cell_count 11
+
+NOTEBOOK notebooks/publication/02_model_analysis_pair.ipynb
+first_meaningful ('code', 'import pandas as pd')
+has_users_path False
+has_src_scripts_ref False
+has_models_pair_noq_tuned False
+has_models_PAIR_noq_tuned False
+has_seed_42 True
+cell_count 4
+
+NOTEBOOK notebooks/publication/03_compare_tuned_vs_baseline_pair.ipynb
+first_meaningful ('code', 'import json')
+has_users_path True
+has_src_scripts_ref False
+has_models_pair_noq_tuned True
+has_models_PAIR_noq_tuned False
+has_seed_42 True
+cell_count 25
+
+NOTEBOOK notebooks/publication/04_C4_pair.ipynb
+first_meaningful ('code', 'from pathlib import Path')
+has_users_path False
+has_src_scripts_ref False
+has_models_pair_noq_tuned True
+has_models_PAIR_noq_tuned True
+has_seed_42 True
+cell_count 11
+
+NOTEBOOK notebooks/publication/05_spades_metrics_compare.ipynb
+first_meaningful ('code', 'from pathlib import Path')
+has_users_path True
+has_src_scripts_ref False
+has_models_pair_noq_tuned False
+has_models_PAIR_noq_tuned False
+has_seed_42 True
+cell_count 23
+
+NOTEBOOK notebooks/publication/cnn_rnn_analysis.ipynb
+first_meaningful ('code', '# PYTHONPATH=src python3 -m mitochime.deep_learning.train_deep \\ ')
+has_users_path False
+has_src_scripts_ref False
+has_models_pair_noq_tuned False
+has_models_PAIR_noq_tuned False
+has_seed_42 True
+cell_count 39
+
+NOTEBOOK notebooks/publication/external_test.ipynb
+first_meaningful ('code', 'from pathlib import Path')
+has_users_path True
+has_src_scripts_ref False
+has_models_pair_noq_tuned False
+has_models_PAIR_noq_tuned False
+has_seed_42 True
+cell_count 13
+

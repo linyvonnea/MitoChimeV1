@@ -1,0 +1,7 @@
+original_path,final_path_or_replacement,classification,reason,evidence,scientific_behavior_changed,references_updated
+models_pair_noq_tuned/,models/pair_noq_tuned/,CONSOLIDATED,Lowercase canonical model path required for case-sensitive filesystems,Researcher decision 5,no,yes
+models_PAIR_noq_tuned/,archive/duplicate_bundles/models_PAIR_noq_tuned/,CONSOLIDATED,Duplicate uppercase model directory archived after comparison,Audit duplicate comparison,no,yes
+reports/final_run/eval_final_all_t0p5.tsv,results/tables/eval_final_all_t0p5.tsv,CONSOLIDATED,Single canonical publication table location,Results provenance,no,yes
+reports/metrics_pair_noq/,results/metrics/classical/baseline_pair_noq/,CONSOLIDATED,Canonical pair-noq baseline metrics promoted to results tree,Researcher decision 1,no,yes
+reports/hparam_tuning_pair_noq/,results/metrics/classical/tuned_pair_noq/,CONSOLIDATED,Canonical tuned pair-noq metrics promoted to results tree,Researcher decision 2,no,yes
+

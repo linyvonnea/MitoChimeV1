@@ -3,11 +3,16 @@ from __future__ import annotations
 
 import argparse
 from pathlib import Path
+
 import pandas as pd
 from sklearn.model_selection import StratifiedKFold
 
-def main():
-    ap = argparse.ArgumentParser()
+from ..utils.read_ids import normalize_base_read_id
+
+def main() -> None:
+    ap = argparse.ArgumentParser(
+        description="Create pair-safe fold assignments for deep-learning sequence TSVs."
+    )
     ap.add_argument("--train-seq-tsv", required=True)
     ap.add_argument("--out", required=True)
     ap.add_argument("--n-splits", type=int, default=5)
@@ -15,8 +20,9 @@ def main():
     args = ap.parse_args()
 
     df = pd.read_csv(args.train_seq_tsv, sep="\t")
-    # read_id is like "BASE/1" or "BASE/2"
-    df["base_id"] = df["read_id"].astype(str).str.replace(r"/[0-9]+$", "", regex=True)
+    if "read_id" not in df.columns or "label" not in df.columns:
+        raise ValueError("train sequence TSV must contain read_id and label columns")
+    df["base_id"] = df["read_id"].map(normalize_base_read_id)
 
     # pair-level label should be identical for both mates; take first per base_id
     base_df = df.groupby("base_id", as_index=False)["label"].first()

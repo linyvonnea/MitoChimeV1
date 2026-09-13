@@ -172,7 +172,16 @@ Placeholders:
 ## Authors
 
 See [AUTHORS.md](AUTHORS.md).
+## Docker
 
+MitoChime can be run in a Docker container with its Python and
+bioinformatics dependencies pre-installed, including minimap2,
+samtools, seqkit, scikit-learn, and CPU-only PyTorch.
+
+### Build the image
+
+```bash
+docker build -t mitochime:latest .
 ## License
 
 See [LICENSE](LICENSE). A final open-source license selection is still pending.

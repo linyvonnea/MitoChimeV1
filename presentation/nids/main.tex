@@ -669,28 +669,490 @@
 
 
 % =========================================================
-% PRESENTER 3 — RESULTS AND CONCLUSION
+% PRESENTER 3 — RESULTS, DISCUSSION, AND CONCLUSION
 % =========================================================
 
-% ---------------------------------------------------------
-% SLIDE 7 — CLASSIFICATION PERFORMANCE
-% ---------------------------------------------------------
-
-% To be added.
-
 
 % ---------------------------------------------------------
-% SLIDE 8 — ASSEMBLY RESULTS
+% SLIDE 7 — CHIMERA DETECTION PERFORMANCE
 % ---------------------------------------------------------
 
-% To be added.
+\begin{frame}{Chimera Detection Performance}
+
+\vspace{-0.10cm}
+
+\begin{center}
+{\small\color{mitogray}Held-out test performance}
+\end{center}
+
+\vspace{-0.02cm}
+
+\begin{center}
+\footnotesize
+\renewcommand{\arraystretch}{1.10}
+
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Model} &
+\textbf{Precision} &
+\textbf{Recall} &
+\textbf{F1} &
+\textbf{ROC-AUC} \\
+\midrule
+
+Gradient Boosting &
+\textbf{0.937} &
+0.663 &
+0.777 &
+0.846 \\
+
+CNN1D &
+0.872 &
+\textbf{0.959} &
+\textbf{0.912} &
+\textbf{0.961} \\
+
+\bottomrule
+\end{tabular}
+\end{center}
+
+\vspace{0.10cm}
+
+\begin{columns}[T,onlytextwidth]
+
+% -------------------------
+% GRADIENT BOOSTING
+% -------------------------
+
+\begin{column}{0.48\textwidth}
+
+\begin{block}{Gradient Boosting}
+\footnotesize
+
+\begin{itemize}
+    \setlength{\itemsep}{2pt}
+    \setlength{\parskip}{0pt}
+
+    \item Very high precision: \textbf{0.937}
+    \item Lower recall: \textbf{0.663}
+    \item \textbf{179 false positives}
+    \item \textbf{1,348 false negatives}
+
+\end{itemize}
+
+\end{block}
+
+\end{column}
+
+
+% -------------------------
+% CNN1D
+% -------------------------
+
+\begin{column}{0.48\textwidth}
+
+\begin{block}{CNN1D}
+\footnotesize
+
+\begin{itemize}
+    \setlength{\itemsep}{2pt}
+    \setlength{\parskip}{0pt}
+
+    \item Very high recall: \textbf{0.959}
+    \item Higher F1 and ROC-AUC
+    \item \textbf{561 false positives}
+    \item \textbf{165 false negatives}
+
+\end{itemize}
+
+\end{block}
+
+\end{column}
+
+\end{columns}
+
+\vspace{0.05cm}
+
+\begin{center}
+{\scriptsize\color{mitogray}
+\textbf{Gradient Boosting:} fewer false positives
+\qquad
+\textbf{CNN1D:} fewer false negatives
+}
+\end{center}
+
+\end{frame}
 
 
 % ---------------------------------------------------------
-% SLIDE 9 — CONCLUSION
+% SLIDE 8 — HIGH-COVERAGE ASSEMBLY
 % ---------------------------------------------------------
 
-% To be added.
+\begin{frame}{Effect on Downstream Assembly}
 
+\vspace{0.05cm}
+
+\begin{center}
+
+    {\large\color{mitoblue}
+    \textbf{High Coverage and Severe Chimera Contamination}}
+    \\[0.05cm]
+
+    {\small\color{mitogray}
+    20,000 read pairs --- 50\% chimeras}
+
+\end{center}
+
+\vspace{0.20cm}
+
+\begin{center}
+
+    \includegraphics[
+        width=0.92\textwidth,
+        height=4.25cm,
+        keepaspectratio
+    ]{figures/20k.png}
+
+\end{center}
+
+\vspace{0.18cm}
+
+\begin{center}
+
+\begin{minipage}{0.90\textwidth}
+    \centering
+    \small
+
+    At high read depth and severe chimera contamination,
+    both filtering approaches dramatically reduced assembly graph
+    complexity.
+
+    % \vspace{0.08cm}
+
+    % \textbf{CNN1D produced the strongest result,
+    % reducing the assembly to a single-node graph.}
+
+\end{minipage}
+
+\end{center}
+
+\end{frame}
+
+
+
+% ---------------------------------------------------------
+% SLIDE 9 — LOW-COVERAGE ASSEMBLY
+% ---------------------------------------------------------
+
+\begin{frame}{Effect on Downstream Assembly}
+
+\vspace{0.05cm}
+
+\begin{center}
+
+    {\large\color{mitoblue}
+    \textbf{Lower Coverage}}
+    \\[0.05cm]
+
+    {\small\color{mitogray}
+    3.2k reads --- 50\% chimeras}
+
+\end{center}
+
+\vspace{0.20cm}
+
+\begin{center}
+
+    \includegraphics[
+        width=0.92\textwidth,
+        height=4.25cm,
+        keepaspectratio
+    ]{figures/3k.png}
+
+\end{center}
+
+\vspace{0.18cm}
+
+\begin{center}
+
+\begin{minipage}{0.90\textwidth}
+    \centering
+    \small
+
+    At lower read depth, aggressive CNN1D filtering can remove
+    too many valid reads and reduce the amount of read support
+    available for assembly.
+
+    % \vspace{0.08cm}
+
+    % \textbf{This can increase fragmentation when coverage is limited.}
+
+\end{minipage}
+
+\end{center}
+
+\end{frame}
+
+
+% ---------------------------------------------------------
+% SLIDE 10 — OVERALL INTERPRETATION
+% ---------------------------------------------------------
+
+\begin{frame}{Overall Interpretation}
+
+\vspace{0.15cm}
+
+{\large\color{mitoblue}\textbf{Main Findings}}
+
+\vspace{0.30cm}
+
+\begin{itemize}
+
+    \setlength{\itemsep}{0.32cm}
+
+    \item
+    PCR-induced chimeric reads can be detected using both
+    \textbf{alignment-derived features} and
+    \textbf{raw nucleotide sequences}.
+
+    \item
+    \textbf{CNN1D achieved the strongest overall classification performance},
+    with an F1 score of \textbf{0.912} and ROC-AUC of \textbf{0.961}.
+
+    \item
+    Chimera filtering can substantially reduce
+    \textbf{assembly graph complexity}, but its effectiveness
+    depends on \textbf{available read depth}.
+
+\end{itemize}
+
+
+% \vspace{0.08cm}
+
+% \begin{center}
+
+% {\large\color{mitoblue}
+% \textbf{Classification performance alone does not determine
+% the best filtering strategy.}
+% }
+
+% \vspace{0.08cm}
+
+% {\small\color{mitogray}
+% Downstream assembly and available read support must also be considered.
+% }
+
+% \end{center}
+
+\end{frame}
+
+% ---------------------------------------------------------
+% SLIDE 11 — FILTERING STRATEGY
+% ---------------------------------------------------------
+
+\begin{frame}{Choosing the Filtering Strategy}
+
+\vspace{0.20cm}
+
+\begin{columns}[T,onlytextwidth]
+
+% -------------------------
+% LOW COVERAGE
+% -------------------------
+
+\begin{column}{0.48\textwidth}
+
+{\large\color{mitoblue}\textbf{At Low Coverage}}
+
+\vspace{0.18cm}
+
+\begin{block}{Gradient Boosting may be safer}
+
+\small
+
+\begin{itemize}
+    \setlength{\itemsep}{6pt}
+
+    \item Higher precision
+    \item Preserves more clean reads
+    \item Maintains assembly support
+
+\end{itemize}
+
+\end{block}
+
+\end{column}
+
+
+% -------------------------
+% MODERATE-HIGH COVERAGE
+% -------------------------
+
+\begin{column}{0.48\textwidth}
+
+{\large\color{mitoblue}\textbf{At Moderate--High Coverage}}
+
+\vspace{0.18cm}
+
+\begin{block}{CNN1D may be more advantageous}
+
+\small
+
+\begin{itemize}
+    \setlength{\itemsep}{6pt}
+
+    \item Higher recall
+    \item Removes more chimeras
+    \item Remaining reads can compensate
+
+\end{itemize}
+
+\end{block}
+
+\end{column}
+
+\end{columns}
+
+\end{frame}
+
+
+% ---------------------------------------------------------
+% SLIDE 12 — PRACTICAL IMPLICATION
+% ---------------------------------------------------------
+
+\begin{frame}{Practical Implication}
+
+\vspace{0.55cm}
+
+\begin{itemize}
+
+    \setlength{\itemsep}{0.65cm}
+
+    \item
+    MitoChime can serve as a
+    \textbf{pre-assembly quality-control step}
+    for mitochondrial genome assembly.
+
+    \item
+    Users can select between
+    \textbf{Gradient Boosting} and \textbf{CNN1D},
+    as well as adjust the
+    \textbf{filtering threshold},
+    depending on the characteristics of their dataset.
+
+\end{itemize}
+
+\end{frame}
+
+% ---------------------------------------------------------
+% SLIDE 13 — LIMITATIONS
+% ---------------------------------------------------------
+
+\begin{frame}{Limitations}
+
+\vspace{0.35cm}
+
+\begin{itemize}
+
+    \setlength{\itemsep}{0.30cm}
+
+    \item
+    The study used \textbf{simulated sequencing reads}.
+
+    \item
+    Evaluation was performed using a
+    \textbf{single mitochondrial reference} from
+    \textit{Sardinella lemuru}.
+
+    \item
+    Simulation cannot fully reproduce real-world sequencing conditions,
+    including:
+
+    \begin{itemize}
+        \setlength{\itemsep}{0.10cm}
+
+        \item Uneven coverage
+        \item Real sequencing errors
+        \item Contaminants
+        \item Nuclear mitochondrial sequences
+        \item Library-specific artifacts
+        \item Differences among taxa and laboratory protocols
+
+    \end{itemize}
+
+\end{itemize}
+
+\end{frame}
+
+
+
+% ---------------------------------------------------------
+% SLIDE 14 — FUTURE WORK
+% ---------------------------------------------------------
+
+\begin{frame}{Future Work}
+
+\vspace{0.45cm}
+
+Future work will include:
+
+\vspace{0.25cm}
+
+\begin{itemize}
+
+    \setlength{\itemsep}{0.32cm}
+
+    \item
+    Validation using \textbf{real sequencing libraries}
+
+    \item
+    Evaluation across \textbf{additional species and mitochondrial references}
+
+    \item
+    Testing under \textbf{different sequencing error profiles}
+
+    \item
+    Evaluation across \textbf{different library preparation conditions}
+
+    \item
+    \textbf{Dataset-specific threshold calibration}
+
+\end{itemize}
+
+\end{frame}
+
+
+
+% ---------------------------------------------------------
+% SLIDE 15 — FINAL TAKEAWAY
+% ---------------------------------------------------------
+
+\begin{frame}{Final Takeaway}
+
+\vspace{0.45cm}
+
+\begin{itemize}
+
+    \setlength{\itemsep}{0.45cm}
+
+    \item
+    Detecting PCR-induced chimeras should not be treated only as a
+    \textbf{classification problem}.
+
+    \item
+    The effect of filtering on
+    \textbf{downstream assembly} and the amount of
+    \textbf{available read support}
+    must also be considered when choosing the appropriate
+    filtering strategy.
+
+    \item
+    \textbf{MitoChime shows potential as a practical
+    pre-assembly quality-control tool for mitochondrial
+    genome assembly workflows.}
+
+\end{itemize}
+
+\end{frame}
 
 \end{document}

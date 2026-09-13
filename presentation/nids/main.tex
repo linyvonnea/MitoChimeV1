@@ -253,20 +253,219 @@
 % PRESENTER 1 — INTRODUCTION
 % =========================================================
 
-% ---------------------------------------------------------
-% SLIDE 2 — PCR-INDUCED CHIMERAS
-% ---------------------------------------------------------
-
-% To be added.
-
 
 % ---------------------------------------------------------
-% SLIDE 3 — RESEARCH GAP AND OBJECTIVE
+% SLIDE 2 — SARDINELLA LEMURU 
 % ---------------------------------------------------------
 
-% To be added.
+\begin{frame}{The Sardinella lemuru}
+
+    \vfill
+
+    \begin{center}
+        \includegraphics[width=0.72\textwidth]{figures/Slemuru.jpg}
+    \end{center}
+
+    \vspace{0.30cm}
+
+    \begin{center}
+        {\small\color{mitogray}
+        \textit{Sardinella lemuru}. Photo by T.\ Gloerfelt-Tarp, via FishBase\\
+        \url{https://www.fishbase.se/FieldGuide/FieldGuideSummary.php?genusname=Sardinella&speciesname=lemuru&c_code=344}
+        }
+    \end{center}
+
+    \vfill
+
+\end{frame}
 
 
+% ---------------------------------------------------------
+% SLIDE 3 — PCR-INDUCED CHIMERAS
+% ---------------------------------------------------------
+
+\begin{frame}{Problem: PCR-Induced Chimeras}
+
+\centering
+
+\includegraphics[
+    width=0.88\textwidth,
+    height=0.68\textheight,
+    keepaspectratio
+]{figures/pcr_image.png}
+
+\vspace{0.6em}
+
+\small
+\textit{Schematic illustration of PCR-induced chimera formation through incomplete extension and template switching.}
+
+\end{frame}
+
+
+
+% ---------------------------------------------------------
+% SLIDE 4 — implication
+% ---------------------------------------------------------
+
+\begin{frame}{Implication}
+
+\vspace{0.15cm}
+
+{\large\color{mitoblue}\textbf{Assembly quality}}
+
+\vspace{0.30cm}
+
+\begin{itemize}
+
+    \setlength{\itemsep}{0.32cm}
+
+    \item
+    Fragmented or failed mitochondrial assemblies
+
+    \item
+    Reduced reliability of mitochondrial genomics workflows
+
+\end{itemize}
+
+\vspace{0.30cm}
+
+{\large\color{mitoblue}\textbf{Research impact}}
+
+\vspace{0.30cm}
+
+\begin{itemize}
+
+    \setlength{\itemsep}{0.32cm}
+
+    \item
+    Limited downstream analyses in fisheries, population genetics, and evolution
+
+    \item
+    Wasted sequencing effort, computing time, and researcher labor
+
+\end{itemize}
+
+\end{frame}
+
+
+% ---------------------------------------------------------
+% SLIDE — RESEARCH GAP AND OBJECTIVE
+% ---------------------------------------------------------
+
+\begin{frame}{Existing approaches}
+
+\scriptsize
+\renewcommand{\arraystretch}{1.35}
+
+\begin{table}
+\centering
+\begin{tabular}{p{0.23\textwidth} p{0.30\textwidth} p{0.37\textwidth}}
+\hline
+\textbf{Tool / Approach} & \textbf{Main focus} & \textbf{Gap for this study} \\
+\hline
+UCHIME / UCHIME2 &
+Amplicon chimeras &
+Reference/abundance dependent \\
+
+DADA2 &
+ASV-level filtering &
+Not read-level mtDNA filtering \\
+
+CATCh &
+16S rRNA ensemble ML &
+Not for mtDNA; inconsistent \\
+
+ChimPipe &
+RNA-seq fusion/chimera detection &
+Not PCR-induced mtDNA artifacts \\
+
+\textbf{MitoChime} &
+\textbf{Read-level mtDNA chimeras} &
+\textbf{Pre-assembly ML/DL filtering} \\
+\hline
+\end{tabular}
+\end{table}
+
+\vspace{0.5em}
+
+\centering
+\footnotesize
+Most existing tools target amplicon, ASV, or RNA-seq chimeras; MitoChime targets PCR-induced mitochondrial short-read artifacts.
+
+\end{frame}
+
+
+% ---------------------------------------------------------
+% SLIDE — PROBLEM QUESTION
+% ---------------------------------------------------------
+
+\begin{frame}
+
+\vspace{0.20cm}
+
+\begin{center}
+    {\Large
+    Can machine learning detect \textbf{\color{mitoblue}PCR-induced chimeric reads}\\[0.15cm]
+    in mitochondrial Illumina data, and can filtering these reads\\[0.15cm]
+    \textbf{\color{mitoblue}improve downstream genome assembly}?
+    }
+\end{center}
+
+\vspace{0.5cm}
+
+\begin{columns}[T,onlytextwidth]
+
+\begin{column}{0.47\textwidth}
+
+    \centerline{\large\color{mitoblue}\textbf{Input}}
+
+    \vspace{-0.05cm}
+
+    \begin{center}
+    \begin{tikzpicture}
+    \node[
+        draw=mitoline,
+        very thick,
+        rounded corners=4pt,
+        fill=mitolight,
+        align=left,
+        text width=5.2cm,
+        inner sep=8pt
+    ] {
+        Simulated clean and chimeric paired-end Illumina reads from \textit{S. lemuru}
+    };
+    \end{tikzpicture}
+    \end{center}
+
+\end{column}
+
+\begin{column}{0.47\textwidth}
+
+    \centerline{\large\color{mitoblue}\textbf{Output}}
+
+    \vspace{-0.05cm}
+
+    \begin{center}
+    \begin{tikzpicture}
+    \node[
+        draw=mitoline,
+        very thick,
+        rounded corners=4pt,
+        fill=mitolight,
+        align=left,
+        text width=5.2cm,
+        inner sep=8pt
+    ] {
+        A modular pipeline that predicts and filters suspected chimeric reads
+    };
+    \end{tikzpicture}
+    \end{center}
+
+\end{column}
+
+\end{columns}
+
+\end{frame}
 
 % =========================================================
 % PRESENTER 2 — METHODOLOGY
